@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{title}}</title>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="icon" href="/static/assets/img/logo.png">
+    {% block head %}
+    {% endblock %}
+    <style>
+        body {
+            background-color: #EFEFF7;
+        }
+
+        .sidenav {
+            margin-top: 59px;
+            height: 100%;
+            width: 160px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            /*background-color: #0F0C27 For blue theme*/;
+            background-color: black;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidenav > a.sidenav-link {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 20px;
+            color: white;
+            display: block;
+        }
+
+        .sidenav > a.sidenav-link:hover {
+            /*background-color: #001f3f; For blue theme*/
+            background-color: #800000;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /*box-shadow: 0 3px 10px gray; For light theme*/
+            box-shadow: 0 3px 10px black;
+        }
+
+        .topnav > a.topnav-link {
+            margin-top: 9px;
+            margin-bottom: 9px;
+            float: right;
+            color: white;
+            text-align: center;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            /*border-left: 1px solid #DDDDDD; For light theme*/
+            border-left: 1px solid #606060;
+        }
+
+        .topnav > a.topnav-link:hover {
+            /*background-color: #DDDDDD; For light theme*/
+            background-color: #606060;
+        }
+
+        .topnav > a.title-logo {
+            font-family: Courier;
+            font-size: 40px;
+            float: left;
+            padding: 7px 0px 0px 13px;
+            margin: 0px;
+            /*color: #14BCDC; For light theme*/
+            color: #ff2800;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-decoration: none;
+        }
+
+        #main {
+            margin-top: 75px;
+            margin-left: 160px;
+            padding: 0 10px;
+        }
+
+        {% block style %}
+        {% endblock %}
+    </style>
+</head>
+<body>
+    <div class="topnav">
+        <a class="title-logo" href="/">FIRESTORM</a>
+        <a class="topnav-link" href="/logout" title="Logout"><i class="fa fa-sign-out"></i></a>
+        <a class="topnav-link" href="/" title="Home"><i class="fa fa-home"></i></a>
+        <a class="topnav-link" href="/power/shutdown" title="Shutdown"><i class="fa fa-power-off"></i></a>
+        <a class="topnav-link" href="/power/restart" title="Restart"><i class="fa fa-repeat"></i></a>
+    </div>
+        <div class="sidenav">
+        <a class="sidenav-link home-sidenav-active" href="/">Home</a>
+        <a class="sidenav-link dashboard-sidenav-active" href="/dashboard">Dashboard</a>
+        <a class="sidenav-link files-sidenav-active" href="/files/">Files</a>
+        <a class="sidenav-link power-sidenav-active" href="/power/">Power</a>
+        <a class="sidenav-link music-sidenav-active" href="/music/">Music</a>
+        <a class="sidenav-link videos-sidenav-active" href="/videos/">Videos</a>
+    </div>
+    <div id="main">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block head %}
+    <script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+{% endblock %}
+{% block style %}
+    div[lang=latex] {
+        display: inline;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    table, th, td {
+        padding: 0px 7px;
+    }
+{% endblock %}
+{% block content %}
+    {{markdown|safe}}
+{% endblock %}
