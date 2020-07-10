@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block style %}
+    a.dashboard-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
+    table, th, td {
+        padding-right: 20px;
+    }
+
+    p {
+        margin: 0px;
+    }
+
+    .monospace {
+        font-family: monospace;
+        font-size: 15px;
+    }
+
+    #main {
+        font-family: monospace;
+        font-size: 15px;
+    }
+{% endblock %}
+{% block content %}
+    <span>{{current_date}}</span>
+    <span style="float: right;">{{current_time}}</span>
+    <br>
+    <br>
+    <p>{{uptime}}</p>
+    <p>{{system_info}}</p>
+    <br>
+    <p>
+        {% if temperature > 100 or temperature == -1 %}
+            <span style="font-weight: bold; color: red;">[!]</span>
+        {% elif temperature > 90 %}
+            <span style="font-weight: bold; color: #ff6700;">[-]</span>
+        {% else %}
+            <span style="font-weight: bold; color: green;">[+]</span>
+        {% endif %}
+        CPU Temp: {{temperature}} &deg;F
+    </p>
+    <p>
+        {% if updates > 100 %}
+            <span style="font-weight: bold; color: red;">[!]</span>
+        {% elif updates > 0 %}
+            <span style="font-weight: bold; color: #ff6700;">[-]</span>
+        {% else %}
+            <span style="font-weight: bold; color: green;">[+]</span>
+        {% endif %}
+        Updates: {{updates}}
+    </p>
+    {% if uptime.split(" ")[2].startswith("day") and uptime.split(" ")[1]|int >= 2 %}
+        <p><span style="font-weight: bold; color: red;">[!]</span> Restart critical</p>
+    {% elif uptime.split(" ")[2].startswith("day") and uptime.split(" ")[1]|int >= 1 %}
+        <p><span style="font-weight: bold; color: #ff6700;">[-]</span> Restart required</p>
+    {% endif %}
+    {% for k in services.keys() %}
+        <p>
+            {% if services[k] %}
+                <span style="font-weight: bold; color: green;">[+]</span>
+            {% else %}
+                <span style="font-weight: bold; color: #ff6700;">[-]</span>
+            {% endif %}
+            {{k}}
+        </p>
+    {% endfor %}
+    {% if who|length > 0 %}
+        <br>
+        <table>
+            <tr>
+                <th>User</th>
+                <th>TTY</th>
+                <th>Time</th>
+                <th>From</th>
+            </tr>
+            {% for row in who %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{col}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    {% if screens %}
+        <br>
+        <table>
+            <tr>
+                <th>Screen Name</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+            {% for row in screens %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{col}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <br>
+    <table>
+        <tr>
+            <th>Source</th>
+            <th>Type</th>
+            <th>Size</th>
+            <th>Used</th>
+            <th>Available</th>
+            <th>Percent</th>
+            <th>Mountpoint</th>
+        </tr>
+        {% for row in fs_info %}
+            <tr>
+                {% for col in row %}
+                    <td>{{col}}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

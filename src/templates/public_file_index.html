@@ -1,19 +1,25 @@
-{% extends "layout.html" %}
-{% block style %}
-    a.files-sidenav-active {
-        background-color: #ff0800 !important;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{"Index of /" + root}}</title>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Georgia;
+        }
 
-    th, td {
-        padding: 5px;
-        font-size: 20px;
-    }
+        th, td {
+            padding: 5px;
+            font-size: 20px;
+        }
 
-    #title {
-        margin-top: 0px;
-    }
-{% endblock %}
-{% block content %}
+        #title {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
     <h1 id="title">{{"Index of /" + root}}</h1>
     <table>
         <tr>
@@ -98,7 +104,7 @@
                         <i class="fa fa-file-o"></i>
                     {% endif %}
                     </td>
-                    <td><a href="{{file['name'].split('/')[-1]}}">{{file["name"].split("/")[-1]}}</a></td>
+                    <td><a href="{{file['name']}}">{{file["name"].split("/")[-1]}}</a></td>
                     <td>{{file["size"]}}</td>
                     <td>{{file["modified"]}}</td>
                     <td>{{file["owner"]}}</td>
@@ -106,4 +112,5 @@
             </tr>
         {% endfor %}
     </table>
-{% endblock %}
+</body>
+</html>

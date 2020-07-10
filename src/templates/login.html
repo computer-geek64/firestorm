@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Monospaced;
+        }
+
+        label {
+            font-size: 17px;
+        }
+
+        fieldset {
+            border-color: #DDDDDD;
+        }
+
+        .input {
+            border: 3px solid black;
+            border-radius: 5px;
+            width: 300px;
+            padding: 10px 5px 10px 5px;
+        }
+
+        .input:focus {
+            border-color: #FF4136;
+        }
+
+        #form {
+            max-width: 344px;
+            margin: auto;
+            margin-top: 100px;
+        }
+
+        #submit {
+            height: 40px;
+            width: 100%;
+            margin-top: 10px;
+            background-color: #01FF70;
+            color: white;
+            font-weight: bold;
+            border: 0px solid white;
+            border-radius: 5px;
+        }
+
+        #submit:hover {
+            background-color: #2ECC40;
+        }
+    </style>
+</head>
+<body>
+    <div id="form">
+        <form method="post">
+            <fieldset>
+                <legend>Login</legend>
+                <div>
+                    <label for="username">Username</label><br>
+                    <input class="input" id="username" type="text" name="username" placeholder="Enter Username" autofocus="autofocus">
+                </div>
+                <br>
+                <div>
+                    <label for="password">Password</label><br>
+                    <input class="input" id="password" type="password" name="password" placeholder="Enter Password">
+                </div>
+                <input type="submit" value="Submit" id="submit">
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

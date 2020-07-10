@@ -3,10 +3,11 @@
 
 import os
 from pwd import getpwuid
+from auth import authenticate
 from datetime import datetime
 from markdown import markdown
 from errors_blueprint import *
-from flask import Blueprint, request, safe_join, render_template, redirect, send_from_directory
+from flask import Blueprint, request, safe_join, render_template, redirect, send_from_directory, session
 
 
 files_blueprint = Blueprint('files_blueprint', __name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates'), static_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'))
@@ -120,11 +121,10 @@ def get_files_root_index():
 
 @files_blueprint.route('/files/<path:path>', methods=['GET'])
 def get_files_index(path):
-    #if 'username' not in session.keys() or 'password' not in session.keys():
-    #    return error_403(403)
-    #if not authenticate(session['username'], session['password']):
-    #    return error_401(401)
-    #permissions = get_permissions(session['username'])
+    if 'username' not in session or 'password' not in session:
+        return error_403(403)
+    if not authenticate(session['username'], session['password']):
+        return error_401(401)
     local_path = os.path.join('/', path)
     path = '' if path == '.' else path
     if not os.path.exists(local_path):
