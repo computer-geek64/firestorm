@@ -74,10 +74,15 @@ def get_dashboard():
     #updates = Popen(['pacman', '-Qu'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().count('\n')
     updates = 0
     services = [x == 'active' for x in Popen(['systemctl', 'is-active', 'httpd', 'sshd', 'NetworkManager'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
+    #services = {
+    #    'Apache HTTP Server': services[0],
+    #    'OpenSSH Server': services[1],
+    #    'Network Manager': services[2]
+    #}
     services = {
-        'Apache HTTP Server': services[0],
-        'OpenSSH Server': services[1],
-        'Network Manager': services[2]
+        'Apache HTTP Server': True,
+        'OpenSSH Server': True,
+        'Network Manager': True
     }
     who = Popen(['who'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')
     if who == ['']:
@@ -85,7 +90,5 @@ def get_dashboard():
     for i in range(len(who)):
         who[i] = [x for x in who[i].split(' ') if x]
         who[i][2] = who[i][2] + ' ' + who[i].pop(3)
-    screens = Popen(['screen', '-ls'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip()
-    screens = [x.strip().split('\t') for x in screens.split('\n') if x.startswith('\t')] if screens.startswith('There') else False
     fs_info = [[y for y in x.split(' ') if y] for x in Popen(['df', '--output=source,fstype,size,used,avail,pcent,target', '-H', '-x', 'tmpfs', '-x', 'devtmpfs'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().split('\n')[1:] if not ('fn' + 'op'[::-1] + 'nr'[::-1] + str(4))[2:-1] in x]
-    return render_template('dashboard.html', current_date=current_date, current_time=current_time, uptime=uptime, system_info=system_info, temperature=temperature, updates=updates, services=services, who=who, screens=screens, fs_info=fs_info, title=session['username'].capitalize() + '\'s Dashboard'), 200
+    return render_template('dashboard.html', current_date=current_date, current_time=current_time, uptime=uptime, system_info=system_info, temperature=temperature, updates=updates, services=services, who=who, fs_info=fs_info, title=session['username'].capitalize() + '\'s Dashboard'), 200
