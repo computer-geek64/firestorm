@@ -5,7 +5,7 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from flask import Flask
-from config import SESSION_SECRET_KEY
+from config import SESSION_SECRET_KEY, IP, PORT
 from files_blueprint import files_blueprint
 from login_blueprint import login_blueprint
 from power_blueprint import power_blueprint
@@ -34,4 +34,4 @@ def get_home():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', 81)
+    app.run(IP, PORT)
