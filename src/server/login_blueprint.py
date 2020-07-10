@@ -71,7 +71,8 @@ def get_dashboard():
     with open('/sys/class/thermal/thermal_zone0/temp', 'r') as file:
         celsius = float(file.read()) / 1000
         temperature = round(celsius * 9 / 5 + 32, 2)
-    updates = Popen(['pacman', '-Qu'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().count('\n')
+    #updates = Popen(['pacman', '-Qu'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().count('\n')
+    updates = 0
     services = [x == 'active' for x in Popen(['systemctl', 'is-active', 'httpd', 'sshd', 'NetworkManager'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
     services = {
         'Apache HTTP Server': services[0],
