@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block style %}
+    a.power-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    fieldset {
+        max-width: 253px;
+        margin: auto;
+    }
+
+    .form-bar {
+        border: 3px black solid;
+        border-radius: 3px;
+        background-color: black;
+        float: left;
+    }
+
+    .input-bar {
+        border: 0;
+        padding: 0 5px 0 5px;
+        height: 34px;
+    }
+
+    .button-bar {
+        border: 0;
+        height: 34px;
+        width: 34px;
+        background-color: lightgray;
+    }
+
+    .button-bar:hover {
+        background-color: black;
+    }
+{% endblock %}
+{% block content %}
+    <h1 class="title">{{title}}</h1>
+    {% if message %}
+        <p style="text-align: center;">{{message}}</p>
+    {% endif %}
+    <fieldset>
+        <legend>Power</legend>
+        <form class="form-bar" action="/power/shutdown" method="POST">
+            <input class="input-bar" placeholder="Minutes to shutdown" type="text" name="time">
+            <button class="button-bar" type="submit" title="Shutdown"><i class="fa fa-power-off"></i></button>
+        </form>
+        <br>
+        <br>
+        <br>
+        <form class="form-bar" action="/power/restart" method="POST">
+            <input class="input-bar" placeholder="Minutes to restart" type="text" name="time">
+            <button class="button-bar" type="submit" title="Restart"><i class="fa fa-repeat"></i></button>
+        </form>
+    </fieldset>
+{% endblock %}
