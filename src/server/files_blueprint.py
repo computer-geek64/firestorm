@@ -86,22 +86,22 @@ def get_public_files_index(path):
             items[-1]['owner'] = getpwuid(os.stat(os.path.join(root, item)).st_uid).pw_name
         except FileNotFoundError:
             items.pop(-1)
-    if 's' in request.args and request.args['s'] == 'A':
+    if request.args.get('s') == 'A':
         items = sorted(items, key=lambda k: k['name'])
         items.reverse()
-    elif 's' in request.args and request.args['s'] == 's':
+    elif request.args.get('s') == 's':
         items = sorted(items, key=lambda k: k['size'] if not k['name'].endswith('/') else 0)
-    elif 's' in request.args and request.args['s'] == 'S':
+    elif request.args.get('s') == 'S':
         items = sorted(items, key=lambda k: k['size'] if not k['name'].endswith('/') else 0)
         items.reverse()
-    elif 's' in request.args and request.args['s'] == 'm':
+    elif request.args.get('s') == 'm':
         items = sorted(items, key=lambda k: k['modified'])
-    elif 's' in request.args and request.args['s'] == 'M':
+    elif request.args.get('s') == 'M':
         items = sorted(items, key=lambda k: k['modified'])
         items.reverse()
-    elif 's' in request.args and request.args['s'] == 'o':
+    elif request.args.get('s') == 'o':
         items = sorted(items, key=lambda k: k['owner'])
-    elif 's' in request.args and request.args['s'] == 'O':
+    elif request.args.get('s') == 'O':
         items = sorted(items, key=lambda k: k['owner'])
         items.reverse()
     else:
@@ -147,22 +147,22 @@ def get_files_index(path):
             items[-1]['owner'] = getpwuid(os.stat(os.path.join(root, item)).st_uid).pw_name
         except FileNotFoundError:
             items.pop(-1)
-    if 's' in request.args.keys() and request.args['s'] == 'A':
+    if request.args.get('s') == 'A':
         items = sorted(items, key=lambda k: k['name'])
         items.reverse()
-    elif 's' in request.args.keys() and request.args['s'] == 's':
+    elif request.args.get('s') == 's':
         items = sorted(items, key=lambda k: k['size'] if not k['name'].endswith('/') else 0)
-    elif 's' in request.args.keys() and request.args['s'] == 'S':
+    elif request.args.get('s') == 'S':
         items = sorted(items, key=lambda k: k['size'] if not k['name'].endswith('/') else 0)
         items.reverse()
-    elif 's' in request.args.keys() and request.args['s'] == 'm':
+    elif request.args.get('s') == 'm':
         items = sorted(items, key=lambda k: k['modified'])
-    elif 's' in request.args.keys() and request.args['s'] == 'M':
+    elif request.args.get('s') == 'M':
         items = sorted(items, key=lambda k: k['modified'])
         items.reverse()
-    elif 's' in request.args.keys() and request.args['s'] == 'o':
+    elif request.args.get('s') == 'o':
         items = sorted(items, key=lambda k: k['owner'])
-    elif 's' in request.args.keys() and request.args['s'] == 'O':
+    elif request.args.get('s') == 'O':
         items = sorted(items, key=lambda k: k['owner'])
         items.reverse()
     else:
