@@ -73,16 +73,11 @@ def get_dashboard():
         temperature = round(celsius * 9 / 5 + 32, 2)
     #updates = Popen(['pacman', '-Qu'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().count('\n')
     updates = 0
-    services = [x == 'active' for x in Popen(['systemctl', 'is-active', 'httpd', 'sshd', 'NetworkManager'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
-    #services = {
-    #    'Apache HTTP Server': services[0],
-    #    'OpenSSH Server': services[1],
-    #    'Network Manager': services[2]
-    #}
+    services = [x == 'active' for x in Popen(['systemctl', 'is-active', 'firestorm', 'sshd', 'NetworkManager'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
     services = {
-        'Apache HTTP Server': True,
-        'OpenSSH Server': True,
-        'Network Manager': True
+        'Firestorm Web Server': services[0],
+        'OpenSSH Server': services[1],
+        'Network Manager': services[2]
     }
     who = Popen(['who'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')
     if who == ['']:
