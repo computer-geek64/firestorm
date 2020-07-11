@@ -17,4 +17,4 @@ DB_USER = ''  # PostgreSQL database user
 DB_PASSWORD = ''  # PostgreSQL database user password
 PROJECTS_DB_NAME = 'projects'  # PostgreSQL projects database name
 
-GIT_FOLDER = '/git'  # Folder for bare git repositories
+GIT_PATH = '/git'  # Path to folder for bare git repositories
