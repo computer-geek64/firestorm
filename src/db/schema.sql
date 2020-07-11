@@ -1,4 +1,4 @@
--- create.sql
+-- schema.sql
 -- Drop tables if already exists
 DROP TABLE IF EXISTS "organization_type" CASCADE;
 DROP TABLE IF EXISTS "organization" CASCADE;

@@ -24,10 +24,9 @@ def get_projects():
 SELECT *
   FROM "organization_type";
 ''')
-    query_results = cursor.fetchall()
+    organization_types = [x[0] for x in cursor.fetchall()]
     conn.close()
-    return jsonify(query_results)
-    return render_template('projects/projects.html')
+    return render_template('projects/projects.html', organization_types=organization_types)
 
 
 @projects_blueprint.route('/projects/create', methods=['GET'])
