@@ -4,6 +4,7 @@
 import os
 from auth import authenticate
 from errors_blueprint import *
+from config import PROJECTS_DATABASE
 from flask import Blueprint, render_template, request, session
 
 
