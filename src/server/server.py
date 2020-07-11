@@ -9,6 +9,7 @@ from config import SESSION_SECRET_KEY, IP, PORT
 from files_blueprint import files_blueprint
 from login_blueprint import login_blueprint
 from power_blueprint import power_blueprint
+from projects_blueprint import projects_blueprint
 from errors_blueprint import errors_blueprint, error_404
 
 
@@ -16,6 +17,7 @@ app = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.dirna
 app.register_blueprint(files_blueprint)
 app.register_blueprint(login_blueprint)
 app.register_blueprint(power_blueprint)
+app.register_blueprint(projects_blueprint)
 app.register_blueprint(errors_blueprint)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = SESSION_SECRET_KEY
