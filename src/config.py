@@ -16,3 +16,5 @@ MUSIC_LOCATION = ''  # Path to music folder
 DB_USER = ''  # PostgreSQL database user
 DB_PASSWORD = ''  # PostgreSQL database user password
 PROJECTS_DB_NAME = 'projects'  # PostgreSQL projects database name
+
+GIT_FOLDER = '/git'  # Folder for bare git repositories
