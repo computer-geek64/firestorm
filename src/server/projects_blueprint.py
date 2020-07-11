@@ -12,9 +12,6 @@ projects_blueprint = Blueprint('projects_blueprint', __name__, template_folder=o
 
 # Projects
 @projects_blueprint.route('/projects/', methods=['GET'])
+@authenticate
 def get_projects():
-    if 'username' not in session or 'password' not in session:
-        return error_403(403)
-    if not authenticate(session.get('username'), session.get('password')):
-        return error_401(401)
-    return 'Hi'
+    return render_template('projects/projects.html')

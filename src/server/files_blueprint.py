@@ -166,4 +166,4 @@ def get_files_index(path):
         items = sorted(items, key=lambda k: k['name'])
     for i in range(len(items)):
         items[i]['size'] = get_size_string(items[i]['size'])
-    return render_template('file_index.html', title='Index of /' + path, root=path, files=items), 200
+    return render_template('file_index.html', root=path, files=items), 200

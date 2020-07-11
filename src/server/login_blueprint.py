@@ -80,4 +80,4 @@ def get_dashboard():
         who[i] = [x for x in who[i].split(' ') if x]
         who[i][2] = who[i][2] + ' ' + who[i].pop(3)
     fs_info = [[y for y in x.split(' ') if y] for x in Popen(['df', '--output=source,fstype,size,used,avail,pcent,target', '-H', '-x', 'tmpfs', '-x', 'devtmpfs'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().split('\n')[1:] if not ('fn' + 'op'[::-1] + 'nr'[::-1] + str(4))[2:-1] in x]
-    return render_template('dashboard.html', current_date=current_date, current_time=current_time, uptime=uptime, system_info=system_info, temperature=temperature, updates=updates, services=services, who=who, fs_info=fs_info, title=session['username'].capitalize() + '\'s Dashboard'), 200
+    return render_template('dashboard.html', current_date=current_date, current_time=current_time, uptime=uptime, system_info=system_info, temperature=temperature, updates=updates, services=services, who=who, fs_info=fs_info), 200

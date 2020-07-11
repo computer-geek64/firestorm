@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block head %}
+    <title>Index of /{{root}}</title>
+{% endblock %}
 {% block style %}
     a.files-sidenav-active {
         background-color: #ff0800 !important;
@@ -14,7 +17,7 @@
     }
 {% endblock %}
 {% block content %}
-    <h1 id="title">{{"Index of /" + root}}</h1>
+    <h1 id="title">Index of /{{root}}</h1>
     <table>
         <tr>
             <th></th>
