@@ -13,6 +13,6 @@ PASSWORD_HASH = ''  # Root user SHA-512 password hash
 VIDEOS_LOCATION = ''  # Path to videos folder
 MUSIC_LOCATION = ''  # Path to music folder
 
-PROJECTS_DB = 'projects'  # PostgreSQL projects database name
-PROJECTS_DB_USER = ''  # PostgreSQL projects database user
-PROJECTS_DB_PASSWORD = ''  # PostgreSQL projects database user password
+DB_USER = ''  # PostgreSQL database user
+DB_PASSWORD = ''  # PostgreSQL database user password
+PROJECTS_DB_NAME = 'projects'  # PostgreSQL projects database name
