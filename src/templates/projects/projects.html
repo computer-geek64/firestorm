@@ -10,7 +10,51 @@
     #title {
         text-align: center;
     }
+
+    #filter-form {
+        width: 100%;
+        display: flex;
+    }
+
+    #search {
+        min-width: 25%;
+        padding: 6px 10px;
+        border: 2px solid #cdc7c2;
+        border-radius: 5px;
+        display: inline;
+        flex-grow: 1;
+    }
+
+    #search:focus {
+        border-color: #0366d6;
+    }
+
+    #select-filters {
+        display: inline;
+    }
+
+    #select-filters > select {
+        margin-left: 10px;
+        border: 2px solid #cdc7c2;
+        border-radius: 5px;
+        padding: 5px;
+        text-align: center;
+        /*appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;*/
+    }
 {% endblock %}
 {% block content %}
     <h1 id="title">Projects</h1>
+    <form id="filter-form">
+        <input id="search" type="search" placeholder="Find a project..." name="search">
+        <div id="select-filters">
+            <select id="type">
+                <option disabled selected>Type</option>
+                <option value="all">All</option>
+                <option value="some">Some</option>
+                <option value="none">None</option>
+            </select>
+        </div>
+    </form>
 {% endblock %}
