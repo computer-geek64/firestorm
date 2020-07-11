@@ -8,7 +8,7 @@ from auth import authenticate
 from errors_blueprint import *
 from subprocess import Popen, PIPE
 from config import PROJECTS_DB_NAME, DB_USER, DB_PASSWORD, GIT_PATH
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, jsonify
 
 
 projects_blueprint = Blueprint('projects_blueprint', __name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates'), static_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'))
@@ -26,7 +26,7 @@ SELECT *
 ''')
     query_results = cursor.fetchall()
     conn.close()
-    return query_results
+    return jsonify(query_results)
     return render_template('projects/projects.html')
 
 
