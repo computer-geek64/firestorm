@@ -13,20 +13,14 @@ power_blueprint = Blueprint('power_blueprint', __name__, template_folder=os.path
 
 # Power
 @power_blueprint.route('/power/', methods=['GET'])
+@authenticate
 def get_power():
-    if 'username' not in session or 'password' not in session:
-        return error_403(403)
-    if not authenticate(session.get('username'), session.get('password')):
-        return error_401(401)
     return render_template('power/power.html', title='Power'), 200
 
 
 @power_blueprint.route('/power/<string:action>', methods=['GET'])
+@authenticate
 def get_power_action(action):
-    if 'username' not in session or 'password' not in session:
-        return error_403(403)
-    if not authenticate(session.get('username'), session.get('password')):
-        return error_401(401)
     actions = {'shutdown': '-P', 'restart': '-r'}
     if action not in actions:
         return error_404(404)
@@ -35,11 +29,8 @@ def get_power_action(action):
 
 
 @power_blueprint.route('/power/<string:action>', methods=['POST'])
+@authenticate
 def power_action(action):
-    if 'username' not in session or 'password' not in session:
-        return error_403(403)
-    if not authenticate(session.get('username'), session.get('password')):
-        return error_401(401)
     try:
         minutes = request.form.get('time', 'now')
         int(minutes)

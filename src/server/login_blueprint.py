@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from auth import authenticate
+from auth import authenticate, verify_credentials
 from errors_blueprint import *
 from subprocess import Popen, PIPE
 from flask import Blueprint, render_template, request, redirect, session
@@ -17,7 +17,7 @@ login_blueprint = Blueprint('login_blueprint', __name__, template_folder=os.path
 def get_login():
     if 'login_attempts' in session and session.get('login_attempts') > 2:
         return error_403(403)
-    if 'username' in session and 'password' in session and authenticate(session.get('username'), session.get('password')):
+    if 'username' in session and 'password' in session and verify_credentials(session.get('username'), session.get('password')):
         return redirect('/dashboard'), 302
     return render_template('login.html'), 200
 
@@ -32,7 +32,7 @@ def post_login():
         session['login_attempts'] = 1
     username = request.form.get('username')
     password = request.form.get('password')
-    if not authenticate(username, password):
+    if not verify_credentials(username, password):
         if session.get('login_attempts') > 2:
             return error_403(403)
         return error_401(401)
@@ -44,22 +44,16 @@ def post_login():
 
 # Logout
 @login_blueprint.route('/logout/', methods=['GET'])
+@authenticate
 def get_logout():
-    if 'username' not in session or 'password' not in session:
-        return error_403(403)
-    if not authenticate(session['username'], session['password']):
-        return error_401(401)
     session.clear()
     return redirect('/'), 302
 
 
 # Dashboard
 @login_blueprint.route('/dashboard', methods=['GET'])
+@authenticate
 def get_dashboard():
-    if 'username' not in session or 'password' not in session:
-        return error_403(403)
-    if not authenticate(session['username'], session['password']):
-        return error_401(401)
     date = datetime.now()
     current_date = date.strftime('%A, %B %-d')
     current_date += 'th' if 4 <= date.day <= 20 or 24 <= date.day <= 30 else ['st', 'nd', 'rd'][date.day % 10 - 1]

@@ -120,11 +120,8 @@ def get_files_root_index():
 
 
 @files_blueprint.route('/files/<path:path>', methods=['GET'])
+@authenticate
 def get_files_index(path):
-    if 'username' not in session or 'password' not in session:
-        return error_403(403)
-    if not authenticate(session['username'], session['password']):
-        return error_401(401)
     local_path = os.path.join('/', path)
     path = '' if path == '.' else path
     if not os.path.exists(local_path):
