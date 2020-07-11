@@ -20,7 +20,7 @@ CREATE TABLE "organization" (
 
 -- Create table language
 CREATE TABLE "language" (
-    "name" VARCHAR (32),
+    "name" VARCHAR (32) PRIMARY KEY,
     "extension" VARCHAR (8),
     "color" VARCHAR (8)
 );
