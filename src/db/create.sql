@@ -16,7 +16,7 @@ CREATE TABLE "organization_type" (
 CREATE TABLE "organization" (
     "name" VARCHAR (64) PRIMARY KEY,
     "type" VARCHAR (32) NOT NULL REFERENCES "organization_type" ("label")
-)
+);
 
 -- Create table language
 CREATE TABLE "language" (
