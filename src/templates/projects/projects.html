@@ -43,18 +43,41 @@
         -webkit-appearance: none;
         -moz-appearance: none;*/
     }
+
+    #submit {
+        margin-left: 10px;
+        border: 2px solid #cdc7c2;
+        border-radius: 5px;
+        width: 35px;
+        height: 35px;
+        color: black;
+        text-align: center;
+    }
+
+    #submit:hover {
+        background-color: #cdc7c2;
+    }
+
 {% endblock %}
 {% block content %}
     <h1 id="title">Projects</h1>
     <form id="filter-form">
         <input id="search" type="search" placeholder="Find a project..." name="search">
         <div id="select-filters">
-            <select id="type">
+            <select name="organization_type">
                 <option disabled selected>Type</option>
-                <option value="all">All</option>
-                <option value="some">Some</option>
-                <option value="none">None</option>
+                <option>All</option>
+                {% for organization_type in organization_types %}
+                    <option value="{{organization_type}}">{{' '.join([x.capitalize() for x in organization_type.split('_')])}}</option>
+                {% endfor %}
+            </select>
+            <select name="organization">
+                <option disabled selected>Organization</option>
+                <option>All</option>
             </select>
         </div>
+        <button id="submit" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
     </form>
 {% endblock %}
