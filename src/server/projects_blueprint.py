@@ -44,26 +44,26 @@ SELECT "name"
     languages = cursor.fetchall()
     languages = [{'label': x[0], 'value': x[0]} for x in languages]
     projects_query = '''
-    SELECT "projects"."name",
-           "projects"."description",
-           "projects"."organization",
+    SELECT "project"."name",
+           "project"."description",
+           "project"."organization",
            "organization"."type",
-           "projects"."language",
-           "projects"."starred",
-           "projects"."created"
-      FROM "projects"
+           "project"."language",
+           "project"."starred",
+           "project"."created"
+      FROM "project"
 INNER JOIN "organization"
-        ON "projects"."organization" = "organization"."name"
+        ON "project"."organization" = "organization"."name"
 '''
     params = []
     if request.args.get('organization_type', 'all') != 'all':
         projects_query += ' AND "organization"."type" = %s'
         params.append(request.args.get('organization_type', 'all'))
     if request.args.get('organization', 'all') != 'all':
-        projects_query += ' AND "projects"."organization" = %s'
+        projects_query += ' AND "project"."organization" = %s'
         params.append(request.args.get('organization', 'all'))
     if request.args.get('language', 'all') != 'all':
-        projects_query += ' AND "projects"."language" = %s'
+        projects_query += ' AND "project"."language" = %s'
         params.append(request.args.get('language', 'all'))
     projects_query = projects_query.replace('AND', 'WHERE', 1) + ';'
     cursor.execute(projects_query, params)
