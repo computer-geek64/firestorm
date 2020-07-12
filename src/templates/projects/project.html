@@ -45,7 +45,7 @@
 {% endblock %}
 {% block content %}
     <div id="project-title-bar">
-        <i class="fa fa-code" style="font-size: 32px;"></i>
+        <!--<i class="fa fa-code" style="font-size: 32px;"></i>-->
         <h1 id="title">{{title}}</h1>
         <button>
             <i class="fa fa-archive"></i>
@@ -58,7 +58,7 @@
     </div>
     <hr>
     <div id="git-log">
-        <p>{{ git_log }}</p>
+        <p>{{ git_log|safe }}</p>
     </div>
     <div>
     </div>
