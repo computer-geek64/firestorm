@@ -99,9 +99,9 @@ def post_star_project(project):
         cursor = conn.cursor()
         cursor.execute('''
 UPDATE "project"
-   SET "starred" = %s
+   SET "starred" = TRUE
  WHERE "name" = %s;
-''', (request.form.get('starred'), project))
+''', (project))
         conn.commit()
         conn.close()
     return 'Success!', 200
