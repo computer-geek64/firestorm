@@ -23,6 +23,7 @@ def snake_case_to_title(s):
 @projects_blueprint.route('/projects/', methods=['GET'])
 @authenticate
 def get_projects():
+    print(dict(request.args))
     conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
     cursor = conn.cursor()
     cursor.execute('''
