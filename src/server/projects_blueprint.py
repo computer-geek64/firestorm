@@ -16,7 +16,7 @@ projects_blueprint = Blueprint('projects_blueprint', __name__, template_folder=o
 
 # Additional functions
 def snake_case_to_title(s):
-    return [' '.join([x.capitalize() if x not in ['of', 'as', 'the'] else x for x in s.split('_')])]
+    return ' '.join([x.capitalize() if x not in ['of', 'as', 'the'] else x for x in s.split('_')])
 
 
 # Projects
