@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block head %}
     <title>{{title}}</title>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat|IBM+Plex+Mono' rel='stylesheet'>
 {% endblock %}
 {% block style %}
     a.projects-sidenav-active {
@@ -38,6 +38,10 @@
         background-color: #d1d5da;
         margin: 16px 0;
     }
+
+    #git-log > p {
+        font-family: IBM Plex Mono;
+    }
 {% endblock %}
 {% block content %}
     <div id="project-title-bar">
@@ -53,8 +57,8 @@
         </button>
     </div>
     <hr>
-    <div>
-        <p>Content</p>
+    <div id="git-log">
+        <p>{{ git_log }}</p>
     </div>
     <div>
     </div>

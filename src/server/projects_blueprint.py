@@ -93,7 +93,8 @@ INNER JOIN "language"
 @authenticate
 def get_project(project):
     branches = [branch[2:] for branch in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
-    return render_template('projects/project.html', title=project), 200
+    git_log = Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--all'], stdout=PIPE, stderr=PIPE).communicate()[0].decode()
+    return render_template('projects/project.html', title=project, git_log=git_log), 200
 
 
 @projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
