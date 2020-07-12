@@ -85,23 +85,23 @@ INNER JOIN "language"
     return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects)
 
 
-#@projects_blueprint.route('/projects/<string:project>/', methods=['GET'])
-#@authenticate
-#def get_project(project):
-#    return project
-
-
 @projects_blueprint.route('/projects/<string:project>/', methods=['GET'])
 @authenticate
+def get_project(project):
+    return project
+
+
+@projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
+@authenticate
 def post_star_project(project):
-    if request.args.get('starred'):
+    if request.form.get('starred'):
         conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
         cursor = conn.cursor()
         cursor.execute('''
 UPDATE "project"
    SET "starred" = %s
  WHERE "name" = %s;
-''', (request.args.get('starred'), project))
+''', (request.form.get('starred'), project))
         conn.commit()
         conn.close()
     return 'Success!', 200

@@ -183,20 +183,16 @@
                 star.classList.replace('fa-star-o', 'fa-star');
                 let xhr = new XMLHttpRequest();
                 xhr.open("POST", '/projects/' + star.getAttribute('data-name') + '/', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.send(JSON.stringify({
-                    starred: true
-                }));
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('starred=true');
             }
             else {
                 // Unstar
                 star.classList.replace('fa-star', 'fa-star-o');
                 let xhr = new XMLHttpRequest();
                 xhr.open("POST", '/projects/' + star.getAttribute('data-name') + '/', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.send(JSON.stringify({
-                    starred: false
-                }));
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('starred=false');
             }
         }
     </script>
