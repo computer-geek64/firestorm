@@ -94,17 +94,17 @@ def get_project(project):
 @projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
 @authenticate
 def post_star_project(project):
-    if request.form.get('star'):
+    if request.form.get('starred'):
         conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
         cursor = conn.cursor()
         cursor.execute('''
 UPDATE "project"
    SET "starred" = %s
  WHERE "name" = %s;
-''', (request.form.get('star'), project))
+''', (request.form.get('starred'), project))
         conn.commit()
         conn.close()
-    return 'Success', 200
+    return 'Success!', 200
 
 
 @projects_blueprint.route('/projects/create/', methods=['GET'])
