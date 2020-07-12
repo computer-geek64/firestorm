@@ -31,8 +31,14 @@ SELECT "label"
 ''')
     organization_types = cursor.fetchall()
     organization_types = [{'label': snake_case_to_title(x[0]), 'value': x[0]} for x in organization_types]
+    cursor.execute('''
+SELECT "name"
+  FROM "organization";
+''')
+    organizations = cursor.fetchall()
+    organizations = [{'label': x[0], 'value': x[0]} for x in organizations]
     conn.close()
-    return render_template('projects/projects.html', organization_types=organization_types)
+    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations)
 
 
 @projects_blueprint.route('/projects/create', methods=['GET'])

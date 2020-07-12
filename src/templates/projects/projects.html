@@ -74,6 +74,9 @@
             <select name="organization">
                 <option disabled selected>Organization</option>
                 <option>All</option>
+                {% for organization in organizations %}
+                    <option value="{{organization['value']}}">{{organization['label']}}</option>
+                {% endfor %}
             </select>
         </div>
         <button id="submit" type="submit">
