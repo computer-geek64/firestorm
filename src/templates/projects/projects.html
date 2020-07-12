@@ -68,7 +68,7 @@
                 <option disabled selected>Type</option>
                 <option>All</option>
                 {% for organization_type in organization_types %}
-                    <option value="{{organization_type}}">{{' '.join([x.capitalize() for x in organization_type.split('_')])}}</option>
+                    <option value="{{organization_type}}">{{organization_type.capitalize()}}</option>
                 {% endfor %}
             </select>
             <select name="organization">
