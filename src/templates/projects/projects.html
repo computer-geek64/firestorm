@@ -131,21 +131,21 @@
                 <option disabled selected value="all">Type</option>
                 <option value="all">All</option>
                 {% for organization_type in organization_types %}
-                    <option value="{{organization_type['value']}}">{{organization_type['label']}}</option>
+                    <option value="{{ organization_type['value'] }}">{{ organization_type['label'] }}</option>
                 {% endfor %}
             </select>
             <select name="organization">
                 <option disabled selected value="all">Organization</option>
                 <option value="all">All</option>
                 {% for organization in organizations %}
-                    <option value="{{organization['value']}}">{{organization['label']}}</option>
+                    <option value="{{ organization['value'] }}">{{ organization['label'] }}</option>
                 {% endfor %}
             </select>
             <select name="language">
                 <option disabled selected value="all">Languages</option>
                 <option value="all">All</option>
                 {% for language in languages %}
-                    <option value="{{language['value']}}">{{language['label']}}</option>
+                    <option value="{{ language['value'] }}">{{ language['label'] }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -158,19 +158,19 @@
         {% for project in projects %}
             <div>
                 <div>
-                    <h2 class="project-name">
-                        <a href="{{project['name']}}">{{project['name']}}</a>
+                    <h2 class="project-name" id="{{ project['name'] }}">
+                        <a href="{{ project['name'] }}">{{ project['name'] }}</a>
                     </h2>
-                    <span class="project-tag">{{project['organization']}}</span>
+                    <span class="project-tag">{{ project['organization'] }}</span>
                     <button class="project-star" onclick="toggleStar(this.children[0]);">
-                        <i class="fa fa-star{{project['starred']}}" data-name="{{project['name']}}"></i>
+                        <i class="fa fa-star{{ project['starred'] }}" data-name="{{ project['name'] }}"></i>
                     </button>
                 </div>
-                <p class="project-description">{{project['description']}}</p>
+                <p class="project-description">{{ project['description'] }}</p>
                 <div class="project-data">
-                    <span class="project-language-color" style="background-color: {{project['language_color']}};"></span>
-                    <span>{{project['language']}}</span>
-                    <span style="float: right;">Created on {{project['created']}}</span>
+                    <span class="project-language-color" style="background-color: {{ project['language_color'] }};"></span>
+                    <span>{{ project['language'] }}</span>
+                    <span style="float: right;">Created on {{ project['created'] }}</span>
                 </div>
             </div>
             <hr class="project-divider">
