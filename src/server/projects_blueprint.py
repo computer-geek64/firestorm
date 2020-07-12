@@ -23,7 +23,6 @@ def snake_case_to_title(s):
 @projects_blueprint.route('/projects/', methods=['GET'])
 @authenticate
 def get_projects():
-    print(dict(request.args))
     conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
     cursor = conn.cursor()
     cursor.execute('''
@@ -39,7 +38,7 @@ SELECT "name"
     organizations = cursor.fetchall()
     organizations = [{'label': x[0], 'value': x[0]} for x in organizations]
     conn.close()
-    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations)
+    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, test=request.args.get('organization'))
 
 
 @projects_blueprint.route('/projects/create', methods=['GET'])
