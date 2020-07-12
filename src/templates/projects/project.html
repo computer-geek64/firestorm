@@ -39,8 +39,23 @@
         margin: 16px 0;
     }
 
-    #git-log > p {
+    #git-log {
+        width: 30%;
+        height: calc(100vh - 147px);
+    }
+
+    #git-log > h4 {
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    #git-log > div {
+        overflow: scroll;
+    }
+
+    #git-log > div > p {
         font-family: IBM Plex Mono;
+        white-space: nowrap;
     }
 {% endblock %}
 {% block content %}
@@ -57,9 +72,12 @@
         </button>
     </div>
     <hr>
+    <div style="display: inline-block;"><p>Main git content</p></div>
     <div id="git-log">
-        <p>{{ git_log|safe }}</p>
-    </div>
-    <div>
+        <h4>Commit Log</h4>
+        <hr>
+        <div>
+            <p>{{ git_log|safe }}</p>
+        </div>
     </div>
 {% endblock %}
