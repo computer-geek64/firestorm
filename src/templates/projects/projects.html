@@ -161,7 +161,9 @@
                     <h2 class="project-name" id="{{ project['name'] }}">
                         <a href="{{ project['name'] }}">{{ project['name'] }}</a>
                     </h2>
-                    <span class="project-tag">{{ project['organization'] }}</span>
+                    {% if project['archived'] %}
+                        <span class="project-tag">Archived</span>
+                    {% endif %}
                     <button class="project-star" onclick="toggleStar(this.children[0]);">
                         <i class="fa fa-star{{ project['starred'] }}" data-name="{{ project['name'] }}"></i>
                     </button>
@@ -170,6 +172,7 @@
                 <div class="project-data">
                     <span class="project-language-color" style="background-color: {{ project['language_color'] }};"></span>
                     <span>{{ project['language'] }}</span>
+                    <span>{{ project['organization'] }}</span>
                     <span style="float: right;">Created on {{ project['created'] }}</span>
                 </div>
             </div>

@@ -48,6 +48,7 @@ SELECT "name"
            "p"."language",
            "l"."color",
            "p"."starred",
+           "p"."archived",
            "p"."created"
       FROM "project"
         AS "p"
@@ -81,7 +82,8 @@ INNER JOIN "language"
             'language': project[4],
             'language_color': project[5],
             'starred': '-o' * int(not project[6]),
-            'created': datetime.strftime(project[7], '%Y-%m-%d')
+            'archived': project[7],
+            'created': datetime.strftime(project[8], '%Y-%m-%d')
         })
     conn.close()
     return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects), 200
@@ -90,6 +92,7 @@ INNER JOIN "language"
 @projects_blueprint.route('/projects/<string:project>/', methods=['GET'])
 @authenticate
 def get_project(project):
+    branches = [branch[2:] for branch in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
     return render_template('projects/project.html', title=project), 200
 
 

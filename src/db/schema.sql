@@ -32,6 +32,7 @@ CREATE TABLE "project" (
     "organization" VARCHAR (64) NOT NULL REFERENCES "organization" ("name"),
     "language" VARCHAR (32) REFERENCES "language" ("name"),
     "starred" BOOLEAN NOT NULL DEFAULT FALSE,
+    "archived" BOOLEAN NOT NULL DEFAULT FALSE,
     "created" TIMESTAMP NOT NULL DEFAULT current_timestamp
 );
 

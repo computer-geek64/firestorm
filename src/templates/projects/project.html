@@ -6,7 +6,13 @@
     #title {
         text-align: center;
     }
+
+    #project-title-bar > *{
+        display: inline;
+    }
 {% endblock %}
 {% block content %}
-    <h1 id="title">{{title}}</h1>
+    <div id="project-title-bar">
+        <h1 id="title">{{title}}</h1>
+    </div>
 {% endblock %}
