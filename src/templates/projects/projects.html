@@ -59,17 +59,36 @@
         background-color: #cdc7c2;
     }
 
-    #projects {
-    }
-
-    #projects > div {
-    }
-
     hr.project-divider {
         height: 1px;
         border-width: 0;
         background-color: #d1d5da;
         margin: 16px 0;
+    }
+
+    h3.project-name {
+        display: inline;
+    }
+
+    h3.project-name > a {
+        color: #0366d6;
+        font-family: Nimbus Sans;
+        text-decoration: none;
+    }
+
+    h3.project-name > a:hover {
+        text-decoration: underline;
+    }
+
+    button.project-star {
+        float: right;
+        border: 0;
+        padding: 0;
+        height: 25px;
+    }
+
+    p.project-description {
+        color: #586069;
     }
 {% endblock %}
 {% block content %}
@@ -108,14 +127,14 @@
         {% for project in projects %}
             <div>
                 <div>
-                    <h3>
+                    <h3 class="project-name">
                         <a href="{{project['name']}}">{{project['name']}}</a>
                     </h3>
-                    <button style="float: right;">
+                    <button class="project-star">
                         <i class="fa fa-star{{project['starred']}}"></i>
                     </button>
                 </div>
-                <p>{{project['description']}}</p>
+                <p class="project-description">{{project['description']}}</p>
                 <div>
                     <span>{{project['language']}}</span>
                     <span>{{project['organization']}}</span>

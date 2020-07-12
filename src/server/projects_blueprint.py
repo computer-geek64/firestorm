@@ -69,7 +69,7 @@ INNER JOIN "organization"
     projects = cursor.fetchall()
     for i in range(len(projects)):
         projects[i] = {
-            'name': projects[i][0],
+            'name': projects[i][0].lower().replace(' ', '-'),
             'description': projects[i][1],
             'organization': projects[i][2],
             'language': projects[i][4],
