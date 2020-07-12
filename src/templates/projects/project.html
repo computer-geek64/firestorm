@@ -47,10 +47,11 @@
     #git-log > h4 {
         text-align: center;
         margin-bottom: 0;
+        font-family: Nimbus Sans;
     }
 
     #git-log > div {
-        height: calc(100vh - 189px);
+        height: calc(100vh - 188px);
         overflow: scroll;
     }
 
@@ -76,7 +77,7 @@
     <div style="display: inline-block;"><p>Main git content</p></div>
     <div id="git-log">
         <h4>Commit Log</h4>
-        <hr>
+        <hr style="margin-bottom: 0;">
         <div>
             <p>{{ git_log|safe }}</p>
         </div>
