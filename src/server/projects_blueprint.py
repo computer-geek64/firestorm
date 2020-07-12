@@ -73,7 +73,7 @@ INNER JOIN "language"
     projects = cursor.fetchall()
     for i in range(len(projects)):
         projects[i] = {
-            'name': projects[i][0].lower().replace(' ', '-'),
+            'name': projects[i][0],
             'description': projects[i][1],
             'organization': projects[i][2],
             'language': projects[i][4],
@@ -85,10 +85,25 @@ INNER JOIN "language"
     return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects)
 
 
-@projects_blueprint.route('/projects/<string:project>/')
+@projects_blueprint.route('/projects/<string:project>/', methods=['GET'])
 @authenticate
 def get_project(project):
     return project
+
+
+@projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
+@authenticate
+def post_star_project(project):
+    if request.form.get('star'):
+        conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
+        cursor = conn.cursor()
+        cursor.execute('''
+UPDATE "project"
+   SET "starred" = %s
+ WHERE "name" = %s;
+''', (request.form.get('star'), project))
+        conn.commit()
+        conn.close()
 
 
 @projects_blueprint.route('/projects/create/', methods=['GET'])

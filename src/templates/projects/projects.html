@@ -98,6 +98,7 @@
         padding: 0;
         font-size: 20px;
         margin-top: 2px;
+        color: #ffd700;
         background-color: transparent;
     }
 
@@ -162,7 +163,7 @@
                     </h2>
                     <span class="project-tag">{{project['organization']}}</span>
                     <button class="project-star" onclick="toggleStar(this.children[0]);">
-                        <i class="fa fa-star{{project['starred']}}"></i>
+                        <i class="fa fa-star{{project['starred']}}" data-name="{{project['name']}}"></i>
                     </button>
                 </div>
                 <p class="project-description">{{project['description']}}</p>
@@ -180,10 +181,22 @@
             if(star.classList.contains('fa-star-o')) {
                 // Star
                 star.classList.replace('fa-star-o', 'fa-star');
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", '/projects/' + star.getAttribute('data-name') + '/', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    starred: true
+                }));
             }
             else {
                 // Unstar
                 star.classList.replace('fa-star', 'fa-star-o');
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", '/projects/' + star.getAttribute('data-name') + '/', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    starred: false
+                }));
             }
         }
     </script>
