@@ -84,13 +84,13 @@ INNER JOIN "language"
             'created': datetime.strftime(project[7], '%Y-%m-%d')
         })
     conn.close()
-    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects)
+    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects), 200
 
 
 @projects_blueprint.route('/projects/<string:project>/', methods=['GET'])
 @authenticate
 def get_project(project):
-    return project
+    return render_template('projects/project.html', title=project), 200
 
 
 @projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
