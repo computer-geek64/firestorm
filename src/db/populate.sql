@@ -26,11 +26,11 @@ INSERT INTO "organization" (
                 'personal'
             ),
             (
-                'Georgia Institute of Technology',
+                'Georgia Tech',
                 'school'
             ),
             (
-                'Nead Werx, Inc.',
+                'Nead Werx',
                 'work'
             ),
             (
@@ -42,7 +42,7 @@ INSERT INTO "organization" (
                 'hackathon'
             ),
             (
-                'Optical Science Center for Applied Research (OSCAR)',
+                'OSCAR',
                 'work'
             );
 
