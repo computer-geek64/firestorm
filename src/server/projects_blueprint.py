@@ -37,8 +37,14 @@ SELECT "name"
 ''')
     organizations = cursor.fetchall()
     organizations = [{'label': x[0], 'value': x[0]} for x in organizations]
+    cursor.execute('''
+SELECT "name"
+  FROM "language";
+''')
+    languages = cursor.fetchall()
+    languages = [{'label': x[0], 'value': x[0]} for x in languages]
     conn.close()
-    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, test=request.args.get('organization'))
+    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages)
 
 
 @projects_blueprint.route('/projects/create', methods=['GET'])

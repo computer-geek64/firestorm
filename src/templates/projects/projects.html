@@ -62,7 +62,7 @@
 {% block content %}
     <h1 id="title">Projects</h1>
     <form id="filter-form">
-        <input id="search" type="search" placeholder="Find a project..." name="search" value="{{test}}">
+        <input id="search" type="search" placeholder="Find a project..." name="search">
         <div id="select-filters">
             <select name="organization_type">
                 <option disabled selected value="all">Type</option>
@@ -73,8 +73,15 @@
             </select>
             <select name="organization">
                 <option disabled selected value="all">Organization</option>
-                <option value="all">All</optionv>
+                <option value="all">All</option>
                 {% for organization in organizations %}
+                    <option value="{{organization['value']}}">{{organization['label']}}</option>
+                {% endfor %}
+            </select>
+            <select name="languages">
+                <option disabled selected value="all">Languages</option>
+                <option value="all">All</option>
+                {% for language in languages %}
                     <option value="{{organization['value']}}">{{organization['label']}}</option>
                 {% endfor %}
             </select>
