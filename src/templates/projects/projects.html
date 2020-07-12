@@ -114,6 +114,10 @@
         font-size: 12px;
     }
 
+    div.project-data > span {
+        margin-right: 16px;
+    }
+
     span.project-language-color {
         display: inline-block;
         width: 12px;
@@ -170,10 +174,10 @@
                 </div>
                 <p class="project-description">{{ project['description'] }}</p>
                 <div class="project-data">
-                    <span class="project-language-color" style="background-color: {{ project['language_color'] }};"></span>
+                    <span class="project-language-color" style="background-color: {{ project['language_color'] }}; margin-right: 0;"></span>
                     <span>{{ project['language'] }}</span>
                     <span>{{ project['organization'] }}</span>
-                    <span style="float: right;">Created on {{ project['created'] }}</span>
+                    <span style="float: right; margin-right: 0;">Created on {{ project['created'] }}</span>
                 </div>
             </div>
             <hr class="project-divider">
