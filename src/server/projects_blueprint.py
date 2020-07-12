@@ -14,6 +14,11 @@ from flask import Blueprint, render_template, request, session, jsonify
 projects_blueprint = Blueprint('projects_blueprint', __name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates'), static_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'))
 
 
+# Additional functions
+def snake_case_to_title(s):
+    return [' '.join([x.capitalize() if x not in ['of', 'as', 'the'] else x for x in s.split('_')])]
+
+
 # Projects
 @projects_blueprint.route('/projects/', methods=['GET'])
 @authenticate
@@ -21,10 +26,11 @@ def get_projects():
     conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
     cursor = conn.cursor()
     cursor.execute('''
-SELECT *
+SELECT "label"
   FROM "organization_type";
 ''')
-    organization_types = [x[0] for x in cursor.fetchall()]
+    organization_types = cursor.fetchall()
+    organization_types = [{'label': snake_case_to_title(x[0]), 'value': x[0]} for x in organization_types]
     conn.close()
     return render_template('projects/projects.html', organization_types=organization_types)
 
