@@ -10,6 +10,7 @@
 
     #title {
         text-align: center;
+        font-family: Montserrat;
     }
 
     #project-title-bar > *{
@@ -21,7 +22,7 @@
         border: 1px solid rgba(27,31,35,.15);
         padding: 5px 10px;
         border-radius: 7px;
-        margin: 4px 0 0 15px;
+        margin: 4px 0 0 10px;
         font-size: 15px;
         background-color: white;
         cursor: pointer;
@@ -30,11 +31,18 @@
     #project-title-bar > button:hover {
         background-color: rgba(27,31,35,.15);
     }
+
+    hr.project-divider {
+        height: 1px;
+        border-width: 0;
+        background-color: #d1d5da;
+        /*margin: 16px 0;*/
+    }
 {% endblock %}
 {% block content %}
     <div id="project-title-bar">
         <i class="fa fa-code" style="font-size: 32px;"></i>
-        <h1 id="title" style="font-family: Montserrat;">{{title}}</h1>
+        <h1 id="title">{{title}}</h1>
         <button>
             <i class="fa fa-archive"></i>
             Archive
