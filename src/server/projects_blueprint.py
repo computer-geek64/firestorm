@@ -92,24 +92,48 @@ INNER JOIN "language"
 @projects_blueprint.route('/projects/<string:project>/', methods=['GET'])
 @authenticate
 def get_project(project):
+    conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
+    cursor = conn.cursor()
+    cursor.execute('''
+SELECT "description",
+       "organization",
+       "language",
+       "starred",
+       "archived",
+       "created"
+  FROM "project"
+ WHERE "name" = %s;
+''', (project,))
+    query_results = cursor.fetchall()
+    if not query_results:
+        return error_404(404)
+    description, organization, language, starred, archived, created = query_results[0]
     branches = [branch[2:] for branch in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
     git_log = Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--decorate', '--all'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().replace('\n', '<br>')
-    return render_template('projects/project.html', title=project, git_log=git_log), 200
+    return render_template('projects/project.html', name=project, description=description, organization=organization, language=language, starred=starred, archived=archived, created=created, git_log=git_log), 200
 
 
 @projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
 @authenticate
 def post_star_project(project):
+    conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
     if request.form.get('starred'):
-        conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
         cursor = conn.cursor()
         cursor.execute('''
 UPDATE "project"
    SET "starred" = %s
  WHERE "name" = %s;
 ''', (request.form.get('starred'), project))
-        conn.commit()
-        conn.close()
+
+    if request.form.get('archived'):
+        cursor = conn.cursor()
+        cursor.execute('''
+UPDATE "project"
+   SET "archived" = %s
+ WHERE "name" = %s;
+''', (request.form.get('archived'), project))
+    conn.commit()
+    conn.close()
     return 'Success!', 200
 
 
