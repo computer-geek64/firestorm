@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block head %}
-    <title>{{title}}</title>
+    <title>{{name}}</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat|IBM+Plex+Mono' rel='stylesheet'>
 {% endblock %}
 {% block style %}
@@ -67,7 +67,7 @@
 {% block content %}
     <div id="project-title-bar">
         <!--<i class="fa fa-code" style="font-size: 32px;"></i>-->
-        <h1 id="title">{{title}}</h1>
+        <h1 id="title">{{name}}</h1>
         <button onclick="toggleArchive(this);">
             <i class="fa fa-archive"></i>
             {% if archived %}
