@@ -104,6 +104,7 @@ UPDATE "project"
 ''', (request.form.get('star'), project))
         conn.commit()
         conn.close()
+    return 'Success', 200
 
 
 @projects_blueprint.route('/projects/create/', methods=['GET'])
