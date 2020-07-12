@@ -105,6 +105,7 @@ SELECT "description",
  WHERE "name" = %s;
 ''', (project,))
     query_results = cursor.fetchall()
+    conn.close()
     if not query_results:
         return error_404(404)
     description, organization, language, starred, archived, created = query_results[0]
