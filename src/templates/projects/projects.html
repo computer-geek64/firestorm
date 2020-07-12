@@ -60,7 +60,15 @@
     }
 
     #projects {
-        display: block;
+    }
+
+    #projects > div {
+    }
+
+    hr.project-divider {
+        height: 1px;
+        border-width: 0;
+        background-color: #d1d5da;
     }
 {% endblock %}
 {% block content %}
@@ -94,9 +102,11 @@
             <i class="fa fa-search"></i>
         </button>
     </form>
+    <hr class="project-divider">
     <div id="projects">
         {% for project in projects %}
-            <p>{{project}}</p>
+            <div></div>
+            <hr class="project-divider">
         {% endfor %}
     </div>
 {% endblock %}
