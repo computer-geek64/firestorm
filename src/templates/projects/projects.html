@@ -88,7 +88,7 @@
         vertical-align: top;
         padding: 5px 4px 2px 4px;
         border: 1px solid lightgray;
-        border-radius: 5px;
+        border-radius: 50px;
         color: #586069;
     }
 
@@ -104,10 +104,11 @@
     p.project-description {
         color: #586069;
         font-size: 14px;
-        margin: 10px 0;
+        margin: 8px 0 20px;
     }
 
     div.project-data {
+        margin-top: 5px;
         color: #586069;
         font-size: 12px;
     }
@@ -117,6 +118,7 @@
         width: 12px;
         height: 12px;
         border-radius: 50%;
+        vertical-align: middle;
     }
 {% endblock %}
 {% block content %}
@@ -159,13 +161,13 @@
                         <a href="{{project['name']}}">{{project['name']}}</a>
                     </h2>
                     <span class="project-tag">{{project['organization']}}</span>
-                    <button class="project-star">
+                    <button class="project-star" onclick="toggleStar(this.children[0]);">
                         <i class="fa fa-star{{project['starred']}}"></i>
                     </button>
                 </div>
                 <p class="project-description">{{project['description']}}</p>
                 <div class="project-data">
-                    <span class="project-language-color" style="color: {{project['language_color']}};"></span>
+                    <span class="project-language-color" style="background-color: {{project['language_color']}};"></span>
                     <span>{{project['language']}}</span>
                     <span style="float: right;">Created on {{project['created']}}</span>
                 </div>
@@ -173,4 +175,16 @@
             <hr class="project-divider">
         {% endfor %}
     </div>
+    <script>
+        function toggleStar(star) {
+            if(star.classList.contains('fa-star-o')) {
+                // Star
+                star.classList.replace('fa-star-o', 'fa-star');
+            }
+            else {
+                // Unstar
+                star.classList.replace('fa-star', 'fa-star-o');
+            }
+        }
+    </script>
 {% endblock %}
