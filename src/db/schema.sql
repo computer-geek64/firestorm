@@ -34,3 +34,11 @@ CREATE TABLE "project" (
     "starred" BOOLEAN NOT NULL DEFAULT FALSE,
     "created" TIMESTAMP NOT NULL DEFAULT current_timestamp
 );
+
+-- Create table project_language
+CREATE TABLE "project_language" (
+    "project" VARCHAR (64) PRIMARY KEY REFERENCES "project" ("name"),
+    "langauge" VARCHAR (32) PRIMARY KEY REFERENCES "language" ("name"),
+    "percentage" FLOAT NOT NULL,
+    "size" FLOAT NOT NULL
+)
