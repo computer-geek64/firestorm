@@ -43,11 +43,42 @@ SELECT "name"
 ''')
     languages = cursor.fetchall()
     languages = [{'label': x[0], 'value': x[0]} for x in languages]
+    projects_query = '''
+    SELECT "projects"."name",
+           "projects"."description",
+           "projects"."organization",
+           "organization"."type",
+           "projects"."language",
+           "projects"."starred",
+           "projects"."created"
+      FROM "projects"
+INNER JOIN "organization"
+        ON "projects"."organization" = "organization"."name"
+'''
+    params = []
+    if request.args.get('organization_type', 'all') != 'all':
+        projects_query += ' AND "organization"."type" = %s'
+        params.append(request.args.get('organization_type', 'all'))
+    if request.args.get('organization', 'all') != 'all':
+        projects_query += ' AND "projects"."organization" = %s'
+        params.append(request.args.get('organization', 'all'))
+    if request.args.get('language', 'all') != 'all':
+        projects_query += ' AND "projects"."language" = %s'
+        params.append(request.args.get('language', 'all'))
+    projects_query = projects_query.replace('AND', 'WHERE', 1) + ';'
+    cursor.execute(projects_query, params)
+    projects = [str(x) for x in cursor.fetchall()]
     conn.close()
-    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages)
+    return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects)
 
 
-@projects_blueprint.route('/projects/create', methods=['GET'])
+@projects_blueprint.route('/projects/<string:project>/')
+@authenticate
+def get_project(project):
+    return project
+
+
+@projects_blueprint.route('/projects/create/', methods=['GET'])
 @authenticate
 def get_create_project():
     #conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)

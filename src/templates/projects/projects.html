@@ -45,6 +45,7 @@
     }
 
     #submit {
+        display: inline;
         margin-left: 10px;
         border: 2px solid #cdc7c2;
         border-radius: 5px;
@@ -58,6 +59,9 @@
         background-color: #cdc7c2;
     }
 
+    #projects {
+        display: block;
+    }
 {% endblock %}
 {% block content %}
     <h1 id="title">Projects</h1>
@@ -78,7 +82,7 @@
                     <option value="{{organization['value']}}">{{organization['label']}}</option>
                 {% endfor %}
             </select>
-            <select name="languages">
+            <select name="language">
                 <option disabled selected value="all">Languages</option>
                 <option value="all">All</option>
                 {% for language in languages %}
@@ -89,5 +93,10 @@
         <button id="submit" type="submit">
             <i class="fa fa-search"></i>
         </button>
+        <div id="projects">
+            {% for project in projects %}
+                <p>{{project}}</p>
+            {% endfor %}
+        </div>
     </form>
 {% endblock %}
