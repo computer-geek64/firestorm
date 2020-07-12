@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block head %}
     <title>{{title}}</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 {% endblock %}
 {% block style %}
     a.projects-sidenav-active {
@@ -32,7 +33,7 @@
 {% endblock %}
 {% block content %}
     <div id="project-title-bar">
-        <i class="fa fa-code" style="font-size: 32px;"></i>&emsp;
+        <i class="fa fa-code" style="font-size: 32px;"></i>
         <h1 id="title">{{title}}</h1>
         <button>
             <i class="fa fa-archive"></i>
@@ -42,5 +43,8 @@
             <i class="fa fa-star"></i>
             Star
         </button>
+    </div>
+    <div>
+
     </div>
 {% endblock %}
