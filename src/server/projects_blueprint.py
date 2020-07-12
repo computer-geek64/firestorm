@@ -46,6 +46,7 @@ SELECT "name"
            "p"."organization",
            "o"."type",
            "p"."language",
+           "l"."color",
            "p"."starred",
            "p"."created"
       FROM "project"
@@ -53,6 +54,9 @@ SELECT "name"
 INNER JOIN "organization"
         AS "o"
         ON "p"."organization" = "o"."name"
+INNER JOIN "language"
+        AS "l"
+        ON "p"."language" = "l"."name"
 '''
     params = []
     if request.args.get('organization_type', 'all') != 'all':
@@ -73,8 +77,9 @@ INNER JOIN "organization"
             'description': projects[i][1],
             'organization': projects[i][2],
             'language': projects[i][4],
-            'starred': '-o' * int(not projects[i][5]),
-            'created': datetime.strftime(projects[i][6], '%Y-%m-%d')
+            'language_color': projects[i][5]
+            'starred': '-o' * int(not projects[i][6]),
+            'created': datetime.strftime(projects[i][7], '%Y-%m-%d')
         }
     conn.close()
     return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects)

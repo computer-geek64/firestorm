@@ -86,8 +86,9 @@
     span.project-tag {
         font-size: 12px;
         vertical-align: top;
-        padding: 5px 2px 2px 2px;
+        padding: 5px 4px 2px 4px;
         border: 1px solid lightgray;
+        border-radius: 5px;
         color: #586069;
     }
 
@@ -95,7 +96,9 @@
         float: right;
         border: 0;
         padding: 0;
-        height: 25px;
+        font-size: 20px;
+        margin-top: 2px;
+        background-color: transparent;
     }
 
     p.project-description {
@@ -106,6 +109,14 @@
 
     div.project-data {
         color: #586069;
+        font-size: 12px;
+    }
+
+    span.project-language-color {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
     }
 {% endblock %}
 {% block content %}
@@ -154,6 +165,7 @@
                 </div>
                 <p class="project-description">{{project['description']}}</p>
                 <div class="project-data">
+                    <span class="project-language-color" style="color: {{project['language_color']}};"></span>
                     <span>{{project['language']}}</span>
                     <span style="float: right;">Created on {{project['created']}}</span>
                 </div>
