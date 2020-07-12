@@ -77,7 +77,7 @@ INNER JOIN "language"
             'description': projects[i][1],
             'organization': projects[i][2],
             'language': projects[i][4],
-            'language_color': projects[i][5]
+            'language_color': projects[i][5],
             'starred': '-o' * int(not projects[i][6]),
             'created': datetime.strftime(projects[i][7], '%Y-%m-%d')
         }
