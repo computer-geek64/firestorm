@@ -65,15 +65,15 @@
         <input id="search" type="search" placeholder="Find a project..." name="search" value="{{test}}">
         <div id="select-filters">
             <select name="organization_type">
-                <option disabled selected>Type</option>
-                <option>All</option>
+                <option disabled selected value="all">Type</option>
+                <option value="all">All</option>
                 {% for organization_type in organization_types %}
                     <option value="{{organization_type['value']}}">{{organization_type['label']}}</option>
                 {% endfor %}
             </select>
             <select name="organization">
-                <option disabled selected>Organization</option>
-                <option>All</option>
+                <option disabled selected value="all">Organization</option>
+                <option value="all">All</optionv>
                 {% for organization in organizations %}
                     <option value="{{organization['value']}}">{{organization['label']}}</option>
                 {% endfor %}
