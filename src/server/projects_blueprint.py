@@ -68,7 +68,7 @@ INNER JOIN "language"
     if request.args.get('language', 'all') != 'all':
         projects_query += ' AND "p"."language" = %s'
         params.append(request.args.get('language', 'all'))
-    projects_query = projects_query.replace('AND', 'WHERE', 1) + ' ORDER BY "p"."starred", "p"."name";'
+    projects_query = projects_query.replace('AND', 'WHERE', 1) + ' ORDER BY "p"."starred" DESC, "p"."name" ASC;'
     cursor.execute(projects_query, params)
     projects = []
     for project in cursor.fetchall():
