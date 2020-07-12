@@ -70,17 +70,19 @@ INNER JOIN "language"
         params.append(request.args.get('language', 'all'))
     projects_query = projects_query.replace('AND', 'WHERE', 1) + ';'
     cursor.execute(projects_query, params)
-    projects = cursor.fetchall()
-    for i in range(len(projects)):
-        projects[i] = {
-            'name': projects[i][0],
-            'description': projects[i][1],
-            'organization': projects[i][2],
-            'language': projects[i][4],
-            'language_color': projects[i][5],
-            'starred': '-o' * int(not projects[i][6]),
-            'created': datetime.strftime(projects[i][7], '%Y-%m-%d')
-        }
+    projects = []
+    for project in cursor.fetchall():
+        if request.args.get('search') and request.args.get('search').lower() not in project[0].lower() and request.args.get('search').lower() not in project[1].lower():
+            continue
+        projects.append({
+            'name': project[0],
+            'description': project[1],
+            'organization': project[2],
+            'language': project[4],
+            'language_color': project[5],
+            'starred': '-o' * int(not project[6]),
+            'created': datetime.strftime(project[7], '%Y-%m-%d')
+        })
     conn.close()
     return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects)
 
