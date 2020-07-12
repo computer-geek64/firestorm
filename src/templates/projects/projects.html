@@ -70,18 +70,25 @@
         margin: 16px 0;
     }
 
-    h3.project-name {
+    h2.project-name {
         display: inline;
     }
 
-    h3.project-name > a {
-        font-size: 20px;
+    h2.project-name > a {
         color: #0366d6;
         text-decoration: none;
     }
 
-    h3.project-name > a:hover {
+    h2.project-name > a:hover {
         text-decoration: underline;
+    }
+
+    span.project-tag {
+        font-size: 12px;
+        vertical-align: top;
+        padding: 5px 2px 2px 2px;
+        border: 1px solid lightgray;
+        color: #586069;
     }
 
     button.project-star {
@@ -94,6 +101,11 @@
     p.project-description {
         color: #586069;
         font-size: 14px;
+        margin: 10px 0;
+    }
+
+    div.project-data {
+        color: #586069;
     }
 {% endblock %}
 {% block content %}
@@ -117,7 +129,7 @@
             </select>
             <select name="language">
                 <option disabled selected value="all">Languages</option>
-                <option value="#d1d5daall">All</option>
+                <option value="all">All</option>
                 {% for language in languages %}
                     <option value="{{language['value']}}">{{language['label']}}</option>
                 {% endfor %}
@@ -132,17 +144,17 @@
         {% for project in projects %}
             <div>
                 <div>
-                    <h3 class="project-name">
+                    <h2 class="project-name">
                         <a href="{{project['name']}}">{{project['name']}}</a>
-                    </h3>
+                    </h2>
+                    <span class="project-tag">{{project['organization']}}</span>
                     <button class="project-star">
                         <i class="fa fa-star{{project['starred']}}"></i>
                     </button>
                 </div>
                 <p class="project-description">{{project['description']}}</p>
-                <div>
+                <div class="project-data">
                     <span>{{project['language']}}</span>
-                    <span>{{project['organization']}}</span>
                     <span style="float: right;">Created on {{project['created']}}</span>
                 </div>
             </div>
