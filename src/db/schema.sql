@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS "organization_type" CASCADE;
 DROP TABLE IF EXISTS "organization" CASCADE;
 DROP TABLE IF EXISTS "language" CASCADE;
 DROP TABLE IF EXISTS "project" CASCADE;
+DROP TABLE IF EXISTS "project_language" CASCADE;
 
 
 -- Create tables
