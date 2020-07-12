@@ -167,7 +167,10 @@
                         <a href="{{ project['name'] }}">{{ project['name'] }}</a>
                     </h2>
                     {% if project['archived'] %}
-                        <span class="project-tag">Archived</span>
+                        <span class="project-tag">
+                            <i class="fa fa-archive"></i>
+                            Archived
+                        </span>
                     {% endif %}
                     <button class="project-star" onclick="toggleStar(this.children[0]);">
                         <i class="fa fa-star{{ project['starred'] }}" data-name="{{ project['name'] }}"></i>

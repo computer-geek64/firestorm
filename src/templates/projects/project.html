@@ -3,6 +3,10 @@
     <title>{{title}}</title>
 {% endblock %}
 {% block style %}
+    a.projects-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
     #title {
         text-align: center;
     }
@@ -13,6 +17,15 @@
 {% endblock %}
 {% block content %}
     <div id="project-title-bar">
+        <i class="fa fa-code"></i>&emsp;
         <h1 id="title">{{title}}</h1>
+        <button>
+            <i class="fa fa-archive"></i>
+            <span>Archive</span>
+        </button>
+        <button>
+            <i class="fa fa-star"></i>
+            <span>Star</span>
+        </button>
     </div>
 {% endblock %}
