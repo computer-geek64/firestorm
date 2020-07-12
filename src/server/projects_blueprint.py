@@ -29,20 +29,17 @@ def get_projects():
 SELECT "label"
   FROM "organization_type";
 ''')
-    organization_types = cursor.fetchall()
-    organization_types = [{'label': snake_case_to_title(x[0]), 'value': x[0]} for x in organization_types]
+    organization_types = [{'label': snake_case_to_title(x[0]), 'value': x[0]} for x in cursor.fetchall()]
     cursor.execute('''
 SELECT "name"
   FROM "organization";
 ''')
-    organizations = cursor.fetchall()
-    organizations = [{'label': x[0], 'value': x[0]} for x in organizations]
+    organizations = [{'label': x[0], 'value': x[0]} for x in cursor.fetchall()]
     cursor.execute('''
 SELECT "name"
   FROM "language";
 ''')
-    languages = cursor.fetchall()
-    languages = [{'label': x[0], 'value': x[0]} for x in languages]
+    languages = [{'label': x[0], 'value': x[0]} for x in cursor.fetchall()]
     projects_query = '''
     SELECT "p"."name",
            "p"."description",
@@ -69,7 +66,16 @@ INNER JOIN "organization"
         params.append(request.args.get('language', 'all'))
     projects_query = projects_query.replace('AND', 'WHERE', 1) + ';'
     cursor.execute(projects_query, params)
-    projects = [str(x) for x in cursor.fetchall()]
+    projects = cursor.fetchall()
+    for i in range(len(projects)):
+        projects[i] = {
+            'name': projects[i][0],
+            'description': projects[i][1],
+            'organization': projects[i][2],
+            'language': projects[i][4],
+            'starred': '-o' * int(not projects[i][5]),
+            'created': datetime.strftime(projects[i][6], '%Y-%m-%d')
+        }
     conn.close()
     return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects)
 
