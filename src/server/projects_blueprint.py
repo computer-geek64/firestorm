@@ -2,6 +2,7 @@
 # projects_blueprint.py
 
 import os
+import shutil
 import psycopg2
 from datetime import datetime
 from auth import authenticate
@@ -20,6 +21,7 @@ def snake_case_to_title(s):
 
 
 # Projects
+# Get projects listing
 @projects_blueprint.route('/projects/', methods=['GET'])
 @authenticate
 def get_projects():
@@ -89,6 +91,7 @@ INNER JOIN "language"
     return render_template('projects/projects.html', organization_types=organization_types, organizations=organizations, languages=languages, projects=projects), 200
 
 
+# Get project
 @projects_blueprint.route('/projects/<string:project>/', methods=['GET'])
 @authenticate
 def get_project(project):
@@ -134,12 +137,22 @@ INNER JOIN "language"
     return render_template('projects/project.html', name=project, description=description, organization=organization, starred=starred, archived=archived, created=created, branches=branches, languages=languages, git_log=git_log), 200
 
 
+# Post project
 @projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
 @authenticate
 def post_star_project(project):
     conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
     cursor = conn.cursor()
 
+    if request.form.get('delete'):
+        cursor.execute('''
+DELETE FROM "project"
+      WHERE "name" = %s;
+''', (project,))
+        conn.commit()
+        conn.close()
+        shutil.rmtree(os.path.join(GIT_PATH, project + '.git'))
+        return redirect('/projects/'), 302
     if request.form.get('name'):
         cursor.execute('''
 UPDATE "project"
@@ -170,6 +183,7 @@ UPDATE "project"
     return redirect(os.path.join('/projects', project, '/')), 302
 
 
+# Create project
 @projects_blueprint.route('/projects/create/', methods=['GET'])
 @authenticate
 def get_create_project():
