@@ -71,6 +71,29 @@
     i.fa.fa-star, i.fa.fa-star-o {
         color: #ffd700;
     }
+
+    #description {
+        display: inline-block;
+        width: 45%;
+    }
+
+    #middle-col {
+        display: inline-block;
+        width: 19%;
+    }
+
+    #middle-col > h4 {
+        text-align: center;
+        font-family: Nimbus Sans;
+    }
+
+    #branches > li {
+        list-style: none;
+    }
+
+    #branches > li:before {
+        content: "\f126";
+    }
 {% endblock %}
 {% block content %}
     <div id="project-title-bar">
@@ -96,11 +119,15 @@
         </button>
     </div>
     <hr>
-    <div style="display: inline-block;">
+    <div id="description">
         <p>{{ description }}</p>
     </div>
-    <div>
-        <p>Languages</p>
+    <div id="middle-col">
+        <h4>Branches</h4>
+        <hr>
+        <ul id="branches">
+            <li>master</li>
+        </ul>
     </div>
     <div id="git-log">
         <h4>Commit Log</h4>
