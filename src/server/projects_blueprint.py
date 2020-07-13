@@ -194,7 +194,7 @@ INNER JOIN "language"
         ON "pl"."language" = "l"."name"
      WHERE "pl"."project" = %s;
 ''', (project,))
-    languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': language[2], 'extension': language[3], 'color': language[4]} for language in cursor.fetchall()]
+    languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': get_size_string(language[2]), 'extension': language[3], 'color': language[4]} for language in cursor.fetchall()]
     conn.close()
     description, organization, starred, archived, created = query_results[0]
     default_branch = 'master'
