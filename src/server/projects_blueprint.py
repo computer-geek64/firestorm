@@ -122,7 +122,14 @@ INNER JOIN "language"
     languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': language[2], 'extension': language[3], 'color': language[4]} for language in cursor.fetchall()]
     conn.close()
     description, organization, starred, archived, created = query_results[0]
-    branches = [branch[2:] for branch in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().rstrip().split('\n')]
+    default_branch = 'master'
+    branches = []
+    for branch in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().rstrip().split('\n'):
+        branches.append(branch[2:])
+        if branch.startswith('*'):
+            default_branch = branch[2:]
+    for i in range(len(branches)):
+        branches[i] = branches[i].ljust(20).replace(' ', '&nbsp;') + [x[0] + '|' + x[1] for x in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'rev-list', '--left-right', '--count', 'master...' + branches[i]['name']], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().replace('\t', ' ').split(' ') if x]
     git_log = Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--decorate', '--all'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().replace('\n', '<br>')
     return render_template('projects/project.html', name=project, description=description, organization=organization, starred=starred, archived=archived, created=created, branches=branches, languages=languages, git_log=git_log), 200
 
