@@ -156,7 +156,7 @@
             {% for language in languages %}
                 <li>
                     <span class="project-language-color" style="background-color: {{ language['color'] }}"></span>
-                    {{ language['name'] }}
+                    {{ language['name'] }} - {{ round(language['percentage'] * 100, 1) }}% - {{ language['size'] }}
                 </li>
             {% endfor %}
         </ul>
