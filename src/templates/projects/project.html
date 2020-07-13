@@ -103,18 +103,18 @@
         font-family: Space Mono;
     }
 
-    #languages > li:before {
-        margin-left: -17px;
-    }
-
     span.project-language-color {
         display: inline-block;
         width: 12px;
         height: 12px;
         border-radius: 50%;
         vertical-align: baseline;
-        margin-left: -17px;
+        margin-left: -22px;
         margin-right: 0 !important;
+    }
+
+    #languages > li > ul > li {
+        margin-left: -22px;
     }
 {% endblock %}
 {% block content %}
@@ -156,7 +156,11 @@
             {% for language in languages %}
                 <li>
                     <span class="project-language-color" style="background-color: {{ language['color'] }}"></span>
-                    {{ language['name'] }} - {{ language['percentage'] }}% - {{ language['size'] }}
+                    {{ language['name'] }}
+                    <ul>
+                        <li>{{ language['percentage'] }}%</li>
+                        <li>{{ language['size'] }}</li>
+                    </ul>
                 </li>
             {% endfor %}
         </ul>
