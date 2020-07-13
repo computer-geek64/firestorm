@@ -179,8 +179,10 @@
                 </div>
                 <p class="project-description">{{ project['description'] }}</p>
                 <div class="project-data">
-                    <span class="project-language-color" style="background-color: {{ project['language_color'] }};"></span>
-                    <span>{{ project['language'] }}</span>
+                    {% if project['language'] %}
+                        <span class="project-language-color" style="background-color: {{ project['language_color'] }};"></span>
+                        <span>{{ project['language'] }}</span>
+                    {% endif %}
                     <i class="fa fa-sitemap"></i>
                     <span>{{ project['organization'] }}</span>
                     <span style="float: right; margin-right: 0;">Created on {{ project['created'] }}</span>
