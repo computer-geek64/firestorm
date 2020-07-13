@@ -201,28 +201,34 @@
         }
 
         function deleteProject() {
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', window.location.pathname, false);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send('delete=true');
+            let projectName = prompt('Enter the project name to confirm:');
+            if(projectName === window.location.pathname.split('/')[2]) {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', window.location.pathname, false);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('delete=true');
+                window.location.pathname = '/projects/';
+            }
         }
 
         function toggleArchive(archiveButton) {
-            if(archiveButton.innerText === ' Archive') {
-                // Archive
-                archiveButton.innerHTML = '<i class="fa fa-archive"></i> Unarchive';
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', window.location.pathname, false);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.send('archived=true');
-            }
-            else {
-                // Unarchive
-                archiveButton.innerHTML = '<i class="fa fa-archive"></i> Archive';
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', window.location.pathname, false);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.send('archived=false');
+            let projectName = prompt('Enter the project name to confirm:');
+            if(projectName === window.location.pathname.split('/')[2]) {
+                if (archiveButton.innerText === ' Archive') {
+                    // Archive
+                    archiveButton.innerHTML = '<i class="fa fa-archive"></i> Unarchive';
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', window.location.pathname, false);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.send('archived=true');
+                } else {
+                    // Unarchive
+                    archiveButton.innerHTML = '<i class="fa fa-archive"></i> Archive';
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', window.location.pathname, false);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.send('archived=false');
+                }
             }
         }
 
