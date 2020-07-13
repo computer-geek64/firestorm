@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from flask import Flask
 from OpenSSL import SSL
-from config import SESSION_SECRET_KEY, IP, PORT
+from config import SSL_CERTIFICATE_FILE, SSL_KEY_FILE, SESSION_SECRET_KEY, IP, PORT
 from files_blueprint import files_blueprint
 from login_blueprint import login_blueprint
 from power_blueprint import power_blueprint
@@ -41,4 +41,4 @@ def get_home():
 
 
 if __name__ == '__main__':
-    app.run(IP, PORT, ssl_context='adhoc')
+    app.run(IP, PORT, ssl_context=(SSL_CERTIFICATE_FILE, SSL_KEY_FILE))

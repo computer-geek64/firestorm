@@ -4,6 +4,9 @@
 IP = '0.0.0.0'
 PORT = 443
 
+SSL_CERTIFICATE_FILE = ''  # Path to SSL certificate file
+SSL_KEY_FILE = ''  # Path to SSL key file
+
 SESSION_SECRET_KEY = ''  # Session variables secret key
 
 SHA512_SALT = ''  # SHA-512 hash salt
