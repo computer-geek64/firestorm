@@ -8,7 +8,7 @@ from auth import authenticate
 from errors_blueprint import *
 from subprocess import Popen, PIPE
 from config import PROJECTS_DB_NAME, DB_USER, DB_PASSWORD, GIT_PATH
-from flask import Blueprint, render_template, request, session, jsonify
+from flask import Blueprint, render_template, request, redirect
 
 
 projects_blueprint = Blueprint('projects_blueprint', __name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates'), static_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'))
@@ -118,8 +118,17 @@ SELECT "description",
 @authenticate
 def post_star_project(project):
     conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
+    cursor = conn.cursor()
+
+    if request.form.get('name'):
+        cursor.execute('''
+UPDATE "project"
+   SET "name" = %s
+ WHERE "name" = %s;
+''', (request.form.get('name'), project))
+        os.rename(os.path.join(GIT_PATH, project + '.git'), os.path.join(GIT_PATH, request.form.get('name') + '.git'))
+        project = request.form.get('name')
     if request.form.get('starred'):
-        cursor = conn.cursor()
         cursor.execute('''
 UPDATE "project"
    SET "starred" = %s
@@ -127,15 +136,18 @@ UPDATE "project"
 ''', (request.form.get('starred'), project))
 
     if request.form.get('archived'):
-        cursor = conn.cursor()
         cursor.execute('''
 UPDATE "project"
    SET "archived" = %s
  WHERE "name" = %s;
 ''', (request.form.get('archived'), project))
+        if request.form.get('archived') == 'true':
+            os.chmod(os.path.join(GIT_PATH, project + '.git'), 0o555)
+        else:
+            os.chmod(os.path.join(GIT_PATH, project + '.git'), 0o775)
     conn.commit()
     conn.close()
-    return 'Success!', 200
+    return redirect(os.path.join('/projects', project, '/')), 302
 
 
 @projects_blueprint.route('/projects/create/', methods=['GET'])

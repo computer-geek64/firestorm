@@ -105,6 +105,16 @@
         </div>
     </div>
     <script>
+        function editName() {
+            let projectName = prompt('Edit project name:', window.location.pathname.split('/')[2]);
+            if(projectName) {
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", window.location.pathname, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('name=' + projectName);
+            }
+        }
+
         function toggleArchive(archiveButton) {
             if(archiveButton.innerText === ' Archive') {
                 // Archive
