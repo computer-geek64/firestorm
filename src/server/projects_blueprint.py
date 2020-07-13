@@ -129,7 +129,7 @@ INNER JOIN "language"
         if branch.startswith('*'):
             default_branch = branch[2:]
     for i in range(len(branches)):
-        branches[i] = branches[i].ljust(13).replace(' ', '&nbsp;') + '|'.join([x for x in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'rev-list', '--left-right', '--count', 'master...' + branches[i]], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().replace('\t', ' ').split(' ') if x])
+        branches[i] = branches[i].ljust(14).replace(' ', '&nbsp;') + '|'.join([x for x in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'rev-list', '--left-right', '--count', 'master...' + branches[i]], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().replace('\t', ' ').split(' ') if x])
     git_log = Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--decorate', '--all'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().replace('\n', '<br>')
     return render_template('projects/project.html', name=project, description=description, organization=organization, starred=starred, archived=archived, created=created, branches=branches, languages=languages, git_log=git_log), 200
 
