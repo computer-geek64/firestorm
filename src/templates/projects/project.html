@@ -157,13 +157,18 @@
     </div>
     <hr>
     <div id="description">
+        <span><strong>Organization:</strong> <i class="fa fa-sitemap"></i> {{ organization }}</span>
         <p>{{ description }}</p>
     </div>
     <div id="middle-col">
         <h4>Branches</h4>
         <ul id="branches">
             {% for branch in branches %}
-                <li>{{ branch|safe }}</li>
+                {% if branch['default'] %}
+                    <li style="color: red;">{{ branch['name']|safe }}</li>
+                {% else %}
+                    <li>{{ branch['name']|safe }}</li>
+                {% endif %}
             {% endfor %}
         </ul>
         <h4>Languages</h4>
