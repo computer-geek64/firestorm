@@ -87,6 +87,11 @@
         float: left;
     }
 
+    #description > textarea {
+        resize: none;
+        border: 0;
+    }
+
     #middle-col {
         display: inline-block;
         width: 20%;
@@ -157,8 +162,8 @@
     </div>
     <hr>
     <div id="description">
-        <span><strong>Organization:</strong> <i class="fa fa-sitemap"></i> {{ organization }}</span>
-        <p>{{ description }}</p>
+        <span><i class="fa fa-sitemap"></i> {{ organization }}</span>
+        <textarea>{{ description }}</textarea>
     </div>
     <div id="middle-col">
         <h4>Branches</h4>
