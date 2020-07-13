@@ -11,11 +11,6 @@
     #title {
         text-align: center;
         font-family: Montserrat;
-        display: inline;
-    }
-
-    #title:hover ~ button.edit-button {
-        display: inline;
     }
 
     #project-title-bar > * {
@@ -28,7 +23,6 @@
         border: 0;
         background-color: transparent;
         cursor: pointer;
-        display: none;
     }
 
     #project-title-bar > button.right {
@@ -62,11 +56,6 @@
     #git-log {
         width: 35%;
         float: right;
-    }
-
-    #git-log > h4 {
-        text-align: center;
-        font-family: Nimbus Sans;
     }
 
     #git-log > div {
@@ -110,10 +99,8 @@
 {% block content %}
     <div id="project-title-bar">
         <!--<i class="fa fa-code" style="font-size: 32px;"></i>-->
-        <div>
-            <h1 id="title">{{name}}</h1>
-            <button class="edit-button" onclick="editName();"><i class="fa fa-pencil"></i></button>
-        </div>
+        <h1 id="title">{{name}}</h1>
+        <button class="edit-button" onclick="editName();"><i class="fa fa-pencil"></i></button>
         <button class="right" onclick="toggleArchive(this);">
             <i class="fa fa-archive"></i>
             {% if archived %}
