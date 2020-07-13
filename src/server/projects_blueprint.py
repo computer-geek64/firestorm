@@ -119,7 +119,7 @@ INNER JOIN "language"
         ON "pl"."language" = "l"."name"
      WHERE "pl"."project" = %s;
 ''', (project,))
-    languages = [{'name': language[0], 'percentage': language[1], 'size': language[2], 'extension': language[3], 'color': language[4]} for language in cursor.fetchall()]
+    languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': language[2], 'extension': language[3], 'color': language[4]} for language in cursor.fetchall()]
     conn.close()
     description, organization, starred, archived, created = query_results[0]
     branches = [branch[2:] for branch in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().rstrip().split('\n')]
