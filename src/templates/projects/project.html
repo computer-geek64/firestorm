@@ -110,7 +110,7 @@
             let projectName = prompt('Edit project name:', currentProjectName);
             if(projectName) {
                 let xhr = new XMLHttpRequest();
-                xhr.open("POST", window.location.pathname, true);
+                xhr.open("POST", window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.send('name=' + projectName);
                 window.location.pathname = window.location.pathname.replace(currentProjectName, projectName);
@@ -122,7 +122,7 @@
                 // Archive
                 archiveButton.innerHTML = '<i class="fa fa-archive"></i> Unarchive';
                 let xhr = new XMLHttpRequest();
-                xhr.open("POST", window.location.pathname, true);
+                xhr.open("POST", window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.send('archived=true');
             }
@@ -130,7 +130,7 @@
                 // Unarchive
                 archiveButton.innerHTML = '<i class="fa fa-archive"></i> Archive';
                 let xhr = new XMLHttpRequest();
-                xhr.open("POST", window.location.pathname, true);
+                xhr.open("POST", window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.send('archived=false');
             }
@@ -141,7 +141,7 @@
                 // Star
                 starButton.innerHTML = '<i class="fa fa-star"></i> Unstar';
                 let xhr = new XMLHttpRequest();
-                xhr.open("POST", window.location.pathname, true);
+                xhr.open("POST", window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.send('starred=true');
             }
@@ -149,7 +149,7 @@
                 // Unarchive
                 starButton.innerHTML = '<i class="fa fa-star-o"></i> Star';
                 let xhr = new XMLHttpRequest();
-                xhr.open("POST", window.location.pathname, true);
+                xhr.open("POST", window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.send('starred=false');
             }
