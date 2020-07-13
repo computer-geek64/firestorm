@@ -20,6 +20,77 @@ def snake_case_to_title(s):
     return ' '.join([x.capitalize() if x not in ['of', 'as', 'the'] else x for x in s.split('_')])
 
 
+def get_size_string(size):
+    units = ['B', 'KB', 'MB', 'GB', 'TB']
+    length = len(str(size))
+    if length % 3 == 0:
+        number = str(size)[:(length % 3) + 3]
+        unit = units[int(length / 3) - 1]
+    else:
+        number = str(size)[:length % 3]
+        unit = units[int(length / 3)]
+    return number + ' ' + unit
+
+
+def update_project_languages(project):
+    Popen(['git', 'clone', os.path.join(GIT_PATH, project + '.git'), os.path.join(GIT_PATH, project)], stdout=PIPE, stderr=PIPE).communicate()
+    conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
+    cursor = conn.cursor()
+    cursor.execute('''
+DELETE FROM "project_language"
+      WHERE "project" = %s;
+''', (project,))
+    conn.commit()
+    cursor.execute('''
+SELECT "name",
+       "extension"
+  FROM "language";
+''')
+    languages = {language[1]: language[0] for language in cursor.fetchall()}
+    project_languages = {}
+    total_size = 0
+    for root, dirs, files in os.walk(os.path.join(GIT_PATH, project)):
+        if root == os.path.join(GIT_PATH, project):
+            dirs[:] = [x for x in dirs if x != '.git']
+        for file in files:
+            ext = os.path.splitext(file)[-1][1:]
+            if languages.get(ext):
+                if not project_languages.get(languages.get(ext)):
+                    project_languages[languages.get(ext)] = {'size': 0}
+                    size = os.path.getsize(os.path.join(root, file))
+                project_languages[languages.get(ext)]['size'] += size
+                total_size += size
+    params = []
+    primary_language = None
+    max_percentage = 0
+    for k in project_languages.keys():
+        project_languages[k]['percentage'] = project_languages[k]['size'] / total_size
+        params += [project, k, project_languages[k]['percentage'], project_languages[k]['size']]
+        if project_languages[k]['percentage'] > max_percentage:
+            primary_language = k
+            max_percentage = project_languages[k]['percentage']
+    if project_languages:
+        cursor.execute('''
+INSERT INTO "project_language"
+            (
+                "project",
+                "language",
+                "percentage",
+                "size"
+            )
+     VALUES
+''' + ', '.join(['(%s, %s, %s, %s)'] * len(project_languages)) + ';', params)
+        cursor.execute('''
+UPDATE "project"
+   SET "language" = %s
+ WHERE "name" = %s;
+''', (primary_language, project))
+        conn.commit()
+    conn.close()
+    shutil.rmtree(os.path.join(GIT_PATH, project))
+    return project_languages
+
+
 # Projects
 # Get projects listing
 @projects_blueprint.route('/projects/', methods=['GET'])
@@ -57,7 +128,7 @@ SELECT "name"
 INNER JOIN "organization"
         AS "o"
         ON "p"."organization" = "o"."name"
-INNER JOIN "language"
+LEFT JOIN "language"
         AS "l"
         ON "p"."language" = "l"."name"
 '''
@@ -109,6 +180,7 @@ SELECT "description",
     query_results = cursor.fetchall()
     if not query_results:
         return error_404(404)
+    update_project_languages(project)
     cursor.execute('''
     SELECT "pl"."language",
            "pl"."percentage",
