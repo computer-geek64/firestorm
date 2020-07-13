@@ -97,7 +97,6 @@ def get_project(project):
     cursor.execute('''
 SELECT "description",
        "organization",
-       "language",
        "starred",
        "archived",
        "created"
@@ -105,13 +104,27 @@ SELECT "description",
  WHERE "name" = %s;
 ''', (project,))
     query_results = cursor.fetchall()
-    conn.close()
     if not query_results:
         return error_404(404)
-    description, organization, language, starred, archived, created = query_results[0]
+    cursor.execute('''
+    SELECT "pl"."language",
+           "pl"."percentage",
+           "pl"."size",
+           "l"."extension",
+           "l"."color"
+      FROM "project_language"
+        AS "pl"
+INNER JOIN "language"
+        AS "l"
+        ON "pl"."language" = "l"."name"
+     WHERE "pl"."project" = %s;
+''', (project,))
+    languages = [{'name': language[0], 'percentage': language[1], 'size': language[2], 'extension': language[3], 'color': language[4]} for language in cursor.fetchall()]
+    conn.close()
+    description, organization, starred, archived, created = query_results[0]
     branches = [branch[2:] for branch in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().rstrip().split('\n')]
     git_log = Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--decorate', '--all'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().replace('\n', '<br>')
-    return render_template('projects/project.html', name=project, description=description, organization=organization, language=language, starred=starred, archived=archived, created=created, branches=branches, git_log=git_log), 200
+    return render_template('projects/project.html', name=project, description=description, organization=organization, starred=starred, archived=archived, created=created, branches=branches, languages=languages, git_log=git_log), 200
 
 
 @projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
