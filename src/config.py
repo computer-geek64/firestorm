@@ -2,7 +2,7 @@
 # config.py
 
 IP = '0.0.0.0'
-PORT = 80
+PORT = 443
 
 SESSION_SECRET_KEY = ''  # Session variables secret key
 
