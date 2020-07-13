@@ -1,8 +1,8 @@
 -- populate.sql
 -- Delete existing data in tables
-DELETE FROM "organization_type";
-DELETE FROM "organization";
 DELETE FROM "language";
+DELETE FROM "organization";
+DELETE FROM "organization_type";
 
 
 -- Insert into table organization_type
