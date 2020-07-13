@@ -150,7 +150,7 @@
         <h4>Branches</h4>
         <ul id="branches">
             {% for branch in branches %}
-                <li>{{ branch }}</li>
+                <li>{{ branch|safe }}</li>
             {% endfor %}
         </ul>
         <h4>Languages</h4>
