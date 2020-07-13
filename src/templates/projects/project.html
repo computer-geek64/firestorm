@@ -40,6 +40,15 @@
         background-color: rgba(27,31,35,.15);
     }
 
+    #project-title-bar > button.right.danger {
+        color: #cb2431;
+    }
+
+    #project-title-bar > button.right.danger:hover {
+        color: white;
+        background-color: #cb2431;
+    }
+
     hr {
         height: 1px;
         border-width: 0;
@@ -140,6 +149,10 @@
                 <i class="fa fa-star-o"></i>
                 Star
             {% endif %}
+        </button>
+        <button class="right danger">
+            <i class="fa fa-trash-o"></i>
+            Delete
         </button>
     </div>
     <hr>
