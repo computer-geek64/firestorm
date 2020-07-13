@@ -47,6 +47,10 @@
         margin: 16px 0;
     }
 
+    h4 {
+        margin: 4px 0;
+    }
+
     #git-log {
         width: 35%;
         float: right;
@@ -54,7 +58,6 @@
 
     #git-log > h4 {
         text-align: center;
-        margin: 4px 0 0;
         font-family: Nimbus Sans;
     }
 
@@ -75,11 +78,12 @@
     #description {
         display: inline-block;
         width: 45%;
+        float: left;
     }
 
     #middle-col {
         display: inline-block;
-        width: 19%;
+        width: 20%;
     }
 
     #middle-col > h4 {
@@ -89,6 +93,7 @@
 
     #branches > li {
         list-style: none;
+        line-height: 25px;
     }
 
     #branches > li:before {
@@ -128,9 +133,16 @@
     </div>
     <div id="middle-col">
         <h4>Branches</h4>
-        <hr>
         <ul id="branches">
-            <li>master</li>
+            {% for branch in branches %}
+                <li>{{ branch }}</li>
+            {% endfor %}
+        </ul>
+        <h4>Languages</h4>
+        <ul id="languages">
+            {% for language in languages %}
+                <li>{{ language }}</li>
+            {% endfor %}
         </ul>
     </div>
     <div id="git-log">
