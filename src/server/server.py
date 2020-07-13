@@ -5,6 +5,7 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from flask import Flask
+from OpenSSL import SSL
 from config import SESSION_SECRET_KEY, IP, PORT
 from files_blueprint import files_blueprint
 from login_blueprint import login_blueprint
@@ -22,8 +23,12 @@ app.register_blueprint(errors_blueprint)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = SESSION_SECRET_KEY
 
+context = SSL.Context(SSL.SSLv3_METHOD)
+context.use_privatekey_file('/home/ashish/key.pem')
+context.use_certificate_file('/home/ashish/cert.pem')
 
-# Fix blueprint 404 HTTP error handler with override
+
+# Fix blueprint 404 HTTP error handler wit)h override
 @app.errorhandler(404)
 def error_404_override(e):
     return error_404(e)
@@ -36,4 +41,4 @@ def get_home():
 
 
 if __name__ == '__main__':
-    app.run(IP, PORT)
+    app.run(IP, PORT, ssl_context='adhoc')
