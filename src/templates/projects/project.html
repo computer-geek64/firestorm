@@ -76,7 +76,7 @@
     <div id="project-title-bar">
         <!--<i class="fa fa-code" style="font-size: 32px;"></i>-->
         <h1 id="title">{{name}}</h1>
-        <button class="edit-button"><i class="fa fa-pencil"></i></button>
+        <button class="edit-button" onclick="editName();"><i class="fa fa-pencil"></i></button>
         <button class="right" onclick="toggleArchive(this);">
             <i class="fa fa-archive"></i>
             {% if archived %}
@@ -106,12 +106,14 @@
     </div>
     <script>
         function editName() {
-            let projectName = prompt('Edit project name:', window.location.pathname.split('/')[2]);
+            let currentProjectName = window.location.pathname.split('/')[2];
+            let projectName = prompt('Edit project name:', currentProjectName);
             if(projectName) {
                 let xhr = new XMLHttpRequest();
                 xhr.open("POST", window.location.pathname, true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.send('name=' + projectName);
+                window.location.pathname = window.location.pathname.replace(currentProjectName, projectName);
             }
         }
 
