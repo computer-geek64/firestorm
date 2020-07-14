@@ -1,12 +1,54 @@
 {% extends "layout.html" %}
 {% block head %}
     <title>Create Project</title>
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet'>
 {% endblock %}
 {% block style %}
+    a.projects-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
     #title {
+        text-align: center;
+    }
+
+    #name, #description, #organization {
+        width: 200px;
+    }
+
+    #name {
+        padding: 6px 10px;
+        border: 2px solid lightgray;
+        border-radius: 5px;
+    }
+
+    #name:focus {
+        border-color: #0366d6;
+    }
+
+    #description {
+        resize: none;
+        height: 100px;
+        font-family: Titillium Web;
+    }
+
+    #organization {
+        border: 2px solid lightgray;
+        border-radius: 5px;
+        padding: 5px;
         text-align: center;
     }
 {% endblock %}
 {% block content %}
     <h1 id="title">Create Project</h1>
+    <form method="POST">
+        <fieldset>
+            <legend>Project</legend>
+            <input id="name" type="text" name="name" placeholder="Enter project name...">
+            <textarea id="description" name="description" placeholder="Enter project description..."></textarea>
+            <select id="organization" name="organization">
+                <option></option>
+            </select>
+        </fieldset>
+    </form>
 {% endblock %}
