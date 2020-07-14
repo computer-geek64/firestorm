@@ -12,18 +12,19 @@
         text-align: center;
     }
 
-    #name, #description, #organization {
-        width: 200px;
-    }
-
-    #name {
+    .input {
+        display: block;
         padding: 6px 10px;
         border: 2px solid lightgray;
         border-radius: 5px;
     }
 
-    #name:focus {
+    .input:focus {
         border-color: #0366d6;
+    }
+
+    #name {
+        width: 176px;
     }
 
     #description {
@@ -33,9 +34,6 @@
     }
 
     #organization {
-        border: 2px solid lightgray;
-        border-radius: 5px;
-        padding: 5px;
         text-align: center;
     }
 {% endblock %}
@@ -44,9 +42,9 @@
     <form method="POST">
         <fieldset>
             <legend>Project</legend>
-            <input id="name" type="text" name="name" placeholder="Enter project name...">
-            <textarea id="description" name="description" placeholder="Enter project description..."></textarea>
-            <select id="organization" name="organization">
+            <input id="name" class="input" type="text" name="name" placeholder="Enter project name...">
+            <textarea id="description" class="input" name="description" placeholder="Enter project description..."></textarea>
+            <select id="organization" class="input" name="organization">
                 <option></option>
             </select>
         </fieldset>
