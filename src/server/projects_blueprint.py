@@ -214,7 +214,7 @@ INNER JOIN "language"
     for i in range(len(branches)):
         behind, ahead = [x for x in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'rev-list', '--left-right', '--count', default_branch + '...' + branches[i]['name']], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().replace('\t', ' ').split(' ') if x]
         branches[i]['name'] = branches[i]['name'].ljust(15).replace(' ', '&nbsp;') + (behind + '|').rjust(5).replace(' ', '&nbsp;') + ahead
-    git_log = Popen(' '.join(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--decorate', '--all', 'head', '-n', '500']), stdout=PIPE, stderr=PIPE, shell=True).communicate()[0].decode().replace('\n', '<br>')
+    git_log = Popen(' '.join(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--decorate', '--all', '|', 'head', '-n', '500']), stdout=PIPE, stderr=PIPE, shell=True).communicate()[0].decode().replace('\n', '<br>')
     return render_template('projects/project.html', name=project, description=description, organization=organization, starred=starred, archived=archived, created=created, branches=branches, languages=languages, git_log=git_log), 200
 
 
