@@ -11,6 +11,22 @@
         text-align: center;
     }
 
+    #create {
+        display: inline;
+        margin-left: 10px;
+        border: 2px solid #cdc7c2;
+        border-radius: 5px;
+        width: 35px;
+        height: 35px;
+        color: #2ea44f;
+        background-color: transparent;
+    }
+
+    #create:hover {
+        color: white;
+        background-color: #2ea44f;
+    }
+
     #filter-form {
         width: 100%;
         display: flex;
@@ -158,6 +174,7 @@
         <button id="submit" type="submit">
             <i class="fa fa-search"></i>
         </button>
+        <a id="create" href="/projects/create/">Create</a>
     </form>
     <hr class="project-divider">
     <div id="projects">
