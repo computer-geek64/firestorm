@@ -20,6 +20,8 @@
         height: 35px;
         color: #2ea44f;
         background-color: transparent;
+        text-align: center;
+        cursor: pointer;
     }
 
     #create:hover {
@@ -174,7 +176,11 @@
         <button id="submit" type="submit">
             <i class="fa fa-search"></i>
         </button>
-        <a id="create" href="/projects/create/">Create</a>
+        <a href="/projects/create/">
+            <button id="create">
+                <i class="fa fa-plus"></i>
+            </button>
+        </a>
     </form>
     <hr class="project-divider">
     <div id="projects">
