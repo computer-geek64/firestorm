@@ -9,7 +9,7 @@ from auth import authenticate
 from errors_blueprint import *
 from subprocess import Popen, PIPE
 from config import PROJECTS_DB_NAME, DB_USER, DB_PASSWORD, GIT_PATH
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, jsonify
 
 
 projects_blueprint = Blueprint('projects_blueprint', __name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates'), static_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'))
@@ -361,14 +361,14 @@ index 0000000..892ef3c
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'commit', '-m', 'Initial commit'], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'core.bare', 'true'], stdout=PIPE, stderr=PIPE).communicate()
 
-    root, dirs, files = next(os.walk(GIT_PATH, name + '.git'))
+    root, dirs, files = next(os.walk(os.path.join(GIT_PATH, name + '.git')))
     dirs.remove('.git')
     for dir in dirs:
         shutil.rmtree(os.path.join(root, dir))
     for file in files:
         os.remove(os.path.join(root, file))
 
-    root, dirs, files = next(os.walk(GIT_PATH, name + '.git', '.git'))
+    root, dirs, files = next(os.walk(os.path.join(GIT_PATH, name + '.git', '.git')))
     for file in dirs + files:
         shutil.move(os.path.join(root, file), os.path.join(GIT_PATH, name + '.git'))
     os.rmdir(os.path.join(GIT_PATH, name + '.git', '.git'))
