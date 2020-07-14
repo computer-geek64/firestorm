@@ -185,7 +185,9 @@ SELECT "description",
     query_results = cursor.fetchall()
     if not query_results:
         return error_404(404)
-    update_project_languages(project)
+    description, organization, starred, archived, created = query_results[0]
+    if not archived:
+        update_project_languages(project)
     cursor.execute('''
     SELECT "pl"."language",
            "pl"."percentage",
@@ -203,7 +205,6 @@ INNER JOIN "language"
 ''', (project,))
     languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': get_size_string(language[2]), 'files': language[3], 'lines': language[4], 'extension': language[5], 'color': language[6]} for language in cursor.fetchall()]
     conn.close()
-    description, organization, starred, archived, created = query_results[0]
     default_branch = 'master'
     branches = Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'branch'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().rstrip().split('\n')
     for i in range(len(branches)):
@@ -220,7 +221,7 @@ INNER JOIN "language"
 # Post project
 @projects_blueprint.route('/projects/<string:project>/', methods=['POST'])
 @authenticate
-def post_star_project(project):
+def post_project(project):
     conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
     cursor = conn.cursor()
 
