@@ -43,5 +43,7 @@ CREATE TABLE "project_language" (
     "language" VARCHAR (32) REFERENCES "language" ("name"),
     "percentage" FLOAT NOT NULL,
     "size" BIGINT NOT NULL,
+    "files" INTEGER NOT NULL,
+    "lines" INTEGER NOT NULL,
     PRIMARY KEY ("project", "language")
 )

@@ -56,17 +56,19 @@ SELECT "name",
             ext = os.path.splitext(file)[-1][1:]
             if languages.get(ext):
                 if not project_languages.get(languages.get(ext)):
-                    project_languages[languages.get(ext)] = {'size': 0, 'files': 0}
-                    size = os.path.getsize(os.path.join(root, file))
+                    project_languages[languages.get(ext)] = {'size': 0, 'files': 0, 'lines': 0}
+                size = os.path.getsize(os.path.join(root, file))
                 project_languages[languages.get(ext)]['size'] += size
                 project_languages[languages.get(ext)]['files'] += 1
+                with open(os.path.join(root, file), 'r') as f:
+                    project_languages[languages.get(ext)]['lines'] += sum(1 for x in f)
                 total_size += size
     params = []
     primary_language = None
     max_percentage = 0
     for k in project_languages.keys():
         project_languages[k]['percentage'] = project_languages[k]['size'] / total_size
-        params += [project, k, project_languages[k]['percentage'], project_languages[k]['size']]
+        params += [project, k, project_languages[k]['percentage'], project_languages[k]['size'], project_languages[k]['files'], project_languages[k]['lines']]
         if project_languages[k]['percentage'] > max_percentage:
             primary_language = k
             max_percentage = project_languages[k]['percentage']
@@ -78,10 +80,11 @@ INSERT INTO "project_language"
                 "language",
                 "percentage",
                 "size",
-                "files"
+                "files",
+                "lines"
             )
      VALUES
-''' + ', '.join(['(%s, %s, %s, %s, %s)'] * len(project_languages)) + ';', params)
+''' + ', '.join(['(%s, %s, %s, %s, %s, %s)'] * len(project_languages)) + ';', params)
         cursor.execute('''
 UPDATE "project"
    SET "language" = %s
@@ -187,6 +190,8 @@ SELECT "description",
     SELECT "pl"."language",
            "pl"."percentage",
            "pl"."size",
+           "pl"."files",
+           "pl"."lines",
            "l"."extension",
            "l"."color"
       FROM "project_language"
@@ -196,7 +201,7 @@ INNER JOIN "language"
         ON "pl"."language" = "l"."name"
      WHERE "pl"."project" = %s;
 ''', (project,))
-    languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': get_size_string(language[2]), 'files': language[3], 'extension': language[4], 'color': language[5]} for language in cursor.fetchall()]
+    languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': get_size_string(language[2]), 'files': language[3], 'lines': language[4], 'extension': language[5], 'color': language[6]} for language in cursor.fetchall()]
     conn.close()
     description, organization, starred, archived, created = query_results[0]
     default_branch = 'master'
