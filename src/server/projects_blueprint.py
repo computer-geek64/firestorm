@@ -362,6 +362,9 @@ index 0000000..892ef3c
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'add', '.'], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'commit', '-m', 'Initial commit'], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'core.bare', 'true'], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'branch', 'develop'], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'branch', 'stable'], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'branch', 'hotfix'], stdout=PIPE, stderr=PIPE).communicate()
 
     root, dirs, files = next(os.walk(os.path.join(GIT_PATH, name + '.git')))
     dirs.remove('.git')
