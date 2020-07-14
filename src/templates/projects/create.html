@@ -62,10 +62,13 @@
     <form id="form" method="POST">
         <fieldset>
             <legend>Project</legend>
-            <input id="name" class="input" type="text" name="name" placeholder="Enter project name">
-            <textarea id="description" class="input" name="description" placeholder="Enter project description"></textarea>
-            <select id="organization" class="input" name="organization">
-                <option></option>
+            <input id="name" class="input" type="text" name="name" placeholder="Enter project name" required>
+            <textarea id="description" class="input" name="description" placeholder="Enter project description" required></textarea>
+            <select id="organization" class="input" name="organization" required>
+                <option selected disabled>Organization</option>
+                {% for organization in organizations %}
+                    <option value="{{ organization }}">{{ organization }}</option>
+                {% endfor %}
             </select>
             <input id="submit" class="input" type="submit" value="Submit">
         </fieldset>

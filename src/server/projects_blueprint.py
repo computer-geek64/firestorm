@@ -272,7 +272,14 @@ UPDATE "project"
 @projects_blueprint.route('/projects/create/', methods=['GET'])
 @authenticate
 def get_create_project():
-    return render_template('projects/create.html'), 200
+    conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
+    cursor = conn.cursor()
+    cursor.execute('''
+SELECT "name"
+  FROM "organization";
+''')
+    organizations = [x[0] for x in cursor.fetchall()]
+    return render_template('projects/create.html', organizations=organizations), 200
 
 
 # Post create project
