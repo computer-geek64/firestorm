@@ -372,3 +372,6 @@ index 0000000..892ef3c
     for file in dirs + files:
         shutil.move(os.path.join(root, file), os.path.join(GIT_PATH, name + '.git'))
     os.rmdir(os.path.join(GIT_PATH, name + '.git', '.git'))
+    Popen(['chmod', '-R', '775', os.path.join(GIT_PATH, name + '.git')], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['chown', '-R', 'git:git', os.path.join(GIT_PATH, name + '.git')], stdout=PIPE, stderr=PIPE).communicate()
+    return redirect('/projects/' + name + '/'), 302
