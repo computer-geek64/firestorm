@@ -87,7 +87,7 @@
         float: left;
     }
 
-    #description > textarea {
+    #description > form > textarea {
         resize: none;
         width: 100%;
         height: 200px;
@@ -95,6 +95,21 @@
         font-size: 20px;
         margin-top: 20px;
         font-family: Titillium Web;
+    }
+
+    #submit-description {
+        border: 1px solid rgba(27,31,35,.15);
+        padding: 5px 10px;
+        border-radius: 7px;
+        margin: 4px 0 0 10px;
+        font-size: 15px;
+        color: #2ea44f;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    #submit-description:hover {
+        background-color: #2ea44f;
     }
 
     #middle-col {
@@ -168,7 +183,10 @@
     <hr>
     <div id="description">
         <span><i class="fa fa-sitemap"></i> {{ organization }}</span>
-        <textarea>{{ description }}</textarea>
+        <form method="POST">
+            <textarea name="description" onchange="document.querySelector('#submit-description').removeAttribute('disabled');">{{ description }}</textarea>
+            <button id="submit-description" type="submit" disabled>Submit</button>
+        </form>
     </div>
     <div id="middle-col">
         <h4>Branches</h4>
