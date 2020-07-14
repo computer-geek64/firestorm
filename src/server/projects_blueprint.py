@@ -306,7 +306,7 @@ INSERT INTO "project"
                 %s
             );
 ''', (name, description, organization))
-    cursor.commit()
+    conn.commit()
     conn.close()
 
     date = datetime.now()
