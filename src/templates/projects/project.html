@@ -104,6 +104,7 @@
         font-size: 15px;
         color: #2ea44f;
         background-color: transparent;
+        display: none;
         cursor: pointer;
     }
 
@@ -184,7 +185,7 @@
     <div id="description">
         <span><i class="fa fa-sitemap"></i> {{ organization }}</span>
         <form method="POST">
-            <textarea name="description" onchange="document.querySelector('#submit-description').removeAttribute('disabled');">{{ description }}</textarea>
+            <textarea name="description" onchange="document.querySelector('#submit-description').removeAttribute('disabled'); document.querySelector('#submit-description').style['display'] = 'block';">{{ description }}</textarea>
             <button id="submit-description" type="submit" disabled>Submit</button>
         </form>
     </div>
