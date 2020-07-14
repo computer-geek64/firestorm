@@ -286,18 +286,37 @@ SELECT "name"
 @projects_blueprint.route('/projects/create/', methods=['POST'])
 @authenticate
 def post_create_project():
-    #conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
-    #cursor = conn.cursor()
-    name = 'Firestorm'
-    description = 'Personal headless CentOS 8 server'
+    if not request.form.get('name') or not request.form.get('description') or not request.form.get('organization'):
+        return redirect('/projects/create/'), 302
+    name = request.form.get('name')
+    description = request.form.get('description')
+    organization = request.form.get('organization')
+    conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
+    cursor = conn.cursor()
+    cursor.execute('''
+INSERT INTO "project"
+            (
+                "name",
+                "description",
+                "organization"
+            )
+     VALUES (
+                %s,
+                %s,
+                %s
+            );
+''', (name, description, organization))
+    cursor.commit()
+    conn.close()
+
     date = datetime.now()
     current_date = date.strftime('%B %-d')
     current_date += 'th' if 4 <= date.day <= 20 or 24 <= date.day <= 30 else ['st', 'nd', 'rd'][date.day % 10 - 1]
     current_date += ', ' + date.strftime('%Y')
-    os.makedirs(os.path.join(GIT_PATH, name))
-    Popen(['git', 'init', '--bare', os.path.join(GIT_PATH, name, '.git')], stdout=PIPE, stderr=PIPE).communicate()
-    Popen(['git', '-C', os.path.join(GIT_PATH, name), 'config', 'core.bare', 'false'], stdout=PIPE, stderr=PIPE).communicate()
-    Popen(['git', '-C', os.path.join(GIT_PATH, name), 'apply', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate(input='''diff --git a/.gitconfig b/.gitconfig
+    os.makedirs(os.path.join(GIT_PATH, name + '.git'))
+    Popen(['git', 'init', '--bare', os.path.join(GIT_PATH, name + '.git', '.git')], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'core.bare', 'false'], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'apply', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate(input='''diff --git a/.gitconfig b/.gitconfig
 new file mode 100644
 index 0000000..2483976
 --- /dev/null
@@ -338,6 +357,18 @@ index 0000000..892ef3c
 +
 +{DESCRIPTION}
 '''.replace('{NAME}', name).replace('{DESCRIPTION}', description).replace('{DATE}', current_date).replace('{YEAR}', str(datetime.now().year)).encode())
-    Popen(['git', '-C', os.path.join(GIT_PATH, name), 'add', '.'], stdout=PIPE, stderr=PIPE).communicate()
-    Popen(['git', '-C', os.path.join(GIT_PATH, name), 'commit', '-m', 'Initial commit'], stdout=PIPE, stderr=PIPE).communicate()
-    Popen(['git', '-C', os.path.join(GIT_PATH, name), 'config', 'core.bare', 'true'], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'add', '.'], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'commit', '-m', 'Initial commit'], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'core.bare', 'true'], stdout=PIPE, stderr=PIPE).communicate()
+
+    root, dirs, files = next(os.walk(GIT_PATH, name + '.git'))
+    dirs.remove('.git')
+    for dir in dirs:
+        shutil.rmtree(os.path.join(root, dir))
+    for file in files:
+        os.remove(os.path.join(root, file))
+
+    root, dirs, files = next(os.walk(GIT_PATH, name + '.git', '.git'))
+    for file in dirs + files:
+        shutil.move(os.path.join(root, file), os.path.join(GIT_PATH, name + '.git'))
+    os.rmdir(os.path.join(GIT_PATH, name + '.git', '.git'))
