@@ -56,9 +56,10 @@ SELECT "name",
             ext = os.path.splitext(file)[-1][1:]
             if languages.get(ext):
                 if not project_languages.get(languages.get(ext)):
-                    project_languages[languages.get(ext)] = {'size': 0}
+                    project_languages[languages.get(ext)] = {'size': 0, 'files': 0}
                     size = os.path.getsize(os.path.join(root, file))
                 project_languages[languages.get(ext)]['size'] += size
+                project_languages[languages.get(ext)]['files'] += 1
                 total_size += size
     params = []
     primary_language = None
@@ -76,10 +77,11 @@ INSERT INTO "project_language"
                 "project",
                 "language",
                 "percentage",
-                "size"
+                "size",
+                "files"
             )
      VALUES
-''' + ', '.join(['(%s, %s, %s, %s)'] * len(project_languages)) + ';', params)
+''' + ', '.join(['(%s, %s, %s, %s, %s)'] * len(project_languages)) + ';', params)
         cursor.execute('''
 UPDATE "project"
    SET "language" = %s
@@ -194,7 +196,7 @@ INNER JOIN "language"
         ON "pl"."language" = "l"."name"
      WHERE "pl"."project" = %s;
 ''', (project,))
-    languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': get_size_string(language[2]), 'extension': language[3], 'color': language[4]} for language in cursor.fetchall()]
+    languages = [{'name': language[0], 'percentage': round(language[1] * 100, 1), 'size': get_size_string(language[2]), 'files': language[3], 'extension': language[4], 'color': language[5]} for language in cursor.fetchall()]
     conn.close()
     description, organization, starred, archived, created = query_results[0]
     default_branch = 'master'
@@ -204,7 +206,7 @@ INNER JOIN "language"
             default_branch = branches[i][2:]
         branches[i] = {'name': branches[i][2:], 'default': branches[i].startswith('*')}
     for i in range(len(branches)):
-        branches[i]['name'] = branches[i]['name'].ljust(14).replace(' ', '&nbsp;') + '|'.join([x for x in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'rev-list', '--left-right', '--count', default_branch + '...' + branches[i]['name']], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().replace('\t', ' ').split(' ') if x])
+        branches[i]['name'] = branches[i]['name'].ljust(17).replace(' ', '&nbsp;') + '|'.join([x for x in Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'rev-list', '--left-right', '--count', default_branch + '...' + branches[i]['name']], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().replace('\t', ' ').split(' ') if x])
     git_log = Popen(['git', '-C', os.path.join(GIT_PATH, project + '.git'), 'log', '--oneline', '--graph', '--decorate', '--all'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().replace('\n', '<br>')
     return render_template('projects/project.html', name=project, description=description, organization=organization, starred=starred, archived=archived, created=created, branches=branches, languages=languages, git_log=git_log), 200
 
