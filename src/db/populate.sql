@@ -92,4 +92,19 @@ INSERT INTO "language" (
                 'JavaScript',
                 'js',
                 '#f1e05a'
+            ),
+            (
+                'SQL',
+                'sql',
+                '#cccccc'
+            ),
+            (
+                'Perl',
+                'pl',
+                '#0298c3'
+            ),
+            (
+                'PHP',
+                'php',
+                '#4f5d95'
             );
