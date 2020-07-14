@@ -39,7 +39,7 @@ CREATE TABLE "project" (
 
 -- Create table project_language
 CREATE TABLE "project_language" (
-    "project" VARCHAR (64) REFERENCES "project" ("name"),
+    "project" VARCHAR (64) REFERENCES "project" ("name") ON DELETE CASCADE,
     "language" VARCHAR (32) REFERENCES "language" ("name"),
     "percentage" FLOAT NOT NULL,
     "size" BIGINT NOT NULL,
