@@ -233,6 +233,12 @@ UPDATE "project"
 ''', (request.form.get('name'), project))
         os.rename(os.path.join(GIT_PATH, project + '.git'), os.path.join(GIT_PATH, request.form.get('name') + '.git'))
         project = request.form.get('name')
+    if request.form.get('description'):
+        cursor.execute('''
+UPDATE "project"
+   SET "description" = %s
+ WHERE "name" = %s;
+''', (request.form.get('description'), project))
     if request.form.get('starred'):
         cursor.execute('''
 UPDATE "project"
