@@ -315,8 +315,8 @@ INSERT INTO "project"
     current_date += ', ' + date.strftime('%Y')
     os.makedirs(os.path.join(GIT_PATH, name + '.git'))
     Popen(['git', 'init', '--bare', os.path.join(GIT_PATH, name + '.git', '.git')], stdout=PIPE, stderr=PIPE).communicate()
-    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', '--global', 'user.name', GIT_USER_NAME], stdout=PIPE, stderr=PIPE).communicate()
-    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', '--global', 'user.email', GIT_USER_EMAIL], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'user.name', GIT_USER_NAME], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'user.email', GIT_USER_EMAIL], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'core.bare', 'false'], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'apply', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate(input='''diff --git a/.gitconfig b/.gitconfig
 new file mode 100644
