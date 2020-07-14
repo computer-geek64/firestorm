@@ -252,7 +252,7 @@ UPDATE "project"
             os.chmod(os.path.join(GIT_PATH, project + '.git'), 0o775)
     conn.commit()
     conn.close()
-    return redirect(os.path.join('/projects', project, '/')), 302
+    return redirect(os.path.join('/projects', project + '/')), 302
 
 
 # Create project
