@@ -269,10 +269,16 @@ UPDATE "project"
     return redirect(os.path.join('/projects', project + '/')), 302
 
 
-# Create project
 @projects_blueprint.route('/projects/create/', methods=['GET'])
 @authenticate
 def get_create_project():
+    return render_template('projects/create.html'), 200
+
+
+# Post create project
+@projects_blueprint.route('/projects/create/', methods=['POST'])
+@authenticate
+def post_create_project():
     #conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
     #cursor = conn.cursor()
     name = 'Firestorm'
