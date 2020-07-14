@@ -12,19 +12,23 @@
         text-align: center;
     }
 
+    #form {
+        margin: auto;
+        width: 428px;
+    }
+
     .input {
         display: block;
         padding: 6px 10px;
         border: 2px solid lightgray;
         border-radius: 5px;
+        width: 400px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
     }
 
     .input:focus {
         border-color: #0366d6;
-    }
-
-    #name {
-        width: 176px;
     }
 
     #description {
@@ -36,10 +40,24 @@
     #organization {
         text-align: center;
     }
+
+    #submit {
+        border: 1px solid lightgray;
+        padding: 5px 10px;
+        border-radius: 7px;
+        font-size: 15px;
+        color: #2ea44f;
+        background-color: transparent;
+    }
+
+    #submit:hover {
+        color: white;
+        background-color: #2ea44f;
+    }
 {% endblock %}
 {% block content %}
     <h1 id="title">Create Project</h1>
-    <form method="POST">
+    <form id="form" method="POST">
         <fieldset>
             <legend>Project</legend>
             <input id="name" class="input" type="text" name="name" placeholder="Enter project name...">
@@ -47,6 +65,7 @@
             <select id="organization" class="input" name="organization">
                 <option></option>
             </select>
+            <input id="submit" class="input" type="submit" value="Submit">
         </fieldset>
     </form>
 {% endblock %}
