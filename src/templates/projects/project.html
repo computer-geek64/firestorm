@@ -185,7 +185,7 @@
     <div id="description">
         <span><i class="fa fa-sitemap"></i> {{ organization }}</span>
         <form method="POST">
-            <textarea name="description" onchange="document.querySelector('#submit-description').style['display'] = 'block';">{{ description }}</textarea>
+            <textarea name="description" oninput="document.querySelector('#submit-description').style['display'] = 'block';">{{ description }}</textarea>
             <button id="submit-description" type="submit">Submit</button>
         </form>
     </div>
