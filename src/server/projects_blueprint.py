@@ -8,7 +8,7 @@ from datetime import datetime
 from auth import authenticate
 from errors_blueprint import *
 from subprocess import Popen, PIPE
-from config import PROJECTS_DB_NAME, DB_USER, DB_PASSWORD, GIT_PATH
+from config import PROJECTS_DB_NAME, DB_USER, DB_PASSWORD, GIT_PATH, GIT_USER_NAME, GIT_USER_EMAIL
 from flask import Blueprint, render_template, request, redirect, jsonify
 
 
@@ -315,6 +315,8 @@ INSERT INTO "project"
     current_date += ', ' + date.strftime('%Y')
     os.makedirs(os.path.join(GIT_PATH, name + '.git'))
     Popen(['git', 'init', '--bare', os.path.join(GIT_PATH, name + '.git', '.git')], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', '--global', 'user.name', GIT_USER_NAME], stdout=PIPE, stderr=PIPE).communicate()
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', '--global', 'user.email', GIT_USER_EMAIL], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'core.bare', 'false'], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'apply', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate(input='''diff --git a/.gitconfig b/.gitconfig
 new file mode 100644
