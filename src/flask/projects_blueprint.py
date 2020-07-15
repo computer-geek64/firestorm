@@ -98,7 +98,7 @@ INSERT INTO "project_language"
             )
      VALUES
 \'\'\' + ', '.join(['(%s, %s, %s, %s, %s, %s)'] * len(project_languages)) + ';', params)
-        cursor.execute(\'\'\'
+    cursor.execute(\'\'\'
 UPDATE "project"
    SET "language" = %s
  WHERE "name" = %s;
