@@ -23,3 +23,5 @@ PROJECTS_DB_NAME = 'projects'  # PostgreSQL projects database name
 GIT_PATH = '/git'  # Path to folder for bare git repositories
 GIT_USER_NAME = ''  # Git config user.name
 GIT_USER_EMAIL = ''  # Git config user.email
+
+USB_KEY_UUID = ''  # USB key UUID

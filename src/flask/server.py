@@ -3,7 +3,7 @@
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask
 from config import SSL_CERTIFICATE_FILE, SSL_KEY_FILE, SESSION_SECRET_KEY, IP, PORT
 from files_blueprint import files_blueprint

@@ -2,6 +2,8 @@
 # projects_blueprint.py
 
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import shutil
 import psycopg2
 from datetime import datetime
@@ -32,48 +34,59 @@ def get_size_string(size):
     return number + ' ' + unit
 
 
-def update_project_languages(project):
-    Popen(['git', 'clone', os.path.join(GIT_PATH, project + '.git'), os.path.join(GIT_PATH, project)], stdout=PIPE, stderr=PIPE).communicate()
-    conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
-    cursor = conn.cursor()
-    cursor.execute('''
+def generate_post_receive(project):
+    return '''#!/usr/bin/python3
+import os
+import sys
+sys.path.append({CONFIG_FILE_PATH})
+import shutil
+import psycopg2
+from subprocess import Popen, PIPE
+from config import GIT_PATH, PROJECTS_DB_NAME, DB_USER, DB_PASSWORD
+
+
+project = {project}
+Popen(['git', 'clone', os.path.join(GIT_PATH, project + '.git'), os.path.join(GIT_PATH, project)], stdout=PIPE, stderr=PIPE).communicate()
+conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
+cursor = conn.cursor()
+cursor.execute(\'\'\'
 DELETE FROM "project_language"
       WHERE "project" = %s;
-''', (project,))
-    conn.commit()
-    cursor.execute('''
+\'\'\', (project,))
+conn.commit()
+cursor.execute(\'\'\'
 SELECT "name",
        "extension"
   FROM "language";
-''')
-    languages = {language[1]: language[0] for language in cursor.fetchall()}
-    project_languages = {}
-    total_size = 0
-    for root, dirs, files in os.walk(os.path.join(GIT_PATH, project)):
-        if root == os.path.join(GIT_PATH, project):
-            dirs[:] = [x for x in dirs if x != '.git']
-        for file in files:
-            ext = os.path.splitext(file)[-1][1:]
-            if languages.get(ext):
-                if not project_languages.get(languages.get(ext)):
-                    project_languages[languages.get(ext)] = {'size': 0, 'files': 0, 'lines': 0}
-                size = os.path.getsize(os.path.join(root, file))
-                project_languages[languages.get(ext)]['size'] += size
-                project_languages[languages.get(ext)]['files'] += 1
-                with open(os.path.join(root, file), 'r') as f:
-                    project_languages[languages.get(ext)]['lines'] += sum(1 for x in f)
-                total_size += size
-    params = []
-    primary_language = None
-    max_percentage = 0
-    for k in project_languages.keys():
-        project_languages[k]['percentage'] = project_languages[k]['size'] / total_size
-        params += [project, k, project_languages[k]['percentage'], project_languages[k]['size'], project_languages[k]['files'], project_languages[k]['lines']]
-        if project_languages[k]['percentage'] > max_percentage:
-            primary_language = k
-            max_percentage = project_languages[k]['percentage']
-    if project_languages:
-        cursor.execute('''
+\'\'\')
+languages = {{language[1]: language[0] for language in cursor.fetchall()}}
+project_languages = {{}}
+total_size = 0
+for root, dirs, files in os.walk(os.path.join(GIT_PATH, project)):
+    if root == os.path.join(GIT_PATH, project):
+        dirs[:] = [x for x in dirs if x != '.git']
+    for file in files:
+        ext = os.path.splitext(file)[-1][1:]
+        if languages.get(ext):
+            if not project_languages.get(languages.get(ext)):
+                project_languages[languages.get(ext)] = {{'size': 0, 'files': 0, 'lines': 0}}
+            size = os.path.getsize(os.path.join(root, file))
+            project_languages[languages.get(ext)]['size'] += size
+            project_languages[languages.get(ext)]['files'] += 1
+            with open(os.path.join(root, file), 'r') as f:
+                project_languages[languages.get(ext)]['lines'] += sum(1 for x in f)
+            total_size += size
+params = []
+primary_language = None
+max_percentage = 0
+for k in project_languages.keys():
+    project_languages[k]['percentage'] = project_languages[k]['size'] / total_size
+    params += [project, k, project_languages[k]['percentage'], project_languages[k]['size'], project_languages[k]['files'], project_languages[k]['lines']]
+    if project_languages[k]['percentage'] > max_percentage:
+        primary_language = k
+        max_percentage = project_languages[k]['percentage']
+if project_languages:
+    cursor.execute(\'\'\'
 INSERT INTO "project_language"
             (
                 "project",
@@ -84,16 +97,16 @@ INSERT INTO "project_language"
                 "lines"
             )
      VALUES
-''' + ', '.join(['(%s, %s, %s, %s, %s, %s)'] * len(project_languages)) + ';', params)
-        cursor.execute('''
+\'\'\' + ', '.join(['(%s, %s, %s, %s, %s, %s)'] * len(project_languages)) + ';', params)
+        cursor.execute(\'\'\'
 UPDATE "project"
    SET "language" = %s
  WHERE "name" = %s;
-''', (primary_language, project))
-        conn.commit()
-    conn.close()
-    shutil.rmtree(os.path.join(GIT_PATH, project))
-    return project_languages
+\'\'\', (primary_language, project))
+    conn.commit()
+conn.close()
+shutil.rmtree(os.path.join(GIT_PATH, project))
+'''.format(project=project, CONFIG_FILE_PATH=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Projects
@@ -186,8 +199,6 @@ SELECT "description",
     if not query_results:
         return error_404(404)
     description, organization, starred, archived, created = query_results[0]
-    if not archived:
-        update_project_languages(project)
     cursor.execute('''
     SELECT "pl"."language",
            "pl"."percentage",
@@ -378,6 +389,8 @@ index 0000000..892ef3c
     for file in dirs + files:
         shutil.move(os.path.join(root, file), os.path.join(GIT_PATH, name + '.git'))
     os.rmdir(os.path.join(GIT_PATH, name + '.git', '.git'))
+    with open(os.path.join(GIT_PATH, 'hooks', 'post-receive'), 'w') as f:
+        f.write(generate_post_receive(name))
     Popen(['chmod', '-R', '775', os.path.join(GIT_PATH, name + '.git')], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['chown', '-R', 'git:git', os.path.join(GIT_PATH, name + '.git')], stdout=PIPE, stderr=PIPE).communicate()
     return redirect('/projects/' + name + '/'), 302
