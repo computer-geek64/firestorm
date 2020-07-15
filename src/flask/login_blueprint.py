@@ -2,10 +2,14 @@
 # login_blueprint.py
 
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import requests
 from datetime import datetime
-from auth import authenticate, verify_credentials
 from errors_blueprint import *
 from subprocess import Popen, PIPE
+from config import FIRESTORM_LOGIN_WEBHOOK
+from auth import authenticate, verify_credentials
 from flask import Blueprint, render_template, request, redirect, session
 
 
@@ -36,6 +40,7 @@ def post_login():
         if session.get('login_attempts') > 2:
             return error_403(403)
         return error_401(401)
+    requests.post(FIRESTORM_LOGIN_WEBHOOK)
     session['username'] = username
     session['password'] = password
     session.pop('login_attempts')
