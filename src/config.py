@@ -25,4 +25,6 @@ GIT_USER_NAME = ''  # Git config user.name
 GIT_USER_EMAIL = ''  # Git config user.email
 
 USB_KEY_UUID = ''  # USB key UUID
+
 UNPLUG_USB_KEY_WEBHOOK = ''  # Webhook for unplugging USB key
+FIRESTORM_LOGIN_WEBHOOK = ''  # Webhook for new Firestorm logins
