@@ -38,14 +38,14 @@ def generate_post_receive(project):
     return '''#!/usr/bin/python3
 import os
 import sys
-sys.path.append({CONFIG_FILE_PATH})
+sys.path.append('{CONFIG_FILE_PATH}')
 import shutil
 import psycopg2
 from subprocess import Popen, PIPE
 from config import GIT_PATH, PROJECTS_DB_NAME, DB_USER, DB_PASSWORD
 
 
-project = {project}
+project = '{project}'
 Popen(['git', 'clone', os.path.join(GIT_PATH, project + '.git'), os.path.join(GIT_PATH, project)], stdout=PIPE, stderr=PIPE).communicate()
 conn = psycopg2.connect(database=PROJECTS_DB_NAME, user=DB_USER, password=DB_PASSWORD)
 cursor = conn.cursor()
