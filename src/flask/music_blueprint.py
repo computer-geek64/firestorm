@@ -38,7 +38,7 @@ def get_music():
     music = []
     for root, dirs, files in os.walk(MUSIC_LOCATION):
         music += [{'path': safe_join('/music', 'src', root.split(MUSIC_LOCATION)[-1], file), 'name': os.path.basename(os.path.splitext(file)[0])} for file in files if file.endswith('.mp3')]
-    return render_template('music/music.html', music=sorted(music, key=lambda k: k['path'])), 200
+    return render_template('music/music.html', music=sorted(music, key=lambda k: k['name'])), 200
 
 
 @music_blueprint.route('/music/', methods=['POST'])
