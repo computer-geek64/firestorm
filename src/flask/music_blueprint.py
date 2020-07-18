@@ -37,7 +37,7 @@ def get_youtube_music(url, directory):
 def get_music():
     music = []
     for root, dirs, files in os.walk(MUSIC_LOCATION):
-        music += [{'path': safe_join('/music', 'src', file), 'name': os.path.basename(os.path.splitext(file)[0])} for file in files if file.endswith('.mp3')]
+        music += [{'path': safe_join('/music', 'src', root.split(MUSIC_LOCATION)[-1], file), 'name': os.path.basename(os.path.splitext(file)[0])} for file in files if file.endswith('.mp3')]
     return render_template('music/music.html', music=sorted(music, key=lambda k: k['path'])), 200
 
 
@@ -52,7 +52,8 @@ def post_music():
 @music_blueprint.route('/music/src/<path:path>/', methods=['GET'])
 @authenticate
 def get_music_source(path):
-    for root, dirs, files in os.walk(MUSIC_LOCATION):
-        if path in files:
-            return send_from_directory(root, filename=path)
+    local_path = os.path.join(MUSIC_LOCATION, path)
+    if os.path.isfile(local_path):
+        directory, filename = os.path.split(local_path)
+        return send_from_directory(directory, filename)
     return error_404(404)
