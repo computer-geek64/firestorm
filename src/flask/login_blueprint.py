@@ -56,7 +56,7 @@ def get_logout():
 
 
 # Dashboard
-@login_blueprint.route('/dashboard', methods=['GET'])
+@login_blueprint.route('/dashboard/', methods=['GET'])
 @authenticate
 def get_dashboard():
     date = datetime.now()

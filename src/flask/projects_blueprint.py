@@ -11,7 +11,7 @@ from auth import authenticate
 from errors_blueprint import *
 from subprocess import Popen, PIPE
 from config import PROJECTS_DB_NAME, DB_USER, DB_PASSWORD, GIT_PATH, GIT_USER_NAME, GIT_USER_EMAIL
-from flask import Blueprint, render_template, request, redirect, jsonify
+from flask import Blueprint, render_template, request, redirect
 
 
 projects_blueprint = Blueprint('projects_blueprint', __name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates'), static_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'))

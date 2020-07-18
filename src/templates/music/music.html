@@ -1,0 +1,256 @@
+{% extends "layout.html" %}
+{% block head %}
+    <title>Music</title>
+{% endblock %}
+{% block style %}
+    a.music-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    #submit {
+        height: 40px;
+        width: 200px;
+        margin-top: 10px;
+        background-color: #01FF70;
+        color: white;
+        font-weight: bold;
+        border: 0px solid white;
+        border-radius: 5px;
+    }
+
+    #submit:hover {
+        background-color: #2ECC40;
+    }
+
+    #main {
+        color: white;
+        /*background-image: linear-gradient(#282828, #222222);
+        background-attachment: fixed;*/
+        background-color: #282828;
+        margin-left: 152px;
+        margin-top: 59px;
+        padding-left: 25px;
+        padding-top: 5px;
+        margin-right: -8px;
+        margin-bottom: -8px;
+    }
+
+    .queue-button {
+        padding: 0;
+        border: 0;
+        color: white;
+        background-color: inherit;
+    }
+
+    .play-button {
+        background-color: black;
+        border: 1px solid white;
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+    }
+
+    .fa.fa-play {
+        padding-left: 1px;
+    }
+
+    .fa.fa-pause {
+        padding-left: 0px;
+    }
+
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 80px;
+        background-color: #282828;
+        margin-left: -25px;
+        box-shadow: 0 -3px 10px black;
+    }
+
+    #audio {
+        width: calc(100% - 320px); /*calc(100% - 160px)*/
+        margin-left: 80px;
+        position: absolute;
+        bottom: 0;
+        /*For full footer
+        margin-left: 10px;*/
+    }
+
+    .form-bar {
+        border: 3px black solid;
+        border-radius: 3px;
+        background-color: black;
+    }
+
+    .input-bar {
+        border: 0;
+        padding: 0 5px 0 5px;
+        height: 34px;
+    }
+
+    .button-bar {
+        border: 0;
+        height: 34px;
+        width: 34px;
+        background-color: lightgray;
+    }
+
+    .button-bar:hover {
+        background-color: black;
+    }
+
+    #audio-name {
+        text-align: center;
+        width: calc(100% - 160px);
+        padding-top: 8px;
+        font-size: 20px;
+    }
+
+    .audio-control-button {
+        height: 40px;
+        width: 40px;
+        position: absolute;
+        bottom: 0;
+        padding: 0;
+        border: 0;
+        color: white;
+        background-color: #1c1c1c;
+    }
+
+    .audio-control-button:hover {
+        color: #48a0f7;
+    }
+
+    .active-audio-control-button {
+        color: #1db954;
+    }
+{% endblock %}
+{% block content %}
+    <script>
+        let shuffle = false;
+        let repeat = true;
+        let last_song_name = "";
+        let last_song_url = ""
+
+        function queue_song(name, url) {
+            let audio = document.querySelector("#audio");
+            let audio_name = document.querySelector("#audio-name");
+
+            last_song_name = audio_name.innerText;
+            last_song_url = decodeURI(audio.src);
+            audio_name.innerText = name;
+            audio.src = encodeURI(url);
+            audio.play();
+        }
+
+        function autoplay_song() {
+            let music_list = document.querySelectorAll("div[data-url]");
+            if (repeat) {
+                document.querySelector("#audio").play();
+                return;
+            }
+            else if(shuffle) {
+                let element = music_list[Math.round(Math.random() * music_list.length)];
+                queue_song(element.getAttribute("data-name"), element.getAttribute("data-url"));
+                return;
+            }
+            else {
+                for(let i = 0; i < music_list.length; i++) {
+                    if(document.querySelector("#audio").src.endsWith(encodeURI(music_list[i].getAttribute("data-url")))) {
+                        let element = music_list[(i + 1) % music_list.length];
+                        queue_song(element.getAttribute("data-name"), element.getAttribute("data-url"));
+                        return;
+                    }
+                }
+            }
+        }
+
+        function play_last_song() {
+            if(last_song_name !== "" && last_song_url !== "") {
+                queue_song(last_song_name, last_song_url);
+            }
+        }
+
+        function toggle_shuffle(icon) {
+            if(shuffle) {
+                shuffle = false;
+                icon.classList.remove("active-audio-control-button");
+            }
+            else {
+                shuffle = true;
+                icon.classList.add("active-audio-control-button");
+            }
+        }
+
+        function toggle_repeat(icon) {
+            if(repeat) {
+                repeat = false;
+                icon.classList.remove("active-audio-control-button");
+            }
+            else {
+                repeat = true;
+                icon.classList.add("active-audio-control-button");
+            }
+        }
+
+        function audio_keypress(e) {
+            if (e.keyCode === 110 || e.keyCode === 78 || e.keyCode === 46 || e.keyCode === 62) { // Next
+                autoplay_song();
+            } else if (e.keyCode === 112 || e.keyCode === 80 || e.keyCode === 44 || e.keyCode === 60) { // Previous
+                play_last_song();
+            } else if (e.keyCode === 114 || e.keyCode === 82 || e.keyCode === 47 || e.keyCode === 63) { // Repeat
+                toggle_repeat(document.querySelector("#repeat").children[0]);
+            } else if (e.keyCode === 115 || e.keyCode === 83) { // Shuffle
+                toggle_shuffle(document.querySelector("#shuffle").children[0]);
+            }
+        }
+    </script>
+    <h1 class="title" style="margin-bottom: 0;">Music</h1>
+    <form class="form-bar" style="float: left;" method="POST">
+        <input class="input-bar" placeholder="URL" type="text" name="url">
+        <button class="button-bar" type="submit"><i class="fa fa-download"></i></button>
+    </form>
+    <form class="form-bar" style="float: right;" method="GET">
+        <input class="input-bar" placeholder="Search" type="text" name="q">
+        <button class="button-bar" type="submit"><i class="fa fa-search"></i></button>
+    </form>
+    <br>
+    <br>
+    <br>
+    {% for name in music.keys()|sort %}
+        <div data-url="{{ music[name] }}" data-name="{{ name.split('.mp3')[0] }}">
+            <button class="queue-button" onclick="queue_song(parentElement.getAttribute('data-name'), parentElement.getAttribute('data-url')); document.querySelector('#audio').focus();"><i class="fa fa-play"></i></button>&emsp;
+            <span>{{ name.split(".mp3")[0] }}</span>
+        </div>
+        <br>
+    {% endfor %}
+    <br style="margin-bottom: 80px;">
+    <div id="footer">
+        <div id="audio-name"></div>
+        <button class="audio-control-button" id="shuffle" onclick="toggle_shuffle(children[0]); document.querySelector('#audio').focus();" style="left: 0;"><i class="fa fa-random"></i></button>
+        <button class="audio-control-button" id="previous" onclick="play_last_song(); document.querySelector('#audio').focus();" style="left: 40px;"><i class="fa fa-step-backward"></i></button>
+        <audio id="audio" controls="" src="" onended="autoplay_song();" onkeypress="audio_keypress(event);"></audio>
+        <button class="audio-control-button" id="next" onclick="autoplay_song(); document.querySelector('#audio').focus();" style="right: 200px;"><i class="fa fa-step-forward"></i></button>
+        <button class="audio-control-button" id="repeat" onclick="toggle_repeat(children[0]); document.querySelector('#audio').focus();" style="right: 160px;"><i class="fa fa-refresh"></i></button>
+    </div>
+    <script>
+        if(shuffle) {
+            document.querySelector("#shuffle").children[0].classList.add("active-audio-control-button");
+        }
+        else {
+            document.querySelector("#shuffle").children[0].classList.remove("active-audio-control-button");
+        }
+        if(repeat) {
+            document.querySelector("#repeat").children[0].classList.add("active-audio-control-button");
+        }
+        else {
+            document.querySelector("#repeat").children[0].classList.remove("active-audio-control-button");
+        }
+    </script>
+{% endblock %}
