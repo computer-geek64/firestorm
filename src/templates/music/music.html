@@ -223,10 +223,10 @@
     <br>
     <br>
     <br>
-    {% for name in music.keys()|sort %}
-        <div data-url="{{ music[name] }}" data-name="{{ name.split('.mp3')[0] }}">
+    {% for audio in music %}
+        <div data-url="{{ audio['path'] }}" data-name="{{ audio['name'] }}">
             <button class="queue-button" onclick="queue_song(parentElement.getAttribute('data-name'), parentElement.getAttribute('data-url')); document.querySelector('#audio').focus();"><i class="fa fa-play"></i></button>&emsp;
-            <span>{{ name.split(".mp3")[0] }}</span>
+            <span>{{ audio['name'] }}</span>
         </div>
         <br>
     {% endfor %}

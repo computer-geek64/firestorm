@@ -35,10 +35,10 @@ def get_youtube_music(url, directory):
 @music_blueprint.route('/music/', methods=['GET'])
 @authenticate
 def get_music():
-    music = {}
+    music = []
     for root, dirs, files in os.walk(MUSIC_LOCATION):
-        music.update({x: safe_join('/music', 'src', x) for x in files if x.endswith('.mp3')})
-    return render_template('music/music.html', music=music), 200
+        music += [{'path': safe_join('/music', 'src', file), 'name': os.path.basename(os.path.splitext(file)[0])} for file in files if file.endswith('.mp3')]
+    return render_template('music/music.html', music=sorted(music, key=lambda k: k['path'])), 200
 
 
 @music_blueprint.route('/music/', methods=['POST'])
