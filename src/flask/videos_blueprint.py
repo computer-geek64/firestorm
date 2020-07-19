@@ -28,7 +28,7 @@ def get_video_categories():
 def get_videos(category):
     categories = {'movies': 'Movies', 'real': 'Real', 'scenes': 'Scenes', 'shows': 'TV Shows', 'tmp': 'Temp'}
     videos = [x.split(os.path.join(VIDEOS_LOCATION, category) + '/')[-1] for x in Popen(['find', os.path.join(VIDEOS_LOCATION, category), '-name', '*.mp4'], stdout=PIPE, stderr=PIPE).communicate()[0].decode().strip().split('\n')]
-    videos = sorted([[x, os.path.basename(os.path.splitext(x)[0])] for x in videos])
+    videos = sorted([[os.path.splitext(x)[0], os.path.basename(os.path.splitext(x)[0])] for x in videos])
     return render_template('videos/videos.html', category=categories[category], videos=videos), 200
 
 
