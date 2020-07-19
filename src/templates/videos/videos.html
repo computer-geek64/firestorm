@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block head %}
+    <title>{{ category }}</title>
+{% endblock %}
+{% block style %}
+    a.videos-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
+    .title {
+        text-align: center;
+    }
+{% endblock %}
+{% block content %}
+    <h1 class="title">{{ category }}</h1>
+    <ul>
+        {% for video in videos %}
+            <li><a href="{{ video[0] }}">{{ video[1] }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

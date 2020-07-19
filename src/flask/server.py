@@ -10,6 +10,7 @@ from login_blueprint import login_blueprint
 from files_blueprint import files_blueprint
 from projects_blueprint import projects_blueprint
 from music_blueprint import music_blueprint
+from videos_blueprint import videos_blueprint
 from power_blueprint import power_blueprint
 from errors_blueprint import errors_blueprint, error_404
 
@@ -19,6 +20,7 @@ app.register_blueprint(login_blueprint)
 app.register_blueprint(files_blueprint)
 app.register_blueprint(projects_blueprint)
 app.register_blueprint(music_blueprint)
+app.register_blueprint(videos_blueprint)
 app.register_blueprint(power_blueprint)
 app.register_blueprint(errors_blueprint)
 app.config['SESSION_TYPE'] = 'filesystem'
