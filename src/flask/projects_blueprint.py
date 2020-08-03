@@ -330,11 +330,11 @@ INSERT INTO "project"
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'user.name', GIT_USER_NAME], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'user.email', GIT_USER_EMAIL], stdout=PIPE, stderr=PIPE).communicate()
     Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'config', 'core.bare', 'false'], stdout=PIPE, stderr=PIPE).communicate()
-    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'apply', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate(input='''diff --git a/.gitconfig b/.gitconfig
+    Popen(['git', '-C', os.path.join(GIT_PATH, name + '.git'), 'apply', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate(input='''diff --git a/.gitignore b/.gitignore
 new file mode 100644
 index 0000000..2483976
 --- /dev/null
-+++ b/.gitconfig
++++ b/.gitignore
 @@ -0,0 +1,2 @@
 +.idea/
 +__pycache__/
