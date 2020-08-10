@@ -57,7 +57,7 @@ def markdown_to_html(filename):
     #        output += ("<tr>" if content[i].count("\n") > 1 else "") + "<td>" + content[i] + "</td>"
     #    else:
     #        output += content[i][:-1] + "|"
-    return markdown(output).replace("<code>", "<pre>").replace("</code>", "</pre>")
+    return markdown(output)#.replace("<code>", "<pre>").replace("</code>", "</pre>")
 
 
 # Public files
