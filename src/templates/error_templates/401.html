@@ -63,16 +63,16 @@
 </head>
 <body>
   <div class="nedry">
-    <img class="body" src="static/assets/img/nedry/body.png">
-    <img class="head" src="static/assets/img/nedry/head.png">
-    <img class="hand" src="static/assets/img/nedry/hand.png">
+    <img class="body" src="/static/assets/img/nedry/body.png">
+    <img class="head" src="/static/assets/img/nedry/head.png">
+    <img class="hand" src="/static/assets/img/nedry/hand.png">
     <div id="title-container">
         <h1 id="title">401 Unauthorized</h1>
         <p id="title-text">Ah ah ah! You didn't say the magic word!</p>
     </div>
   </div>
   <script>
-    ahahah = new Audio("static/assets/audio/nedry/ahahah.mp3");
+    ahahah = new Audio("/static/assets/audio/nedry/ahahah.mp3");
     ahahah.addEventListener('ended', function() {
       this.play();
     }, false);
