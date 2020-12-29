@@ -1,2 +1,2 @@
-# firestorm
-Personal headless CentOS 8 server
+# Firestorm
+My personal headless CentOS 8 server with a custom-built web interface
