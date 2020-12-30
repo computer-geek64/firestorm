@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# start.py
+# on_boot.py
 
 import os
 import sys
