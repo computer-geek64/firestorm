@@ -1,2 +1,1 @@
-* linguist-vendored
-src/templates/*.html linguist-vendored=false
+src/templates/**/*.html linguist-vendored=true
