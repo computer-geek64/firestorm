@@ -1,4 +1,4 @@
 #!/usr/bin/python3
-# stop.py
+# on_shutdown.py
 
 import os
