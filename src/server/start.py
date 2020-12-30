@@ -20,6 +20,5 @@ response = requests.get('http://api.openweathermap.org/data/2.5/weather?q={locat
 if response.status_code == 200:
     json_obj = json.loads(response.content)
     weather = json_obj['weather'][0]['main']
-    kelvin = json_obj['main']['temp']
-    fahrenheit = (kelvin - 273.15) * 9 / 5 + 32
-    requests.post(IFTTT_WEBHOOK, json={'value1': '{location} Weather'.format(location=LOCATION.split(',')[0]), 'value2': '{temperature:.1f} °F — {weather}'.format(temperature=fahrenheit, weather=weather), 'value3': 'https://www.google.com/search?q={location}+weather'.format(location=LOCATION.replace(' ', '+'))})
+    temperature = (json_obj['main']['temp'] - 273.15) * 9 / 5 + 32
+    requests.post(IFTTT_WEBHOOK, json={'value1': '{location} Weather'.format(location=LOCATION.split(',')[0]), 'value2': '{temperature:.0f} °F — {weather}'.format(temperature=temperature, weather=weather), 'value3': 'https://www.google.com/search?q={location}+weather'.format(location=LOCATION.replace(' ', '+'))})
