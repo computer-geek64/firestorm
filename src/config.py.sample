@@ -27,3 +27,7 @@ GIT_USER_EMAIL = ''  # Git config user.email
 USB_KEY_UUID = ''  # USB key UUID
 
 IFTTT_WEBHOOK = ''  # IFTTT push notification webhook URL
+
+LOCATION = ''  # Current location (City, State, Country)
+
+OPENWEATHERMAP_API_KEY = ''  # Open Weathermap API Key
