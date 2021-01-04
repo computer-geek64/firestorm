@@ -105,21 +105,25 @@
     {% endif %}
     <br>
     <table>
-        <tr>
-            <th>Source</th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Used</th>
-            <th>Available</th>
-            <th>Percent</th>
-            <th>Mountpoint</th>
-        </tr>
-        {% for row in fs_info %}
+        <thead>
             <tr>
-                {% for col in row %}
-                    <td>{{col}}</td>
-                {% endfor %}
+                <th>Source</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Used</th>
+                <th>Available</th>
+                <th>Percent</th>
+                <th>Mountpoint</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for row in fs_info %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{col}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}
