@@ -71,19 +71,23 @@
     {% if who|length > 0 %}
         <br>
         <table>
-            <tr>
-                <th>User</th>
-                <th>TTY</th>
-                <th>Time</th>
-                <th>From</th>
-            </tr>
-            {% for row in who %}
+            <thead>
                 <tr>
-                    {% for col in row %}
-                        <td>{{col}}</td>
-                    {% endfor %}
+                    <th>User</th>
+                    <th>TTY</th>
+                    <th>Time</th>
+                    <th>From</th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for row in who %}
+                    <tr>
+                        {% for col in row %}
+                            <td>{{col}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     {% endif %}
     {% if screens %}
