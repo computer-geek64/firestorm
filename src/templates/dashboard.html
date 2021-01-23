@@ -7,7 +7,7 @@
         background-color: #ff0800 !important;
     }
 
-    table, th, td {
+    th, td {
         padding-right: 20px;
     }
 
@@ -24,110 +24,161 @@
         font-family: monospace;
         font-size: 15px;
     }
+
+    div.todo-list-item {
+        margin-top: 10px;
+    }
+
+    input[type=checkbox] {
+        vertical-align: middle;
+    }
+
+    div.todo-list-item > progress::-moz-progress-bar {
+        background: #3584e4;
+    }
+
+    div.todo-list-item > progress {
+        border: 1px solid #cdc7c2;
+        width: calc(100% - 34px);
+        margin-left: 32px;
+    }
+
+    progress.todo-priority-high {
+        background-color: red;
+    }
+
+    progress.todo-priority-medium {
+        background-color: #FFDC00;
+    }
+
+    progress.todo-priority-low {
+        background-color: green;
+    }
 {% endblock %}
 {% block content %}
-    <span>{{current_date}}</span>
-    <span style="float: right;">{{current_time}}</span>
-    <br>
-    <br>
-    <p>{{uptime}}</p>
-    <p>{{system_info}}</p>
-    <br>
-    <p>
-        {% if temperature > 100 or temperature == -1 %}
-            <span style="font-weight: bold; color: red;">[!]</span>
-        {% elif temperature > 90 %}
-            <span style="font-weight: bold; color: #ff6700;">[-]</span>
-        {% else %}
-            <span style="font-weight: bold; color: green;">[+]</span>
-        {% endif %}
-        CPU Temp: {{temperature}} &deg;F
-    </p>
-    <p>
-        {% if updates > 100 %}
-            <span style="font-weight: bold; color: red;">[!]</span>
-        {% elif updates > 0 %}
-            <span style="font-weight: bold; color: #ff6700;">[-]</span>
-        {% else %}
-            <span style="font-weight: bold; color: green;">[+]</span>
-        {% endif %}
-        Updates: {{updates}}
-    </p>
-    {% if uptime.split(" ")[2].startswith("day") and uptime.split(" ")[1]|int >= 2 %}
-        <p><span style="font-weight: bold; color: red;">[!]</span> Restart critical</p>
-    {% elif uptime.split(" ")[2].startswith("day") and uptime.split(" ")[1]|int >= 1 %}
-        <p><span style="font-weight: bold; color: #ff6700;">[-]</span> Restart required</p>
-    {% endif %}
-    {% for k in services.keys() %}
+    <div style="float: left;">
+        <span>{{ current_date }}</span>
+        <br>
+        <br>
+        <p>{{ uptime }}</p>
+        <p>{{ system_info }}</p>
+        <br>
         <p>
-            {% if services[k] %}
-                <span style="font-weight: bold; color: green;">[+]</span>
-            {% else %}
+            {% if temperature > 100 or temperature == -1 %}
+                <span style="font-weight: bold; color: red;">[!]</span>
+            {% elif temperature > 90 %}
                 <span style="font-weight: bold; color: #ff6700;">[-]</span>
+            {% else %}
+                <span style="font-weight: bold; color: green;">[+]</span>
             {% endif %}
-            {{k}}
+            CPU Temp: {{ temperature }} &deg;F
         </p>
-    {% endfor %}
-    {% if who|length > 0 %}
+        <p>
+            {% if updates > 100 %}
+                <span style="font-weight: bold; color: red;">[!]</span>
+            {% elif updates > 0 %}
+                <span style="font-weight: bold; color: #ff6700;">[-]</span>
+            {% else %}
+                <span style="font-weight: bold; color: green;">[+]</span>
+            {% endif %}
+            Updates: {{ updates }}
+        </p>
+        {% if uptime.split(" ")[2].startswith("day") and uptime.split(" ")[1]|int >= 2 %}
+            <p><span style="font-weight: bold; color: red;">[!]</span> Restart critical</p>
+        {% elif uptime.split(" ")[2].startswith("day") and uptime.split(" ")[1]|int >= 1 %}
+            <p><span style="font-weight: bold; color: #ff6700;">[-]</span> Restart required</p>
+        {% endif %}
+        {% for k in services.keys() %}
+            <p>
+                {% if services[k] %}
+                    <span style="font-weight: bold; color: green;">[+]</span>
+                {% else %}
+                    <span style="font-weight: bold; color: #ff6700;">[-]</span>
+                {% endif %}
+                {{ k }}
+            </p>
+        {% endfor %}
+        {% if who|length > 0 %}
+            <br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>TTY</th>
+                        <th>Time</th>
+                        <th>From</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in who %}
+                        <tr>
+                            {% for col in row %}
+                                <td>{{ col }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if screens %}
+            <br>
+            <table>
+                <tr>
+                    <th>Screen Name</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+                {% for row in screens %}
+                    <tr>
+                        {% for col in row %}
+                            <td>{{ col }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
         <br>
         <table>
             <thead>
                 <tr>
-                    <th>User</th>
-                    <th>TTY</th>
-                    <th>Time</th>
-                    <th>From</th>
+                    <th>Source</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Used</th>
+                    <th>Available</th>
+                    <th>Percent</th>
+                    <th>Mountpoint</th>
                 </tr>
             </thead>
             <tbody>
-                {% for row in who %}
+                {% for row in fs_info %}
                     <tr>
                         {% for col in row %}
-                            <td>{{col}}</td>
+                            <td>{{ col }}</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% endif %}
-    {% if screens %}
-        <br>
-        <table>
-            <tr>
-                <th>Screen Name</th>
-                <th>Time</th>
-                <th>Status</th>
-            </tr>
-            {% for row in screens %}
-                <tr>
-                    {% for col in row %}
-                        <td>{{col}}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-    <br>
-    <table>
-        <thead>
-            <tr>
-                <th>Source</th>
-                <th>Type</th>
-                <th>Size</th>
-                <th>Used</th>
-                <th>Available</th>
-                <th>Percent</th>
-                <th>Mountpoint</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in fs_info %}
-                <tr>
-                    {% for col in row %}
-                        <td>{{col}}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    </div>
+    <div style="float: right; width: 500px;">
+        <p>To-do:</p>
+        <div class="todo-list-item">
+            <input type="checkbox" checked>
+            <span>Turn extra router into bridge</span>
+            <progress class="todo-priority-medium" value="30" max="100">30%</progress>
+        </div>
+        <div class="todo-list-item">
+            <input type="checkbox" checked>
+            <span>Pack stuff for trip</span>
+            <progress class="todo-priority-high" value="5" max="100">5%</progress>
+        </div>
+        {% for item in to_do %}
+            <div class="todo-list-item" title="{{ item['description'] }}">
+                <input type="checkbox" checked disabled>
+                <span>{{ item['label'] }}</span>
+                <progress class="todo-priority-{{ item['priority'] }}" value="{{ item['status'] * 100 | round }}" max="100">{{ item['status'] * 100 | round }}%</progress>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

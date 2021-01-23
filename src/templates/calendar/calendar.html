@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block head %}
+    <title>Calendar</title>
+{% endblock %}
+{% block style %}
+    a.calendar-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .calendar-month-arrow {
+        vertical-align: sub;
+        margin: 0 10px 0;
+        text-decoration: none;
+    }
+
+    table#month-calendar {
+        width: 100%;
+        table-layout: fixed;
+        font-family: Sans;
+        border-collapse: collapse;
+    }
+
+    table#month-calendar > thead > tr > th {
+        border: 1px solid black;
+        height: 40px;
+        background-color: #dddddd;
+        font-size: 20px;
+    }
+
+    table#month-calendar > tbody > tr > td {
+        border: 1px solid black;
+        height: 200px;
+        vertical-align: top;
+        padding: 10px;
+    }
+
+    span.calendar-date {
+        font-size: 24px;
+        vertical-align: top;
+    }
+
+    span.calendar-date#calendar-date-today {
+        color: red;
+        border: 2px solid red;
+        border-radius: 50%;
+        padding: 5px;
+        margin-left: -7px;
+    }
+{% endblock %}
+{% block content %}
+    <div style="text-align: center;">
+        <a class="calendar-month-arrow" href="?month={{ previous_month['month'] }}&year={{ previous_month['year'] }}">❮</a>
+        <h1 class="title" style="display: inline;">JANUARY</h1>
+        <a class="calendar-month-arrow" href="?month={{ next_month['month'] }}&year={{ next_month['year'] }}">❯</a>
+        <br>
+        <h3 class="title" style="display: inline;">2021</h3>
+    </div>
+    <br>
+    <table id="month-calendar">
+        <thead>
+            <tr>
+                <th>Sunday</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(0, calendar_dates|length, 7) %}
+                <tr>
+                    {% for j in range(7) %}
+                        <td>
+                            <span class="calendar-date"{% if calendar_dates[i + j]['today'] %} id="calendar-date-today"{% endif %}>{{ calendar_dates[i + j]['date'] }}</span>
+                            {% if calendar_dates[i + j]['holiday'] %}
+                                &emsp;<span style="font-weight: bold;">{{ calendar_dates[i + j]['holiday'] }}</span>
+                            {% endif %}
+                            <br><br>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

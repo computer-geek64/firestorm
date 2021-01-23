@@ -146,7 +146,7 @@ SELECT "name"
 INNER JOIN "organization"
         AS "o"
         ON "p"."organization" = "o"."name"
-LEFT JOIN "language"
+ LEFT JOIN "language"
         AS "l"
         ON "p"."language" = "l"."name"
 '''

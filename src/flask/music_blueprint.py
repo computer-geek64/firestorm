@@ -49,7 +49,7 @@ def post_music():
     return redirect('/music/'), 302
 
 
-@music_blueprint.route('/music/src/<path:path>/', methods=['GET'])
+@music_blueprint.route('/music/src/<path:path>', methods=['GET'])
 @authenticate
 def get_music_source(path):
     local_path = os.path.join(MUSIC_LOCATION, path)
