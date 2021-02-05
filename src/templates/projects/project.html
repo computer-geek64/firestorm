@@ -77,7 +77,7 @@
         white-space: nowrap;
     }
 
-    i.fa.fa-star, i.fa.fa-star-o {
+    i.far.fa-star, i.fas.fa-star {
         color: #ffd700;
     }
 
@@ -162,13 +162,13 @@
     <div id="project-title-bar">
         <!--<i class="fa fa-code" style="font-size: 32px;"></i>-->
         <h1 id="title">{{ name }}</h1>
-        <button class="edit-button" onclick="editName();"><i class="fa fa-pencil"></i></button>
+        <button class="edit-button" onclick="editName();"><i class="fas fa-pencil-alt"></i></button>
         <button class="right danger" onclick="deleteProject();">
-            <i class="fa fa-trash"></i>
+            <i class="fas fa-trash-alt"></i>
             Delete
         </button>
         <button class="right danger" onclick="toggleArchive(this);">
-            <i class="fa fa-archive"></i>
+            <i class="fas fa-archive"></i>
             {% if archived %}
                 Unarchive
             {% else %}
@@ -177,17 +177,17 @@
         </button>
         <button class="right" onclick="toggleStar(this);">
             {% if starred %}
-                <i class="fa fa-star"></i>
+                <i class="fas fa-star"></i>
                 Unstar
             {% else %}
-                <i class="fa fa-star-o"></i>
+                <i class="far fa-star"></i>
                 Star
             {% endif %}
         </button>
     </div>
     <hr>
     <div id="description">
-        <span><i class="fa fa-sitemap"></i> {{ organization }}</span>
+        <span><i class="fas fa-sitemap"></i> {{ organization }}</span>
         <form method="POST">
             <textarea name="description" oninput="document.querySelector('#submit-description').style['display'] = 'block';">{{ description }}</textarea>
             <button id="submit-description" type="submit">Submit</button>
@@ -254,14 +254,14 @@
             if(projectName === window.location.pathname.split('/')[2]) {
                 if (archiveButton.innerText === ' Archive') {
                     // Archive
-                    archiveButton.innerHTML = '<i class="fa fa-archive"></i> Unarchive';
+                    archiveButton.innerHTML = '<i class="fas fa-archive"></i> Unarchive';
                     let xhr = new XMLHttpRequest();
                     xhr.open('POST', window.location.pathname, false);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     xhr.send('archived=true');
                 } else {
                     // Unarchive
-                    archiveButton.innerHTML = '<i class="fa fa-archive"></i> Archive';
+                    archiveButton.innerHTML = '<i class="fas fa-archive"></i> Archive';
                     let xhr = new XMLHttpRequest();
                     xhr.open('POST', window.location.pathname, false);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -273,7 +273,7 @@
         function toggleStar(starButton) {
             if(starButton.innerText === ' Star') {
                 // Star
-                starButton.innerHTML = '<i class="fa fa-star"></i> Unstar';
+                starButton.innerHTML = '<i class="fas fa-star"></i> Unstar';
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -281,7 +281,7 @@
             }
             else {
                 // Unarchive
-                starButton.innerHTML = '<i class="fa fa-star-o"></i> Star';
+                starButton.innerHTML = '<i class="far fa-star"></i> Star';
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

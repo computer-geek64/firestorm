@@ -13,15 +13,14 @@
 
     .calendar-month-arrow {
         vertical-align: super;
-        margin: 0 10px 0;
         text-decoration: none;
         color: black;
+        font-size: 20px;
     }
 
     table#month-calendar {
         width: 100%;
         table-layout: fixed;
-        font-family: Sans;
         border-collapse: collapse;
     }
 
@@ -40,25 +39,71 @@
     }
 
     span.calendar-date {
+        font-family: Sans;
         font-size: 24px;
-        vertical-align: top;
+        width: 31px;
+        height: 29px;
+        padding: 1px 0;
+        text-align: center;
+    }
+
+    span.calendar-date.calendar-date-filler {
+        color: gray;
     }
 
     span.calendar-date#calendar-date-today {
         color: red;
         border: 2px solid red;
         border-radius: 50%;
-        padding: 5px;
-        margin-left: -7px;
+        padding: 6px 5px;
+        margin: -7px 0 0 -7px;
+    }
+
+    ul.calendar-item-list {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    ul.calendar-item-list > li.calendar-item {
+        display: inline;
+    }
+
+    div.calendar-item-popup {
+        display: inline;
+        position: absolute;
+        z-index: 0;
+        //margin-top: calc(-300px - 30px);
+        //margin-left: calc(-300px - 30px - 10px);
+        margin-left: 10px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 2px black;
+        padding: 15px;
+        overflow: hidden;
+
+        visibility: hidden;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        transition: opacity 0.5s, height 0.5s, visibility 0s ease 0.5s, width 0s ease 0.5s;
+    }
+
+    li.calendar-item:hover + div.calendar-item-popup, div.calendar-item-popup:hover {
+        visibility: visible;
+        opacity: 1;
+        width: 300px;
+        height: 250px;
+        transition: opacity 0.5s, height 0.5s;
     }
 {% endblock %}
 {% block content %}
     <div style="text-align: center;">
         <a class="calendar-month-arrow" href="?month={{ previous_month['month'] }}&year={{ previous_month['year'] }}">❮</a>
-        <h1 class="title" style="display: inline;">JANUARY</h1>
+        <h1 class="title" style="display: inline-block; width: 250px; margin: 0;">{{ current_month['month'].upper() }}</h1>
         <a class="calendar-month-arrow" href="?month={{ next_month['month'] }}&year={{ next_month['year'] }}">❯</a>
         <br>
-        <h3 class="title" style="display: inline;">2021</h3>
+        <h3 class="title" style="display: inline;">{{ current_month['year'] }}</h3>
     </div>
     <br>
     <table id="month-calendar">
@@ -78,15 +123,63 @@
                 <tr>
                     {% for j in range(7) %}
                         <td>
-                            <span class="calendar-date"{% if calendar_dates[i + j]['today'] %} id="calendar-date-today"{% endif %}>{{ calendar_dates[i + j]['date'] }}</span>
-                            {% if calendar_dates[i + j]['holiday'] %}
-                                &emsp;<span style="font-weight: bold;">{{ calendar_dates[i + j]['holiday'] }}</span>
-                            {% endif %}
-                            <br><br>
+                            <div style="display: flex;">
+                                <span class="calendar-date{% if calendar_dates[i + j]['filler_date'] %} calendar-date-filler{% endif %}"{% if calendar_dates[i + j]['today'] %} id="calendar-date-today"{% endif %}>{{ calendar_dates[i + j]['date'] }}</span>
+                                {% if calendar_dates[i + j]['holiday'] %}
+                                    &emsp;<span style="font-weight: bold;">{{ calendar_dates[i + j]['holiday'] }}</span>
+                                {% endif %}
+                            </div>
+                            <br>
+                            <ul class="calendar-item-list">
+                                {% for calendar_item in calendar_dates[i + j]['calendar_items'] %}
+                                    <li class="calendar-item">
+                                        {% if calendar_item['url'] %}
+                                            <a href="{{ calendar_item['url'] }}" style="text-decoration: none; color: black;">
+                                                {{ calendar_item['label'] }}
+                                            </a>
+                                        {% else %}
+                                            {{ calendar_item['label'] }}
+                                        {% endif %}
+                                    </li>
+                                    <div class="calendar-item-popup">
+                                        <h3 style="margin-top: 0; font-size: 20px;">{{ calendar_item['label'] }}</h3>
+                                        <p>{{ calendar_item['description'] }}</p>
+                                        {% if calendar_item['type'] == 'event' %}
+                                            <i class="far fa-clock"></i> {{ calendar_item['start_time'] }} to {{ calendar_item['end_time'] }}<br>
+                                            {% if calendar_item['location'] %}
+                                                <i class="fas fa-map-marker-alt" style="width: 16px; text-align: center;"></i> {{ calendar_item['location'].capitalize() }}<br>
+                                            {% endif %}
+                                            <br>
+                                            Priority: {{ calendar_item['priority'].capitalize() }}<br>
+                                            Progress: {{ (calendar_item['progress'] * 100)|round|int }}%<br><br>
+                                        {% else %}
+                                            <i class="far fa-clock"></i> {{ calendar_item['deadline'] }}<br>
+                                            {% if calendar_item['location'] %}
+                                                <i class="fas fa-map-marker-alt" style="width: 16px; text-align: center;"></i> {{ calendar_item['location'].capitalize() }}<br>
+                                            {% endif %}
+                                            <br>
+                                            Priority: {{ calendar_item['priority'].capitalize() }}<br>
+                                            Status: {{ calendar_item['status'].capitalize() }}<br><br>
+                                        {% endif %}
+                                        {% if calendar_item['url'] %}
+                                            <a href="{{ calendar_item['url'] }}">{{ calendar_item['url'] }}</a>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                {% endfor %}
+                            </ul>
                         </td>
                     {% endfor %}
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <script>
+        setTimeout(function(){
+            let animationElements = document.querySelectorAll('.disable-animations');
+            for(let i = 0; i < animationElements.length; i++) {
+                animationElements[i].classList.remove('disable-animations');
+            }
+        }, 500);
+    </script>
 {% endblock %}

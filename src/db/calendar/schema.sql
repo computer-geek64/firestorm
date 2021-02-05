@@ -25,26 +25,26 @@ CREATE TABLE "status" (
 
 -- Create table event
 CREATE TABLE "event" (
-    "label" VARCHAR PRIMARY KEY,
+    "label" VARCHAR,
     "description" VARCHAR,
     "start_time" TIMESTAMP NOT NULL,
-    "end_time" TIMESTAMP NOT NULL,
-    "all_day" BOOLEAN NOT NULL DEFAULT false,
-    "priority" INTEGER NOT NULL REFERENCES "priority" ("id"),
+    "end_time" TIMESTAMP,
+    "priority" INTEGER NOT NULL REFERENCES "priority" ("id") DEFAULT 1,
     "location" VARCHAR,
-    "url" VARCHAR
+    "url" VARCHAR,
+    PRIMARY KEY ("label", "end_time")
 );
 
 -- Create table task
 CREATE TABLE "task" (
-    "label" VARCHAR PRIMARY KEY,
+    "label" VARCHAR,
     "description" VARCHAR,
-    "deadline" TIMESTAMP NOT NULL,
-    "all_day" BOOLEAN NOT NULL DEFAULT false,
-    "priority" INTEGER NOT NULL REFERENCES "priority" ("id"),
-    "status" INTEGER REFERENCES "status" ("id"),
+    "deadline" TIMESTAMP,
+    "priority" INTEGER NOT NULL REFERENCES "priority" ("id") DEFAULT 1,
+    "status" INTEGER NOT NULL REFERENCES "status" ("id") DEFAULT 1,
     "location" VARCHAR,
-    "url" VARCHAR
+    "url" VARCHAR,
+    PRIMARY KEY ("label", "deadline")
 );
 
 
@@ -64,8 +64,6 @@ CREATE VIEW "calendar_view"
          AS "start_time",
             "e"."end_time"
          AS "end_time",
-            "e"."all_day"
-         AS "all_day",
             "p"."label"
          AS "priority",
             CASE
@@ -90,12 +88,10 @@ CREATE VIEW "calendar_view"
          AS "label",
             "t"."description"
          AS "label",
-            current_timestamp
+            "t"."deadline"
          AS "start_time",
             "t"."deadline"
          AS "end_time",
-            "t"."all_day"
-         AS "all_day",
             "p"."label"
          AS "priority",
             "s"."percentage"

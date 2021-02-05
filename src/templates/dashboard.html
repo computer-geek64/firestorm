@@ -177,7 +177,7 @@
             <div class="todo-list-item" title="{{ item['description'] }}">
                 <input type="checkbox" checked disabled>
                 <span>{{ item['label'] }}</span>
-                <progress class="todo-priority-{{ item['priority'] }}" value="{{ item['status'] * 100 | round }}" max="100">{{ item['status'] * 100 | round }}%</progress>
+                <progress class="todo-priority-{{ item['priority'] }}" value="{{ (item['status'] * 100)|round|int }}" max="100">{{ (item['status'] * 100)|round|int }}%</progress>
             </div>
         {% endfor %}
     </div>

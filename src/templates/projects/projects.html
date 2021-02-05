@@ -176,11 +176,11 @@
             </select>
         </div>
         <button id="submit" type="submit">
-            <i class="fa fa-search"></i>
+            <i class="fas fa-search"></i>
         </button>
         <a href="/projects/create/">
             <button id="create" type="button">
-                <i class="fa fa-plus"></i>
+                <i class="fas fa-plus"></i>
             </button>
         </a>
     </form>
@@ -194,12 +194,12 @@
                     </h2>
                     {% if project['archived'] %}
                         <span class="project-tag">
-                            <i class="fa fa-archive"></i>
+                            <i class="fas fa-archive"></i>
                             Archived
                         </span>
                     {% endif %}
                     <button class="project-star" onclick="toggleStar(this.children[0]);">
-                        <i class="fa fa-star{{ project['starred'] }}" data-name="{{ project['name'] }}"></i>
+                        <i class="fa{{ project['starred'] }} fa-star" data-name="{{ project['name'] }}"></i>
                     </button>
                 </div>
                 <p class="project-description">{{ project['description'] }}</p>
@@ -208,7 +208,7 @@
                         <span class="project-language-color" style="background-color: {{ project['language_color'] }};"></span>
                         <span>{{ project['language'] }}</span>
                     {% endif %}
-                    <i class="fa fa-sitemap"></i>
+                    <i class="fas fa-sitemap"></i>
                     <span>{{ project['organization'] }}</span>
                     <span style="float: right; margin-right: 0;">Created on {{ project['created'] }}</span>
                 </div>
@@ -218,9 +218,9 @@
     </div>
     <script>
         function toggleStar(star) {
-            if(star.classList.contains('fa-star-o')) {
+            if(star.classList.contains('far')) {
                 // Star
-                star.classList.replace('fa-star-o', 'fa-star');
+                star.classList.replace('far', 'fas');
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', '/projects/' + star.getAttribute('data-name') + '/', false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -228,7 +228,7 @@
             }
             else {
                 // Unstar
-                star.classList.replace('fa-star', 'fa-star-o');
+                star.classList.replace('fas', 'far');
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', '/projects/' + star.getAttribute('data-name') + '/', false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

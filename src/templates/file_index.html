@@ -23,44 +23,44 @@
             <th></th>
             <th>Name
                 {% if "s" in request.args and request.args["s"] == "A" %}
-                    <a href="?s=a"><i class="fa fa-sort-up"></i></a>
+                    <a href="?s=a"><i class="fas fa-sort-up"></i></a>
                 {% elif "s" in request.args and request.args["s"] == "a" %}
-                    <a href="?s=A"><i class="fa fa-sort-down"></i></a>
+                    <a href="?s=A"><i class="fas fa-sort-down"></i></a>
                 {% else %}
-                    <a href="?s=A"><i class="fa fa-sort"></i></a>
+                    <a href="?s=A"><i class="fas fa-sort"></i></a>
                 {% endif %}
             </th>
             <th>Size
                 {% if "s" in request.args and request.args["s"] == "S" %}
-                    <a href="?s=s"><i class="fa fa-sort-up"></i></a>
+                    <a href="?s=s"><i class="fas fa-sort-up"></i></a>
                 {% elif "s" in request.args and request.args["s"] == "s" %}
-                    <a href="?s=S"><i class="fa fa-sort-down"></i></a>
+                    <a href="?s=S"><i class="fas fa-sort-down"></i></a>
                 {% else %}
-                    <a href="?s=S"><i class="fa fa-sort"></i></a>
+                    <a href="?s=S"><i class="fas fa-sort"></i></a>
                 {% endif %}
             </th>
             <th>Last Modified
                 {% if "s" in request.args and request.args["s"] == "M" %}
-                    <a href="?s=m"><i class="fa fa-sort-up"></i></a>
+                    <a href="?s=m"><i class="fas fa-sort-up"></i></a>
                 {% elif "s" in request.args and request.args["s"] == "m" %}
-                    <a href="?s=M"><i class="fa fa-sort-down"></i></a>
+                    <a href="?s=M"><i class="fas fa-sort-down"></i></a>
                 {% else %}
-                    <a href="?s=M"><i class="fa fa-sort"></i></a>
+                    <a href="?s=M"><i class="fas fa-sort"></i></a>
                 {% endif %}
             </th>
             <th>Owner
                 {% if "s" in request.args and request.args["s"] == "O" %}
-                    <a href="?s=o"><i class="fa fa-sort-up"></i></a>
+                    <a href="?s=o"><i class="fas fa-sort-up"></i></a>
                 {% elif "s" in request.args and request.args["s"] == "o" %}
-                    <a href="?s=O"><i class="fa fa-sort-down"></i></a>
+                    <a href="?s=O"><i class="fas fa-sort-down"></i></a>
                 {% else %}
-                    <a href="?s=O"><i class="fa fa-sort"></i></a>
+                    <a href="?s=O"><i class="fas fa-sort"></i></a>
                 {% endif %}
             </th>
         </tr>
         {% if root != "" %}
             <tr>
-                <td><i class="fa fa-reply"></i></td>
+                <td><i class="fas fa-reply"></i></td>
                 <td><a href="..">Parent Directory</a></td>
                 <td>-</td>
                 <td>-</td>
@@ -70,7 +70,7 @@
         {% for file in files %}
             <tr>
                 {% if file["name"].endswith("/") %}
-                    <td><i class="fa fa-folder-open"></i></td>
+                    <td><i class="fas fa-folder-open"></i></td>
                     <td><a href="{{file['name'].split('/')[-2] + '/'}}">{{file['name'].split('/')[-2] + '/'}}</a></td>
                     <td>-</td>
                     <td>{{file["modified"]}}</td>
@@ -78,27 +78,27 @@
                 {% else %}
                     <td>
                     {% if file["name"].endswith(".mp4") or file["name"].endswith(".mkv") %}
-                        <i class="fa fa-file-video-o"></i>
+                        <i class="far fa-file-video"></i>
                     {% elif file["name"].endswith(".png") or file["name"].endswith(".jpg") or file["name"].endswith(".jpeg") or file["name"].endswith(".svg") or file["name"].endswith(".gif") %}
-                        <i class="fa fa-file-image-o"></i>
+                        <i class="far fa-file-image"></i>
                     {% elif file["name"].endswith(".pdf") %}
-                        <i class="fa fa-file-pdf-o"></i>
+                        <i class="far fa-file-pdf"></i>
                     {% elif file["name"].endswith(".mp3") or file["name"].endswith(".ogg") %}
-                        <i class="fa fa-file-audio-o"></i>
+                        <i class="far fa-file-audio"></i>
                     {% elif file["name"].endswith(".zip") or file["name"].endswith(".tar") or file["name"].endswith(".tar.gz") or file["name"].endswith(".tar.xz") or file["name"].endswith(".tar.bz") %}
-                        <i class="fa fa-file-archive-o"></i>
+                        <i class="far fa-file-archive"></i>
                     {% elif file["name"].endswith(".txt") or file["name"].endswith(".srt") or file["name"].endswith(".vtt") %}
-                        <i class="fa fa-file-text-o"></i>
+                        <i class="far fa-file-text"></i>
                     {% elif file["name"].endswith(".doc") or file["name"].endswith(".docx") %}
-                        <i class="fa fa-file-word-o"></i>
+                        <i class="far fa-file-word"></i>
                     {% elif file["name"].endswith(".xls") or file["name"].endswith(".xlsx") %}
-                        <i class="fa fa-file-excel-o"></i>
+                        <i class="far fa-file-excel"></i>
                     {% elif file["name"].endswith(".ppt") or file["name"].endswith(".pptx") %}
-                        <i class="fa fa-file-powerpoint-o"></i>
+                        <i class="far fa-file-powerpoint"></i>
                     {% elif file["name"].endswith(".md") or file["name"].endswith(".html") or file["name"].endswith(".css") or file["name"].endswith(".js") or file["name"].endswith(".json") or file["name"].endswith(".py") or file["name"].endswith(".rb") or file["name"].endswith(".java") or file["name"].endswith(".c") %}
-                        <i class="fa fa-file-code-o"></i>
+                        <i class="far fa-file-code"></i>
                     {% else %}
-                        <i class="fa fa-file-o"></i>
+                        <i class="far fa-file"></i>
                     {% endif %}
                     </td>
                     <td><a href="{{file['name'].split('/')[-1]}}">{{file["name"].split("/")[-1]}}</a></td>

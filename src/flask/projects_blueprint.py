@@ -172,7 +172,7 @@ INNER JOIN "organization"
             'organization': project[2],
             'language': project[4],
             'language_color': project[5],
-            'starred': '-o' * int(not project[6]),
+            'starred': 's' if project[6] else 'r',
             'archived': project[7],
             'created': datetime.strftime(project[8], '%Y-%m-%d')
         })

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+{#    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">#}
+    <link href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" rel="stylesheet">
     <link rel="icon" href="/static/assets/img/logo.png">
     {% block head %}
     {% endblock %}
@@ -29,6 +30,7 @@
             font-size: 20px;
             color: white;
             display: block;
+            transition: background-color 0.3s;
         }
 
         .sidenav > a.sidenav-link:hover {
@@ -58,6 +60,7 @@
             font-size: 17px;
             /*border-left: 1px solid #DDDDDD; For light theme*/
             border-left: 1px solid #606060;
+            transition: background-color 0.3s;
         }
 
         .topnav > a.topnav-link:hover {
@@ -91,16 +94,16 @@
 <body>
     <div class="topnav">
         <a class="title-logo" href="/">FIRESTORM</a>
-        <a class="topnav-link" href="/logout" title="Logout"><i class="fa fa-sign-out"></i></a>
-        <a class="topnav-link" href="/" title="Home"><i class="fa fa-home"></i></a>
-        <a class="topnav-link" href="/power/shutdown" title="Shutdown"><i class="fa fa-power-off"></i></a>
-        <a class="topnav-link" href="/power/restart" title="Restart"><i class="fa fa-repeat"></i></a>
+        <a class="topnav-link" href="/logout" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+        <a class="topnav-link" href="/" title="Home"><i class="fas fa-home"></i></a>
+        <a class="topnav-link" href="/power/shutdown" title="Shutdown"><i class="fas fa-power-off"></i></a>
+        <a class="topnav-link" href="/power/restart" title="Restart"><i class="fas fa-redo-alt"></i></a>
     </div>
     <div class="sidenav">
         <a class="sidenav-link home-sidenav-active" href="/">Home</a>
         <a class="sidenav-link dashboard-sidenav-active" href="/dashboard/">Dashboard</a>
         <a class="sidenav-link calendar-sidenav-active" href="/calendar/">Calendar</a>
-        <a class="sidenav-link files-sidenav-active" href="/files/home/ashish/">Files</a>
+        <a class="sidenav-link files-sidenav-active" href="/files/">Files</a>
         <a class="sidenav-link projects-sidenav-active" href="/projects/">Projects</a>
         <a class="sidenav-link music-sidenav-active" href="/music/">Music</a>
         <a class="sidenav-link videos-sidenav-active" href="/videos/">Videos</a>

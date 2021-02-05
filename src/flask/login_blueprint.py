@@ -98,8 +98,8 @@ def get_dashboard():
 SELECT *
   FROM "calendar_view"
  WHERE "status" < 1
-   AND "end_time" < to_timestamp(extract(epoch FROM current_timestamp) + {threshold_in_seconds});
-'''.format(threshold_in_seconds=604800))
-    to_do = [{'type': row[0], 'label': row[1], 'description': row[2], 'start_time': row[3], 'end_time': row[4], 'all_day': row[5], 'priority': row[6], 'status': row[7], 'location': row[8], 'url': row[9]} for row in cursor.fetchall()]
+   AND "end_time" < to_timestamp(extract(epoch FROM current_timestamp) + %s);
+''', (604800,))
+    to_do = [{'type': row[0], 'label': row[1], 'description': row[2], 'start_time': row[3], 'end_time': row[4], 'priority': row[5], 'status': row[6], 'location': row[7], 'url': row[8]} for row in cursor.fetchall()]
     conn.close()
     return render_template('dashboard.html', current_date=current_date, uptime=uptime, system_info=system_info, temperature=temperature, updates=updates, services=services, who=who, fs_info=fs_info, to_do=to_do), 200
