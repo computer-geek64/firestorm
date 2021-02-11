@@ -43,7 +43,7 @@
         margin-left: 32px;
     }
 
-    progress.todo-priority-high {
+    progress.todo-priority-high, progress.todo-priority-critical {
         background-color: red;
     }
 
@@ -163,19 +163,9 @@
     </div>
     <div style="float: right; width: 500px;">
         <p>To-do:</p>
-        <div class="todo-list-item">
-            <input type="checkbox" checked>
-            <span>Turn extra router into bridge</span>
-            <progress class="todo-priority-medium" value="30" max="100">30%</progress>
-        </div>
-        <div class="todo-list-item">
-            <input type="checkbox" checked>
-            <span>Pack stuff for trip</span>
-            <progress class="todo-priority-high" value="5" max="100">5%</progress>
-        </div>
         {% for item in to_do %}
             <div class="todo-list-item" title="{{ item['description'] }}">
-                <input type="checkbox" checked disabled>
+                <input type="checkbox" checked>
                 <span>{{ item['label'] }}</span>
                 <progress class="todo-priority-{{ item['priority'] }}" value="{{ (item['status'] * 100)|round|int }}" max="100">{{ (item['status'] * 100)|round|int }}%</progress>
             </div>

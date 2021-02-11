@@ -134,8 +134,8 @@
         <div style="display: inline-block; width: 25%; vertical-align: top;">
             <h3 class="subtitle">Priority</h3>
             {% for priority_option in priorities %}
-                <input name="priority" type="radio" value="{{ priority_option[0] }}" oninput="showSubmitButton();"{% if priority_option[1] == priority %} checked{% endif %}/>
-                <label>{{ priority_option[1].capitalize() }}</label>
+                <input id="priority-option-{{ priority_option[0] }}" name="priority" type="radio" value="{{ priority_option[0] }}" oninput="showSubmitButton();"{% if priority_option[1] == priority %} checked{% endif %}/>
+                <label for="priority-option-{{ priority_option[0] }}">{{ priority_option[1].capitalize() }}</label>
                 <br>
             {% endfor %}
             <br>
@@ -146,8 +146,8 @@
             {% else %}
                 <h3 class="subtitle">Status</h3>
                 {% for status_option in statuses %}
-                    <input name="status" type="radio" value="{{ status_option[0] }}" oninput="showSubmitButton();"{% if status_option[1] == status %} checked{% endif %}/>
-                    <label>{{ status_option[1].capitalize() }} ({{ (status_option[2] * 100)|round|int }}%)</label>
+                    <input id="status-option-{{ status_option[0] }}" name="status" type="radio" value="{{ status_option[0] }}" oninput="showSubmitButton();"{% if status_option[1] == status %} checked{% endif %}/>
+                    <label for="status-option-{{ status_option[0] }}">{{ status_option[1].capitalize() }} ({{ (status_option[2] * 100)|round|int }}%)</label>
                     <br>
                 {% endfor %}
             {% endif %}
