@@ -20,30 +20,30 @@ CREATE TABLE "priority" (
 CREATE TABLE "status" (
     "id" SERIAL PRIMARY KEY,
     "label" VARCHAR NOT NULL,
-    "percentage" FLOAT
+    "percentage" FLOAT NOT NULL
 );
 
 -- Create table event
 CREATE TABLE "event" (
     "label" VARCHAR,
-    "description" VARCHAR,
+    "description" VARCHAR NOT NULL,
     "start_time" TIMESTAMP NOT NULL,
     "end_time" TIMESTAMP,
     "priority" INTEGER NOT NULL REFERENCES "priority" ("id") DEFAULT 1,
-    "location" VARCHAR,
-    "url" VARCHAR,
+    "location" VARCHAR NOT NULL,
+    "url" VARCHAR NOT NULL,
     PRIMARY KEY ("label", "end_time")
 );
 
 -- Create table task
 CREATE TABLE "task" (
     "label" VARCHAR,
-    "description" VARCHAR,
+    "description" VARCHAR NOT NULL,
     "deadline" TIMESTAMP,
     "priority" INTEGER NOT NULL REFERENCES "priority" ("id") DEFAULT 1,
     "status" INTEGER NOT NULL REFERENCES "status" ("id") DEFAULT 1,
-    "location" VARCHAR,
-    "url" VARCHAR,
+    "location" VARCHAR NOT NULL,
+    "url" VARCHAR NOT NULL,
     PRIMARY KEY ("label", "deadline")
 );
 
@@ -110,7 +110,8 @@ CREATE VIEW "calendar_view"
          ON "t"."status" = "s"."id") "unordered_calendar"
    ORDER BY "end_time" ASC,
             CASE
-                WHEN "priority" = 'high' THEN 1
-                WHEN "priority" = 'medium' THEN 2
-                WHEN "priority" = 'low' THEN 3
+                WHEN "priority" = 'critical' THEN 1
+                WHEN "priority" = 'high' THEN 2
+                WHEN "priority" = 'medium' THEN 3
+                WHEN "priority" = 'low' THEN 4
             END ASC;

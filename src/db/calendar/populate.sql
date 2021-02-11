@@ -20,10 +20,13 @@ INSERT INTO "priority" (
             ),
             (
                 'high'
+            ),
+            (
+                'critical'
             );
 
 -- Lock table priority with row_lock constraint
-ALTER TABLE "priority" ADD CONSTRAINT "row_lock" CHECK ("id" <= 3);
+ALTER TABLE "priority" ADD CONSTRAINT "row_lock" CHECK ("id" <= 4);
 
 -- Insert into table status
 INSERT INTO "status" (
@@ -36,13 +39,21 @@ INSERT INTO "status" (
                 0
             ),
             (
-                'incomplete',
+                'started',
+                0.1
+            ),
+            (
+                'halfway',
                 0.5
             ),
             (
-                'finished',
+                'almost finished',
+                0.75
+            ),
+            (
+                'completed',
                 1
             );
 
 -- Lock table status with row_lock constraint
-ALTER TABLE "status" ADD CONSTRAINT "row_lock" CHECK ("id" <= 3);
+ALTER TABLE "status" ADD CONSTRAINT "row_lock" CHECK ("id" <= 5);

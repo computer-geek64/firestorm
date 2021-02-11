@@ -17,6 +17,10 @@
         display: inline;
     }
 
+    button {
+        transition: color 0.5s, background-color 0.5s;
+    }
+
     button.edit-button {
         vertical-align: super;
         padding: 0;
@@ -227,20 +231,20 @@
     </div>
     <script>
         function editName() {
-            let currentProjectName = window.location.pathname.split('/')[2];
+            let currentProjectName = document.querySelector('#title').innerText;
             let projectName = prompt('Edit project name:', currentProjectName);
             if(projectName) {
                 let xhr = new XMLHttpRequest();
-                xhr.open("POST", window.location.pathname, false);
+                xhr.open('POST', window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.send('name=' + projectName);
-                window.location.pathname = window.location.pathname.replace(currentProjectName, projectName);
+                xhr.send('name=' + encodeURIComponent(projectName));
+                window.location.pathname = window.location.pathname.replace(encodeURIComponent(currentProjectName), encodeURIComponent(projectName));
             }
         }
 
         function deleteProject() {
             let projectName = prompt('Enter the project name to confirm:');
-            if(projectName === window.location.pathname.split('/')[2]) {
+            if(projectName === document.querySelector('#title').innerText) {
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', window.location.pathname, false);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -251,7 +255,7 @@
 
         function toggleArchive(archiveButton) {
             let projectName = prompt('Enter the project name to confirm:');
-            if(projectName === window.location.pathname.split('/')[2]) {
+            if(projectName === document.querySelector('#title').innerText) {
                 if (archiveButton.innerText === ' Archive') {
                     // Archive
                     archiveButton.innerHTML = '<i class="fas fa-archive"></i> Unarchive';

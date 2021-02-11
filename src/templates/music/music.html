@@ -55,11 +55,11 @@
         height: 30px;
     }
 
-    .fa.fa-play {
+    .fas.fa-play {
         padding-left: 1px;
     }
 
-    .fa.fa-pause {
+    .fas.fa-pause {
         padding-left: 0px;
     }
 
@@ -214,18 +214,18 @@
     <h1 class="title" style="margin-bottom: 0;">Music</h1>
     <form class="form-bar" style="float: left;" method="POST">
         <input class="input-bar" placeholder="URL" type="text" name="url">
-        <button class="button-bar" type="submit"><i class="fa fa-download"></i></button>
+        <button class="button-bar" type="submit"><i class="fas fa-download"></i></button>
     </form>
     <form class="form-bar" style="float: right;" method="GET">
         <input class="input-bar" placeholder="Search" type="text" name="q">
-        <button class="button-bar" type="submit"><i class="fa fa-search"></i></button>
+        <button class="button-bar" type="submit"><i class="fas fa-search"></i></button>
     </form>
     <br>
     <br>
     <br>
     {% for audio in music %}
         <div data-url="{{ audio['path'] }}" data-name="{{ audio['name'] }}">
-            <button class="queue-button" onclick="queue_song(parentElement.getAttribute('data-name'), parentElement.getAttribute('data-url')); document.querySelector('#audio').focus();"><i class="fa fa-play"></i></button>&emsp;
+            <button class="queue-button" onclick="queue_song(parentElement.getAttribute('data-name'), parentElement.getAttribute('data-url')); document.querySelector('#audio').focus();"><i class="fas fa-play"></i></button>&emsp;
             <span>{{ audio['name'] }}</span>
         </div>
         <br>
@@ -233,11 +233,11 @@
     <br style="margin-bottom: 80px;">
     <div id="footer">
         <div id="audio-name"></div>
-        <button class="audio-control-button" id="shuffle" onclick="toggle_shuffle(children[0]); document.querySelector('#audio').focus();" style="left: 0;"><i class="fa fa-random"></i></button>
-        <button class="audio-control-button" id="previous" onclick="play_last_song(); document.querySelector('#audio').focus();" style="left: 40px;"><i class="fa fa-step-backward"></i></button>
+        <button class="audio-control-button" id="shuffle" onclick="toggle_shuffle(children[0]); document.querySelector('#audio').focus();" style="left: 0;"><i class="fas fa-random"></i></button>
+        <button class="audio-control-button" id="previous" onclick="play_last_song(); document.querySelector('#audio').focus();" style="left: 40px;"><i class="fas fa-step-backward"></i></button>
         <audio id="audio" controls="" src="" onended="autoplay_song();" onkeypress="audio_keypress(event);"></audio>
-        <button class="audio-control-button" id="next" onclick="autoplay_song(); document.querySelector('#audio').focus();" style="right: 200px;"><i class="fa fa-step-forward"></i></button>
-        <button class="audio-control-button" id="repeat" onclick="toggle_repeat(children[0]); document.querySelector('#audio').focus();" style="right: 160px;"><i class="fa fa-refresh"></i></button>
+        <button class="audio-control-button" id="next" onclick="autoplay_song(); document.querySelector('#audio').focus();" style="right: 200px;"><i class="fas fa-step-forward"></i></button>
+        <button class="audio-control-button" id="repeat" onclick="toggle_repeat(children[0]); document.querySelector('#audio').focus();" style="right: 160px;"><i class="fas fa-sync-alt"></i></button>
     </div>
     <script>
         if(shuffle) {

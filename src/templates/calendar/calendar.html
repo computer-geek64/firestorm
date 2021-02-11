@@ -124,7 +124,7 @@
                     {% for j in range(7) %}
                         <td>
                             <div style="display: flex;">
-                                <span class="calendar-date{% if calendar_dates[i + j]['filler_date'] %} calendar-date-filler{% endif %}"{% if calendar_dates[i + j]['today'] %} id="calendar-date-today"{% endif %}>{{ calendar_dates[i + j]['date'] }}</span>
+                                <span class="calendar-date{% if calendar_dates[i + j]['filler_date'] %} calendar-date-filler{% endif %}"{% if calendar_dates[i + j]['today'] %} id="calendar-date-today"{% endif %} style="cursor: pointer;" onclick="createCalendarItem(this);" data-timestamp="{{ calendar_dates[i + j]['timestamp'] }}">{{ calendar_dates[i + j]['date'] }}</span>
                                 {% if calendar_dates[i + j]['holiday'] %}
                                     &emsp;<span style="font-weight: bold;">{{ calendar_dates[i + j]['holiday'] }}</span>
                                 {% endif %}
@@ -133,13 +133,9 @@
                             <ul class="calendar-item-list">
                                 {% for calendar_item in calendar_dates[i + j]['calendar_items'] %}
                                     <li class="calendar-item">
-                                        {% if calendar_item['url'] %}
-                                            <a href="{{ calendar_item['url'] }}" style="text-decoration: none; color: black;">
-                                                {{ calendar_item['label'] }}
-                                            </a>
-                                        {% else %}
+                                        <a href="{{ calendar_item['page'] }}" style="text-decoration: none; color: black;">
                                             {{ calendar_item['label'] }}
-                                        {% endif %}
+                                        </a>
                                     </li>
                                     <div class="calendar-item-popup">
                                         <h3 style="margin-top: 0; font-size: 20px;">{{ calendar_item['label'] }}</h3>
@@ -151,7 +147,7 @@
                                             {% endif %}
                                             <br>
                                             Priority: {{ calendar_item['priority'].capitalize() }}<br>
-                                            Progress: {{ (calendar_item['progress'] * 100)|round|int }}%<br><br>
+                                            Status: {{ (calendar_item['status'] * 100)|round|int }}%<br><br>
                                         {% else %}
                                             <i class="far fa-clock"></i> {{ calendar_item['deadline'] }}<br>
                                             {% if calendar_item['location'] %}
@@ -175,11 +171,21 @@
         </tbody>
     </table>
     <script>
-        setTimeout(function(){
-            let animationElements = document.querySelectorAll('.disable-animations');
-            for(let i = 0; i < animationElements.length; i++) {
-                animationElements[i].classList.remove('disable-animations');
+        function createCalendarItem(dateElement) {
+            let timestamp = dateElement.getAttribute('data-timestamp');
+
+            let calendarItemType = confirm('Create task?') ? 'task' : 'event';
+
+            let name = prompt('Enter the ' + calendarItemType + ' name:');
+            if(!name) {
+                return;
             }
-        }, 500);
+
+            let request = new XMLHttpRequest();
+            request.open('POST', '/calendar/create/', false);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            request.send('type=' + encodeURIComponent(calendarItemType) + '&name=' + encodeURIComponent(name) + '&timestamp=' + encodeURIComponent(timestamp));
+            window.location.pathname = '/calendar/' + encodeURIComponent(name) + '_' + encodeURIComponent(timestamp) + '/';
+        }
     </script>
 {% endblock %}

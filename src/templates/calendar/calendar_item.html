@@ -1,0 +1,189 @@
+{% extends "layout.html" %}
+{% block head %}
+    <title>{{ name }}</title>
+{% endblock %}
+{% block style %}
+    a.calendar-sidenav-active {
+        background-color: #ff0800 !important;
+    }
+
+    div#calendar-item-title-bar > * {
+        display: inline;
+    }
+
+    button {
+        transition: color 0.5s, background-color 0.5s;
+    }
+
+    /*div#calendar-item-title-bar > #title:hover + button.edit-button, div#calendar-item-title-bar > button.edit-button:hover {
+        display: inline !important;
+    }*/
+
+
+    button.edit-button {
+        //display: none !important;
+        vertical-align: super;
+        padding: 0;
+        border: 0;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    div#calendar-item-title-bar > button.right {
+        float: right;
+        border: 1px solid lightgray;
+        padding: 5px 10px;
+        border-radius: 7px;
+        margin: 4px 0 0 10px;
+        font-size: 15px;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    div#calendar-item-title-bar > button.right:hover {
+        background-color: lightgray;
+    }
+
+    div#calendar-item-title-bar > button.right.danger {
+        color: #cb2431;
+    }
+
+    div#calendar-item-title-bar > button.right.danger:hover {
+        color: white;
+        background-color: #cb2431;
+    }
+
+    div#calendar-item-title-bar + hr {
+        height: 1px;
+        border-width: 0;
+        background-color: #d1d5da;
+        margin: 16px 0;
+    }
+
+    textarea#description {
+        resize: none;
+        width: 100%;
+        height: 200px;
+        border: 0;
+        font-size: 20px;
+        //font-family: Titillium Web;
+    }
+
+    h3.subtitle {
+        margin: 0;
+    }
+
+    progress#statusbar {
+        border: 1px solid #cdc7c2;
+        width: 100%;
+    }
+
+    progress#statusbar::-moz-progress-bar {
+        background: #3584e4;
+    }
+
+    div#calendar-item-title-bar > button#submit-calendar-item {
+        display: none;
+        border: 1px solid lightgray;
+        padding: 5px 10px;
+        border-radius: 7px;
+        font-size: 15px;
+        color: #2ea44f;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    div#calendar-item-title-bar > button#submit-calendar-item:hover {
+        color: white;
+        background-color: #2ea44f;
+    }
+{% endblock %}
+{% block content %}
+    <div id="calendar-item-title-bar">
+        <h1 id="title">{{ name }}</h1>
+        <button class="edit-button" onclick="editName();"><i class="fas fa-pencil-alt"></i></button>
+        <button class="right danger" onclick="deleteCalendarItem();">
+            <i class="fas fa-trash-alt"></i>
+            Delete
+        </button>
+        <button id="submit-calendar-item" class="right" onclick="document.querySelector('form#calendar-item-form').submit();">Submit</button>
+    </div>
+    <hr>
+    <form id="calendar-item-form" method="POST">
+        <div style="display: inline-block; width: 49%;">
+            <textarea id="description" name="description" oninput="showSubmitButton();">{{ description }}</textarea>
+        </div>
+        <div style="display: inline-block; width: 25%; vertical-align: top;">
+            {% if calendar_item_type == 'event' %}
+                <h3 class="subtitle">From:</h3>
+                <input name="from_date" type="date" value="{{ start_time.strftime('%Y-%m-%d') }}" oninput="showSubmitButton();"/>
+                <input name="from_time" type="time" value="{{ start_time.strftime('%H:%M') }}" oninput="showSubmitButton();"/>
+                <br><br>
+                <h3 class="subtitle">To:</h3>
+                <input name="to_date" type="date" value="{{ end_time.strftime('%Y-%m-%d') }}" oninput="showSubmitButton();"/>
+                <input name="to_time" type="time" value="{{ end_time.strftime('%H:%M') }}" oninput="showSubmitButton();"/>
+            {% else %}
+                <h3 class="subtitle">Deadline:</h3>
+                <input name="date" type="date" value="{{ deadline.strftime('%Y-%m-%d') }}" oninput="showSubmitButton();"/>
+                <input name="time" type="time" value="{{ deadline.strftime('%H:%M') }}" oninput="showSubmitButton();"/>
+            {% endif %}
+            <br><br>
+            <h3 class="subtitle">Location:</h3>
+            <input name="location" type="text" value="{{ location }}" oninput="showSubmitButton();"/>
+        </div>
+        <div style="display: inline-block; width: 25%; vertical-align: top;">
+            <h3 class="subtitle">Priority</h3>
+            {% for priority_option in priorities %}
+                <input name="priority" type="radio" value="{{ priority_option[0] }}" oninput="showSubmitButton();"{% if priority_option[1] == priority %} checked{% endif %}/>
+                <label>{{ priority_option[1].capitalize() }}</label>
+                <br>
+            {% endfor %}
+            <br>
+            {% if calendar_item_type == 'event' %}
+                <h3 class="subtitle">Status: {{ (status * 100)|round|int }}%</h3>
+                <progress id="statusbar" value="{{ (status * 100)|round|int }}" max="100">{{ (status * 100)|round|int }}%</progress>
+                <br>
+            {% else %}
+                <h3 class="subtitle">Status</h3>
+                {% for status_option in statuses %}
+                    <input name="status" type="radio" value="{{ status_option[0] }}" oninput="showSubmitButton();"{% if status_option[1] == status %} checked{% endif %}/>
+                    <label>{{ status_option[1].capitalize() }} ({{ (status_option[2] * 100)|round|int }}%)</label>
+                    <br>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <h3 class="subtitle">URL</h3>
+            <input name="url" type="text" value="{{ url }}" style="width: 100%;" oninput="showSubmitButton();"/>
+        </div>
+    </form>
+    <script>
+        let calendarItemType = '{{ calendar_item_type }}';
+
+        function showSubmitButton() {
+            document.querySelector('button#submit-calendar-item').style['display'] = 'block';
+        }
+
+        function editName() {
+            let currentCalendarItemName = document.querySelector('#title').innerText;
+            let calendarItemName = prompt('Edit ' + calendarItemType + ' name:', currentCalendarItemName);
+            if(calendarItemName) {
+                let request = new XMLHttpRequest();
+                request.open('POST', window.location.pathname, false);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                request.send('name=' + encodeURIComponent(calendarItemName));
+                window.location.pathname = window.location.pathname.replace(encodeURIComponent(currentCalendarItemName), encodeURIComponent(calendarItemName));
+            }
+        }
+
+        function deleteCalendarItem() {
+            let calendarItemName = prompt('Enter the ' + calendarItemType + ' name to confirm:');
+            if(calendarItemName === document.querySelector('#title').innerText) {
+                let request = new XMLHttpRequest();
+                request.open('POST', window.location.pathname, false);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                request.send('delete=true');
+                window.location.pathname = '/calendar/';
+            }
+        }
+    </script>
+{% endblock %}
