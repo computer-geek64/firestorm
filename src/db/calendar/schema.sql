@@ -114,4 +114,6 @@ CREATE VIEW "calendar_view"
                 WHEN "priority" = 'high' THEN 2
                 WHEN "priority" = 'medium' THEN 3
                 WHEN "priority" = 'low' THEN 4
-            END ASC;
+            END ASC,
+            "status" ASC,
+            "label" ASC;

@@ -124,7 +124,7 @@
                     {% for j in range(7) %}
                         <td>
                             <div style="display: flex;">
-                                <span class="calendar-date{% if calendar_dates[i + j]['filler_date'] %} calendar-date-filler{% endif %}"{% if calendar_dates[i + j]['today'] %} id="calendar-date-today"{% endif %} style="cursor: pointer;" onclick="createCalendarItem(this);" data-timestamp="{{ calendar_dates[i + j]['timestamp'] }}">{{ calendar_dates[i + j]['date'] }}</span>
+                                <span class="calendar-date{% if calendar_dates[i + j]['filler_date'] %} calendar-date-filler{% endif %}"{% if calendar_dates[i + j]['today'] %} id="calendar-date-today"{% endif %} style="cursor: pointer;" onclick="createCalendarItem(this);" data-timestamp="{{ calendar_dates[i + j]['timestamp'] + 86340 }}">{{ calendar_dates[i + j]['date'] }}</span>
                                 {% if calendar_dates[i + j]['holiday'] %}
                                     &emsp;<span style="font-weight: bold;">{{ calendar_dates[i + j]['holiday'] }}</span>
                                 {% endif %}
