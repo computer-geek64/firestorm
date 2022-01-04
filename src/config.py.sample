@@ -34,3 +34,6 @@ IFTTT_WEBHOOK = ''  # IFTTT push notification webhook URL
 LOCATION = ''  # Current location (City, State, Country)
 
 OPENWEATHERMAP_API_KEY = ''  # Open Weathermap API Key
+
+LIFE360_USERNAME = ''  # Life360 email
+LIFE360_PASSWORD = ''  # Life360 password
