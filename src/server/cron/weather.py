@@ -15,10 +15,10 @@ try:
     # Get current lat/lon coordinates from Life360
     life360_authorization_token = 'cFJFcXVnYWJSZXRyZTRFc3RldGhlcnVmcmVQdW1hbUV4dWNyRUh1YzptM2ZydXBSZXRSZXN3ZXJFQ2hBUHJFOTZxYWtFZHI0Vg=='
     life360_api = life360(authorization_token=life360_authorization_token, username=LIFE360_USERNAME, password=LIFE360_PASSWORD)
-    if not api.authenticate():
+    if not life360_api.authenticate():
         raise Exception('Failed to authenticate with Life360 API')
 
-    circle = api.get_circle(api.get_circles()[0]['id'])
+    circle = life360_api.get_circle(life360_api.get_circles()[0]['id'])
     life360_location = [member for member in circle['members'] if member['loginEmail'] == LIFE360_USERNAME][0]['location']
     lat, lon = life360_location['latitude'], life360_location['longitude']
 
@@ -33,7 +33,7 @@ try:
     
     # Send weather data to IFTTT push notification
     requests.post(IFTTT_WEBHOOK, json={'value1': '{location} Weather'.format(location=json_obj['name']), 'value2': '{temperature:.0f} °F — {weather}'.format(temperature=temperature, weather=weather), 'value3': 'https://www.google.com/search?q={location}+weather'.format(location=json_obj['name'].replace(' ', '+'))})
-except:
+except Exception:
     # Resort to backup of hardcoded location
     response = requests.get('http://api.openweathermap.org/data/2.5/weather?q={location}&appid={openweathermap_api_key}'.format(location=LOCATION, openweathermap_api_key=OPENWEATHERMAP_API_KEY))
     if response.status_code == 200:
